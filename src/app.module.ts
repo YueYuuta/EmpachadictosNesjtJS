@@ -32,8 +32,8 @@ export class AppModule {
       // .forRoutes({ path: 'usuario/avatar/:userId', method: RequestMethod.PUT });
       .forRoutes(
         { path: 'usuario/crear', method: RequestMethod.POST },
-        // { path: 'usuario/avatar/:userId', method: RequestMethod.PUT },
-        // { path: 'usuario/editar/usuario/:id', method: RequestMethod.PUT },
+        // { path: 'usuario/avatar/:userId', method: RequestMethod.PATCH },
+        { path: 'usuario/editar/:id', method: RequestMethod.PATCH },
         // { path: 'producto/:id', method: RequestMethod.PATCH },
         // { path: 'producto', method: RequestMethod.POST },
         // { path: 'producto/guardar/imagen/:id', method: RequestMethod.PUT },

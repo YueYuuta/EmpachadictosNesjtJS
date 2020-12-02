@@ -42,6 +42,7 @@ export class CrearUsuarioCasoUso {
     usuario.Contraseña = await ProveedorBcrypt.encriptarContra(Contraseña);
     if (req.files) {
       nombreImagen = await manejoDeImagenes(req, PathFile.USERS);
+      usuario.Detalle.Avatar = nombreImagen;
     }
     try {
       const usuarioGuardado: Usuario = await this._userRepository.crear(

@@ -171,6 +171,7 @@ export class UsuarioController {
     @Param('id', ParseIntPipe) UsuarioID: number,
     @ObtenerUsuario() Usuario: any,
   ): Promise<SalidaApi> {
+    console.log(UsuarioID);
     const respuesta = await this._eliminarUsuarioService.eliminar(
       UsuarioID,
       Usuario.UsuarioID,
