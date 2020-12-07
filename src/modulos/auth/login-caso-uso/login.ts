@@ -32,14 +32,21 @@ export class LoginCasoUso {
       throw new NotFoundException(`El usuario: ${Usuario} no existe`);
     }
 
-    const existAlmacenAsig = await this._usuarioAlmacenService.obtenerPorUsuario(
+    const numeroDeAlmacenes = await this._usuarioAlmacenService.verificarCantidadAlmacenesAsignados(
       usuario.UsuarioID,
     );
-    if (!existAlmacenAsig) {
+
+    if (numeroDeAlmacenes === 0) {
       throw new UnauthorizedException(
         'El usuario aun no ha sido asignado a un almacen porfacor comuniquese con un administrador!',
       );
     }
+
+    const almacenes = await this._usuarioAlmacenService.obtenerPorUsuario(
+      usuario.UsuarioID,
+      0,
+      1,
+    );
     const isMatch = await ProveedorBcrypt.compararContra(
       Contraseña,
       usuario.Contraseña,
@@ -48,15 +55,14 @@ export class LoginCasoUso {
       throw new UnauthorizedException('Contraseña Incorrecta!');
     }
     const token = await this._authService.crearToken(usuario);
-    const usuarioAlmacen = existAlmacenAsig.map(usuarioAlmacen =>
-      plainToClass(LeerUAlmacenLoginDto, usuarioAlmacen),
-    );
+
     const usuarioModel = new UsuarioModel(usuario);
     const usuarioDto = plainToClass(LeerUsuarioDto, usuarioModel);
     return {
       Token: token,
       Usuario: usuarioDto,
-      UsuarioAlmacen: usuarioAlmacen,
+      NumeroDeAlmacenes: numeroDeAlmacenes,
+      Almacen: almacenes[0][0].Almacen,
     };
   }
 }

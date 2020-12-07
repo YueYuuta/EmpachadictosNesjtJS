@@ -9,6 +9,8 @@ export class UalmacenBodyGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const AlmacenID: number = request.body.Almacen;
+    console.log(request);
+
     const UsuarioID: number = request.user.UsuarioID;
     await this._usuarioAlmacenService.validarExiste(UsuarioID, AlmacenID);
 

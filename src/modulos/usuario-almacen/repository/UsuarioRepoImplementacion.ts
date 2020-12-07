@@ -16,6 +16,49 @@ export class UsuarioAlmacenRepoService implements IUsuarioAlmacenCasoUso {
   constructor(
     private readonly _usuarioAlmacenRepository: UsuarioAlmacenRepository,
   ) {}
+  async verificarCantidadAlmacenesAsignados(
+    UsuarioID: number,
+  ): Promise<number> {
+    try {
+      return await this._usuarioAlmacenRepository.count({
+        where: { Usuario: UsuarioID, Estado: EntityStatus.ACTIVE },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async obtenerPorUsuarioPaginadoTermino(
+    UsuarioID: number,
+    desde: number,
+    limite: number,
+    termino?: string,
+  ): Promise<any> {
+    try {
+      return await this._usuarioAlmacenRepository
+        .createQueryBuilder('UsuarioAlmacen')
+        .innerJoinAndSelect('UsuarioAlmacen.Almacen', 'Almacen')
+        .where('UsuarioAlmacen.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('UsuarioAlmacen.Usuario =:UsuarioID', { UsuarioID })
+        .andWhere(
+          new Brackets(qb => {
+            qb.where('Almacen.NombreComercial ILIKE :NombreComercial', {
+              NombreComercial: `%${termino}%`,
+            }).orWhere('Almacen.RazonSocial ILIKE :RazonSocial', {
+              RazonSocial: `%${termino}%`,
+            });
+          }),
+        )
+        .skip(desde)
+        .take(limite)
+        .getManyAndCount();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async validarExisteEditar(
     UsuarioAlmacenID: number,
     UsuarioID: number,
@@ -54,11 +97,17 @@ export class UsuarioAlmacenRepoService implements IUsuarioAlmacenCasoUso {
       );
     }
   }
-  async obtenerPorUsuario(UsuarioID: number): Promise<UsuarioAlmacen[]> {
+  async obtenerPorUsuarioPaginado(
+    UsuarioID: number,
+    desde: number,
+    limite: number,
+  ): Promise<any> {
     try {
-      const usuariosAlmacen: UsuarioAlmacen[] = await this._usuarioAlmacenRepository.find(
+      const usuariosAlmacen = await this._usuarioAlmacenRepository.findAndCount(
         {
           where: { Usuario: UsuarioID, Estado: EntityStatus.ACTIVE },
+          skip: desde,
+          take: limite,
         },
       );
 
@@ -69,6 +118,7 @@ export class UsuarioAlmacenRepoService implements IUsuarioAlmacenCasoUso {
       );
     }
   }
+
   async obtenerPorAlmacen(AlmacenID: number): Promise<UsuarioAlmacen[]> {
     try {
       const usuariosAlmacen: UsuarioAlmacen[] = await this._usuarioAlmacenRepository.find(
@@ -96,7 +146,11 @@ export class UsuarioAlmacenRepoService implements IUsuarioAlmacenCasoUso {
       );
     }
   }
-  async obtenerPorBusqueda(termino: string): Promise<any> {
+  async obtenerPorBusqueda(
+    desde: number,
+    limite: number,
+    termino: string,
+  ): Promise<any> {
     try {
       return await this._usuarioAlmacenRepository
         .createQueryBuilder('UsuarioAlmacen')
@@ -129,6 +183,8 @@ export class UsuarioAlmacenRepoService implements IUsuarioAlmacenCasoUso {
               );
           }),
         )
+        .skip(desde)
+        .take(limite)
         .getManyAndCount();
     } catch (error) {
       throw new InternalServerErrorException(
@@ -153,7 +209,7 @@ export class UsuarioAlmacenRepoService implements IUsuarioAlmacenCasoUso {
   async obtenerPaginado(desde: number, limite: number): Promise<any> {
     try {
       return await this._usuarioAlmacenRepository.findAndCount({
-        where: { status: EntityStatus.ACTIVE },
+        where: { Estado: EntityStatus.ACTIVE },
         skip: desde,
         take: limite,
         order: {

@@ -24,10 +24,10 @@ import {
 } from './dto';
 import { SalidaApi } from '@modulos/shared/models/salida-api';
 import { UsuarioAlmacenMapper } from '@utils/Mappers/usuario-almacen';
+import { ObtenerUsuario } from '@modulos/usuario/decoradores/obtenerUsuario';
+import { UalmacenBodyGuard } from '../guard/ualmacen-body.guard';
 
-import { UalmacenParamsGuard } from '../guard/ualmacen-params.guard';
-
-@UseGuards(AuthGuard('jwt'), UalmacenParamsGuard)
+@UseGuards(AuthGuard('jwt'), UalmacenBodyGuard)
 @Controller('usuario-almacen')
 export class UsuarioAlmacenController {
   constructor(
@@ -52,11 +52,11 @@ export class UsuarioAlmacenController {
     };
   }
 
-  @Patch('editar/:id')
+  @Patch('editar/:UsuarioAlmacenID')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
     @Body() usuarioAlmacen: EditarUsuarioAlmacenDto,
-    @Param('id', ParseIntPipe) UsuarioAlmacenID: number,
+    @Param('UsuarioAlmacenID', ParseIntPipe) UsuarioAlmacenID: number,
   ): Promise<SalidaApi> {
     const respuesta = await this._editarUsuarioAlmacenService.editar(
       UsuarioAlmacenMapper.editar(usuarioAlmacen),
@@ -69,9 +69,9 @@ export class UsuarioAlmacenController {
     };
   }
 
-  @Get('obtener/:id')
+  @Get('obtener/:UsuarioALmacenID')
   async obtenerPorId(
-    @Param('id', ParseIntPipe) UsuarioAlmacenID: number,
+    @Param('UsuarioALmacenID', ParseIntPipe) UsuarioAlmacenID: number,
   ): Promise<SalidaApi> {
     const respuesta = await this._leerUsuarioAlmacenService.obtenerProId(
       UsuarioAlmacenID,
@@ -82,14 +82,31 @@ export class UsuarioAlmacenController {
     };
   }
 
-  @Get('obtener/paginado/:desde/:limite')
+  @Get('guard/frontend/usuario-almacen/:AlmacenID')
+  async guardAlmacenFrontEnd(
+    @Param('AlmacenID', ParseIntPipe) AlmacenID: number,
+    @ObtenerUsuario() usuario: any,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerUsuarioAlmacenService.validarExiste(
+      usuario.UsuarioID,
+      AlmacenID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener/paginado/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,
     @Param('limite', ParseIntPipe) limite: number,
+    @Param('termino') termino: string,
   ): Promise<SalidaApi> {
     const respuesta = await this._leerUsuarioAlmacenService.obtenerPaginado(
       desde,
       limite,
+      termino,
     );
     return {
       status: HttpStatus.OK,
@@ -106,11 +123,29 @@ export class UsuarioAlmacenController {
     };
   }
 
-  @Get('obtener/almacenes/table/input/:termino')
-  async obtenerPorBusqueda(
+  // @Get('obtener/almacenes/table/input/:termino')
+  // async obtenerPorBusqueda(
+  //   @Param('termino') termino: string,
+  // ): Promise<SalidaApi> {
+  //   const respuesta = await this._leerUsuarioAlmacenService.obtenerProBusqueda(
+  //     termino,
+  //   );
+  //   return {
+  //     status: HttpStatus.OK,
+  //     data: respuesta,
+  //   };
+  // }
+  @Get('obtener/usuario/:desde/:limite/:termino?')
+  async obtenerPorUsuario(
+    @ObtenerUsuario() usuario: any,
+    @Param('desde', ParseIntPipe) desde: number,
+    @Param('limite', ParseIntPipe) limite: number,
     @Param('termino') termino: string,
   ): Promise<SalidaApi> {
-    const respuesta = await this._leerUsuarioAlmacenService.obtenerProBusqueda(
+    const respuesta = await this._leerUsuarioAlmacenService.obtenerPorUsuario(
+      usuario.UsuarioID,
+      desde,
+      limite,
       termino,
     );
     return {
@@ -118,21 +153,9 @@ export class UsuarioAlmacenController {
       data: respuesta,
     };
   }
-  @Get('obtener/usuario/:id')
-  async obtenerPorUsuario(
-    @Param('id', ParseIntPipe) UsuarioID: number,
-  ): Promise<SalidaApi> {
-    const respuesta = await this._leerUsuarioAlmacenService.obtenerPorUsuario(
-      UsuarioID,
-    );
-    return {
-      status: HttpStatus.OK,
-      data: respuesta,
-    };
-  }
-  @Get('obtener/almacen/:id')
+  @Get('obtener/almacen/:AlmacenID')
   async obtenerPorAlmacen(
-    @Param('id', ParseIntPipe) AlmacenID: number,
+    @Param('AlmacenID', ParseIntPipe) AlmacenID: number,
   ): Promise<SalidaApi> {
     const respuesta = await this._leerUsuarioAlmacenService.obtenerPorAlmacen(
       AlmacenID,
@@ -142,10 +165,13 @@ export class UsuarioAlmacenController {
       data: respuesta,
     };
   }
-  @Delete('eliminar/:id')
-  async eliminar(@Param('id') AlmacenID: number): Promise<SalidaApi> {
+  @Delete('eliminar/:UsuarioAlmacenID')
+  async eliminar(
+    @Param('UsuarioAlmacenID') usuarioAlmacenID: number,
+  ): Promise<SalidaApi> {
+    console.log(usuarioAlmacenID);
     const respuesta = await this._eliminarUsuarioAlmacenService.eliminar(
-      AlmacenID,
+      usuarioAlmacenID,
     );
     return {
       status: HttpStatus.OK,

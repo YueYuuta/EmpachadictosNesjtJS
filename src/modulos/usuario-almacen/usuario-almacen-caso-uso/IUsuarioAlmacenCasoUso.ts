@@ -6,9 +6,23 @@ export interface IUsuarioAlmacenCasoUso {
   obtenerPodId(UsuarioAlmacenID: number): Promise<UsuarioAlmacen>;
   obtener(): Promise<UsuarioAlmacen[]>;
   obtenerPaginado(desde: number, limite: number): Promise<any>;
-  obtenerPorUsuario(UsuarioID: number): Promise<UsuarioAlmacen[]>;
+  obtenerPorUsuarioPaginado(
+    UsuarioID: number,
+    desde: number,
+    limite: number,
+  ): Promise<any>;
+  obtenerPorUsuarioPaginadoTermino(
+    UsuarioID: number,
+    desde: number,
+    limite: number,
+    termino?: string,
+  ): Promise<any>;
   obtenerPorAlmacen(AlmacenID: number): Promise<UsuarioAlmacen[]>;
-  obtenerPorBusqueda(termino: string): Promise<any>;
+  obtenerPorBusqueda(
+    desde: number,
+    limite: number,
+    termino: string,
+  ): Promise<any>;
   editar(
     almacen: Partial<EditarUsuarioAlmacenDto>,
     UsuarioID: number,
@@ -21,4 +35,5 @@ export interface IUsuarioAlmacenCasoUso {
     UsuarioID: number,
     ALmacenID: number,
   ): Promise<UsuarioAlmacen>;
+  verificarCantidadAlmacenesAsignados(UsuarioID: number): Promise<number>;
 }

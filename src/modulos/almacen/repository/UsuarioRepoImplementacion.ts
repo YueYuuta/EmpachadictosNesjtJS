@@ -26,9 +26,13 @@ export class AlmacenRepoService implements IAlmacenCasoUso {
       );
     }
   }
-  async obtenerPorBusqueda(termino: string): Promise<any> {
+  async obtenerPorBusqueda(
+    desde: number,
+    limite: number,
+    termino: string,
+  ): Promise<any> {
     try {
-      return await this._almacenRepository.find({
+      return await this._almacenRepository.findAndCount({
         where: [
           {
             Estado: EntityStatus.ACTIVE,
@@ -39,6 +43,8 @@ export class AlmacenRepoService implements IAlmacenCasoUso {
             RazonSocial: Raw(alias => `${alias} ILIKE '%${termino}%'`),
           },
         ],
+        skip: desde,
+        take: limite,
       });
     } catch (error) {
       throw new InternalServerErrorException(

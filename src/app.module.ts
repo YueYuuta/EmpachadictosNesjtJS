@@ -8,6 +8,7 @@ import { SharedModule } from './modulos/shared/shared.module';
 import { AuthModule } from './modulos/auth/auth.module';
 import { AlmacenModule } from './modulos/almacen/almacen.module';
 import { UsuarioAlmacenModule } from './modulos/usuario-almacen/usuario-almacen.module';
+import { RolModule } from './modulos/rol/rol.module';
 
 const fileup = require('express-fileupload');
 
@@ -20,6 +21,7 @@ const fileup = require('express-fileupload');
     AuthModule,
     AlmacenModule,
     UsuarioAlmacenModule,
+    RolModule,
   ],
   controllers: [],
   providers: [],

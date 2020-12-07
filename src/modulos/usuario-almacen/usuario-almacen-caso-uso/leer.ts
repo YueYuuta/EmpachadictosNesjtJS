@@ -1,7 +1,10 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { IUsuarioAlmacenCasoUso } from './IUsuarioAlmacenCasoUso';
 import { plainToClass } from 'class-transformer';
-import { LeerUsuarioAlmacenDto } from '../api/dto/leer-usuario-almacen.dto';
+import {
+  LeerUsuarioAlmacenDto,
+  LeerUsuarioAlmacenesDto,
+} from '../api/dto/leer-usuario-almacen.dto';
 import { UsuarioAlmacen } from '../entidates/usuario-almacen.entity';
 import { LeerUsuarioCasoUso } from '@modulos/usuario/usuario-caso-uso/leer';
 import { LeerAlmacenCasoUso } from '@modulos/almacen/almacen-caso-uso/leer';
@@ -30,34 +33,63 @@ export class LeerUsuarioAlmacenCasoUso {
       plainToClass(LeerUsuarioAlmacenDto, usuarioAlmacen),
     );
   }
-  async obtenerProBusqueda(termino: string): Promise<LeerUsuarioAlmacenDto[]> {
-    const uAlmacenes = await this._usuarioAlmacenRepository.obtenerPorBusqueda(
-      termino,
-    );
-    return uAlmacenes.map((usuarioAlmacen: any) =>
-      plainToClass(LeerUsuarioAlmacenDto, usuarioAlmacen),
-    );
-  }
+  // async obtenerProBusqueda(termino: string): Promise<LeerUsuarioAlmacenDto[]> {
+  //   const uAlmacenes = await this._usuarioAlmacenRepository.obtenerPorBusqueda(
+  //     termino,
+  //   );
+  //   return uAlmacenes.map((usuarioAlmacen: any) =>
+  //     plainToClass(LeerUsuarioAlmacenDto, usuarioAlmacen),
+  //   );
+  // }
   async obtenerPaginado(
     desde: number,
     limite: number,
+    termino?: string,
   ): Promise<LeerUsuarioAlmacenDto[]> {
-    const uAlmacenes = await this._usuarioAlmacenRepository.obtenerPaginado(
-      desde,
-      limite,
-    );
-    return uAlmacenes.map((usuarioAlmacen: any) =>
+    let usuarioAlmacenes: any;
+    if (termino) {
+      termino = termino.trim();
+      usuarioAlmacenes = await this._usuarioAlmacenRepository.obtenerPorBusqueda(
+        desde,
+        limite,
+        termino,
+      );
+    } else {
+      usuarioAlmacenes = await this._usuarioAlmacenRepository.obtenerPaginado(
+        desde,
+        limite,
+      );
+    }
+    return usuarioAlmacenes.map((usuarioAlmacen: any) =>
       plainToClass(LeerUsuarioAlmacenDto, usuarioAlmacen),
     );
   }
 
-  async obtenerPorUsuario(UsuarioID: number): Promise<LeerUsuarioAlmacenDto[]> {
+  async obtenerPorUsuario(
+    UsuarioID: number,
+    desde: number,
+    limite: number,
+    termino?: string,
+  ): Promise<any> {
     await this._usuarioService.obtenerProId(UsuarioID);
-    const uAlmacenes = await this._usuarioAlmacenRepository.obtenerPorUsuario(
-      UsuarioID,
-    );
-    return uAlmacenes.map((usuarioAlmacen: any) =>
-      plainToClass(LeerUsuarioAlmacenDto, usuarioAlmacen),
+    let usuarioAlmacenes: any;
+    if (termino) {
+      termino = termino.trim();
+      usuarioAlmacenes = await this._usuarioAlmacenRepository.obtenerPorUsuarioPaginadoTermino(
+        UsuarioID,
+        desde,
+        limite,
+        termino,
+      );
+    } else {
+      usuarioAlmacenes = await this._usuarioAlmacenRepository.obtenerPorUsuarioPaginado(
+        UsuarioID,
+        desde,
+        limite,
+      );
+    }
+    return usuarioAlmacenes.map((usuarioAlmacen: any) =>
+      plainToClass(LeerUsuarioAlmacenesDto, usuarioAlmacen),
     );
   }
   async obtenerPorAlmacen(ALmacenID: number): Promise<LeerUsuarioAlmacenDto[]> {
@@ -84,5 +116,24 @@ export class LeerUsuarioAlmacenCasoUso {
       );
     }
     return plainToClass(LeerUsuarioAlmacenDto, existe);
+  }
+
+  async guardAlmacenFrontEnd(
+    UsuarioID: number,
+    AlmacenID: number,
+  ): Promise<LeerUsuarioAlmacenDto> {
+    const existe = await this._usuarioAlmacenRepository.validarExiste(
+      UsuarioID,
+      AlmacenID,
+    );
+    return plainToClass(LeerUsuarioAlmacenDto, existe);
+  }
+
+  async verificarCantidadAlmacenesAsignados(
+    UsuarioID: number,
+  ): Promise<number> {
+    return await this._usuarioAlmacenRepository.verificarCantidadAlmacenesAsignados(
+      UsuarioID,
+    );
   }
 }

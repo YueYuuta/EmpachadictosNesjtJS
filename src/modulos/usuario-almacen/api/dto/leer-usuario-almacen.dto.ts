@@ -20,3 +20,16 @@ export class LeerUsuarioAlmacenDto {
   @Expose()
   readonly Fecha: string;
 }
+
+export class LeerUsuarioAlmacenesDto {
+  @Expose()
+  @IsNumber()
+  readonly UsuarioAlmacenID: number;
+
+  @Expose()
+  @Type(type => LeerAlmacenDto)
+  readonly Almacen: LeerAlmacenDto;
+
+  @Expose()
+  readonly Fecha: string;
+}

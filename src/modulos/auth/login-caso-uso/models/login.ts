@@ -1,8 +1,8 @@
-import { LeerUAlmacenLoginDto } from '../dto/ualmacen-login.dto';
 import { LeerUsuarioDto } from '@modulos/auth/api/dto/leer-usuario.dto';
 
 export class Login {
-  UsuarioAlmacen: LeerUAlmacenLoginDto[];
+  NumeroDeAlmacenes: number;
   Usuario: LeerUsuarioDto;
   Token: string;
+  Almacen?: any;
 }

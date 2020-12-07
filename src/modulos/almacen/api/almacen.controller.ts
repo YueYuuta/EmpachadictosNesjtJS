@@ -72,14 +72,17 @@ export class AlmacenController {
     };
   }
 
-  @Get('obtener/almacenes/:desde/:limite')
+  @Get('obtener/almacenes/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,
     @Param('limite', ParseIntPipe) limite: number,
+    @Param('termino') termino: string,
   ): Promise<SalidaApi> {
+    console.log('hola');
     const respuesta = await this._leerAlmacenService.obtenerPaginado(
       desde,
       limite,
+      termino,
     );
     return {
       status: HttpStatus.OK,
@@ -96,18 +99,18 @@ export class AlmacenController {
     };
   }
 
-  @Get('obtener/almacenes/table/input/:termino')
-  async obtenerPorBusqueda(
-    @Param('termino') termino: string,
-  ): Promise<SalidaApi> {
-    const respuesta = await this._leerAlmacenService.obtenerProBusqueda(
-      termino,
-    );
-    return {
-      status: HttpStatus.OK,
-      data: respuesta,
-    };
-  }
+  // @Get('obtener/almacenes/table/input/:termino')
+  // async obtenerPorBusqueda(
+  //   @Param('termino') termino: string,
+  // ): Promise<SalidaApi> {
+  //   const respuesta = await this._leerAlmacenService.obtenerProBusqueda(
+  //     termino,
+  //   );
+  //   return {
+  //     status: HttpStatus.OK,
+  //     data: respuesta,
+  //   };
+  // }
   @Delete('eliminar/:id')
   async eliminar(@Param('id') AlmacenID: number): Promise<SalidaApi> {
     const respuesta = await this._eliminarAlmacenService.eliminar(AlmacenID);

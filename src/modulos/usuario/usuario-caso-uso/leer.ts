@@ -43,7 +43,9 @@ export class LeerUsuarioCasoUso {
     } else {
       usuarios = await this._userRepository.obtenerPaginado(desde, limite);
     }
-    return usuarios.map(usuario => plainToClass(LeerUsuarioDto, usuario));
+    return usuarios.map((usuario: any) =>
+      plainToClass(LeerUsuarioDto, usuario),
+    );
   }
 
   async validacionUsuario(nombreUsuario: string): Promise<boolean> {

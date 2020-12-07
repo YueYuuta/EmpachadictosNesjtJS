@@ -23,18 +23,28 @@ export class LeerAlmacenCasoUso {
       plainToClass(LeerAlmacenDto, almacen),
     );
   }
-  async obtenerProBusqueda(termino: string): Promise<LeerAlmacenDto[]> {
-    const almacenes = await this._almacenRepository.obtenerPorBusqueda(termino);
-    return almacenes.map(almacen => plainToClass(LeerAlmacenDto, almacen));
-  }
+  // async obtenerProBusqueda(termino: string): Promise<LeerAlmacenDto[]> {
+  //   const almacenes = await this._almacenRepository.obtenerPorBusqueda(termino);
+  //   return almacenes.map(almacen => plainToClass(LeerAlmacenDto, almacen));
+  // }
   async obtenerPaginado(
     desde: number,
     limite: number,
+    termino?: string,
   ): Promise<LeerAlmacenDto[]> {
-    const almacenes = await this._almacenRepository.obtenerPaginado(
-      desde,
-      limite,
+    let almacenes: any;
+    if (termino) {
+      termino = termino.trim();
+      almacenes = await this._almacenRepository.obtenerPorBusqueda(
+        desde,
+        limite,
+        termino,
+      );
+    } else {
+      almacenes = await this._almacenRepository.obtenerPaginado(desde, limite);
+    }
+    return almacenes.map((almacen: any) =>
+      plainToClass(LeerAlmacenDto, almacen),
     );
-    return almacenes.map(almacen => plainToClass(LeerAlmacenDto, almacen));
   }
 }
