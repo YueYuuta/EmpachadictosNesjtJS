@@ -8,6 +8,7 @@ import { RolPermisoRepository } from './repository/rol-permiso.repository';
 import { PermisoRepository } from './repository/permiso.repository';
 import { EditarRoleCasoUso } from './role-caso-uso/editar';
 import { EliminarRolCasoUso } from './role-caso-uso/eliminar';
+import { LeerRolCasoUso } from './role-caso-uso/leer';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { EliminarRolCasoUso } from './role-caso-uso/eliminar';
     RolRepoProvider,
     EditarRoleCasoUso,
     EliminarRolCasoUso,
+    LeerRolCasoUso,
   ],
 })
 export class RolModule {}

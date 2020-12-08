@@ -4,14 +4,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  Unique,
   OneToMany,
 } from 'typeorm';
 import { EntityStatus } from '@utils/enums';
 
 @Entity('Rol')
-@Unique(['Nombre'])
 export class Rol extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   RolID: number;

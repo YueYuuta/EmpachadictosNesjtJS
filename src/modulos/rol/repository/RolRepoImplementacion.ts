@@ -11,7 +11,7 @@ import { Permiso } from '../entidades/permiso.entity';
 import { PermisoRepository } from './permiso.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityStatus } from '@utils/enums';
-import { Not } from 'typeorm';
+import { Brackets, Not } from 'typeorm';
 import { RolPermisoRepository } from './rol-permiso.repository';
 import { RolPermiso } from '../entidades/rol-permiso.entity';
 
@@ -26,21 +26,68 @@ export class RolRepoService implements IRolCasoUso {
     private readonly _rolPermisoRepository: RolPermisoRepository,
   ) {}
   obtenerRoles(): Promise<Rol[]> {
-    throw new Error('Method not implemented.');
+    try {
+      return this._rolRepository
+        .createQueryBuilder('Rol')
+        .innerJoinAndSelect('Rol.RolPermiso', 'RolPermiso')
+        .innerJoinAndSelect('RolPermiso.Permiso', 'Permiso')
+        .innerJoinAndSelect('Permiso.Modulo', 'Modulo')
+        .where('Rol.Estado =:Estado', { Estado: EntityStatus.ACTIVE })
+        .getMany();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
   }
-  obtenerRolesPaginado(desde: number, limite: number): Promise<any> {
-    throw new Error('Method not implemented.');
+  obtenerPaginado(desde: number, limite: number): Promise<any> {
+    try {
+      return this._rolRepository
+        .createQueryBuilder('Rol')
+
+        .where('Rol.Estado =:Estado', { Estado: EntityStatus.ACTIVE })
+        .skip(desde)
+        .take(limite)
+        .getManyAndCount();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
   }
-  obtenerRolesPorBusqueda(
+  async obtenerPorBusqueda(
     desde: number,
     limite: number,
     termino: string,
   ): Promise<any> {
-    throw new Error('Method not implemented.');
+    return await this._rolRepository
+      .createQueryBuilder('Rol')
+      .where('Rol.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+      .andWhere(
+        new Brackets(qb => {
+          qb.where('Rol.Nombre ILIKE :Nombre', {
+            Nombre: `%${termino}%`,
+          });
+        }),
+      )
+      .skip(desde)
+      .take(limite)
+      .orderBy('Rol.RolID', 'DESC')
+      .getManyAndCount();
   }
   obtenerPermisos(): Promise<Permiso[]> {
-    throw new Error('Method not implemented.');
+    try {
+      return this._permisoRepository
+        .createQueryBuilder('Permiso')
+        .innerJoinAndSelect('Permiso.Modulo', 'Modulo')
+        .getMany();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
   }
+
   async obtenerPermisosPorRole(RolID: number): Promise<RolPermiso[]> {
     try {
       return await this._rolPermisoRepository

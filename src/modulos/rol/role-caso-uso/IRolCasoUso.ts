@@ -6,8 +6,8 @@ import { RolPermiso } from '../entidades/rol-permiso.entity';
 export interface IRolCasoUso {
   obtenerPodId(RolID: number): Promise<Rol>;
   obtenerRoles(): Promise<Rol[]>;
-  obtenerRolesPaginado(desde: number, limite: number): Promise<any>;
-  obtenerRolesPorBusqueda(
+  obtenerPaginado(desde: number, limite: number): Promise<any>;
+  obtenerPorBusqueda(
     desde: number,
     limite: number,
     termino: string,

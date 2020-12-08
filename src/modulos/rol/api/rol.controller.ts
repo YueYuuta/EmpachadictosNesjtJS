@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -16,6 +17,7 @@ import { LeerRolDto } from './dto/leer-rol.dto';
 import { CrearRoleCasoUso } from '../role-caso-uso/crear';
 import { EditarRoleCasoUso } from '../role-caso-uso/editar';
 import { EliminarRolCasoUso } from '../role-caso-uso/eliminar';
+import { LeerRolCasoUso } from '../role-caso-uso/leer';
 
 @Controller('rol')
 export class RolController {
@@ -23,6 +25,7 @@ export class RolController {
     private readonly _crearRolService: CrearRoleCasoUso,
     private readonly _editarRolService: EditarRoleCasoUso,
     private readonly _eliminarRolService: EliminarRolCasoUso,
+    private readonly _leerRolService: LeerRolCasoUso,
   ) {}
 
   @Post('crear')
@@ -60,6 +63,51 @@ export class RolController {
       status: HttpStatus.OK,
       data: respuesta,
       message: `Rol eliminado correctamente`,
+    };
+  }
+  @Get('obtener/:RolID')
+  async obtenerPorId(
+    @Param('RolID', ParseIntPipe) RolID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerRolService.obtenerProId(RolID);
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener/roles/:desde/:limite/:termino?')
+  async ObtenerPaginado(
+    @Param('desde', ParseIntPipe) desde: number,
+    @Param('limite', ParseIntPipe) limite: number,
+    @Param('termino') termino: string,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerRolService.obtenerPaginado(
+      desde,
+      limite,
+      termino,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener')
+  async obtener(): Promise<SalidaApi> {
+    const respuesta = await this._leerRolService.obtenerRoles();
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener/todos/permisos')
+  async obtenerPermisos(): Promise<SalidaApi> {
+    const respuesta = await this._leerRolService.obtenerPermisos();
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
     };
   }
 }
