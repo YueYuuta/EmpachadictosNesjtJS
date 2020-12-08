@@ -6,6 +6,7 @@ import {
   Column,
   ManyToMany,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { EntityStatus } from '@utils/enums';
 
@@ -15,9 +16,10 @@ export class Rol extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   RolID: number;
 
-  @ManyToMany(
+  @OneToMany(
     type => RolPermiso,
     rolPermiso => rolPermiso.Rol,
+    { cascade: true, eager: true },
   )
   RolPermiso: RolPermiso[];
 
@@ -27,6 +29,6 @@ export class Rol extends BaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   Fecha: string;
 
-  @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
+  @Column({ type: 'boolean', default: EntityStatus.ACTIVE, nullable: true })
   Estado: boolean;
 }

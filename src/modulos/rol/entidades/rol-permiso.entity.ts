@@ -15,22 +15,24 @@ export class RolPermiso extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   RolPermisoID: number;
 
-  @ManyToOne(type => Rol, {
-    cascade: true,
-    nullable: false,
-    eager: true,
-  })
+  @ManyToOne(
+    type => Rol,
+    rol => rol.RolPermiso,
+    {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'RolID' })
   Rol: number;
 
-  @ManyToOne(type => Permiso, {
-    cascade: true,
-    nullable: false,
-    eager: true,
-  })
+  @ManyToOne(
+    type => Permiso,
+    rol => rol.RolPermiso,
+  )
   @JoinColumn({ name: 'PermisoID' })
   Permiso: number;
 
-  @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
+  @Column({ type: 'boolean', default: EntityStatus.ACTIVE, nullable: true })
   Estado: boolean;
 }

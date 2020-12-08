@@ -10,11 +10,14 @@ import { UsuarioModel } from '../usuario-caso-uso/models/usuario';
 import { Brackets, Not } from 'typeorm';
 import { EntityStatus } from '@utils/enums/entity-status.enum';
 import { UsuarioDetalleRepository } from './usuario-detalle.repository';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsuarioRepoService implements IUsuarioCasoUso {
   constructor(
+    @InjectRepository(UsuarioRepository)
     private readonly _usuarioRepository: UsuarioRepository,
+    @InjectRepository(UsuarioDetalleRepository)
     private readonly _usuarioDetalleRepository: UsuarioDetalleRepository,
   ) {}
   async autoEliminar(

@@ -1,22 +1,20 @@
 import { IsNumber, IsString } from 'class-validator';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { LeerAlmacenDto } from '@modulos/almacen/api/dto';
-import { LeerRolPermisoDto } from './leer-rol-permiso.dto';
 import { LeerPermisoDto } from './leer-permiso.dto';
 
 @Exclude()
-export class LeerRolDto {
+export class LeerRolPermisoDto {
   @Expose()
   @IsNumber()
-  readonly RolID: number;
+  readonly RolPermisoID: number;
 
   @Expose()
   @IsString()
   readonly Nombre: string;
 
   @Expose()
-  @Type(type => LeerRolPermisoDto)
-  readonly RolPermiso: LeerPermisoDto[];
+  @Type(type => LeerPermisoDto)
+  readonly Permiso: LeerPermisoDto;
 
   @Expose()
   readonly Fecha: string;

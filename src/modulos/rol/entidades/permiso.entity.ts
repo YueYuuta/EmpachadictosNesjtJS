@@ -7,7 +7,9 @@ import {
   ManyToOne,
   JoinColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
+import { RolPermiso } from './rol-permiso.entity';
 
 @Entity('Permiso')
 @Unique(['Ruta', 'Titulo'])
@@ -22,6 +24,13 @@ export class Permiso extends BaseEntity {
   })
   @JoinColumn({ name: 'ModuloID' })
   Modulo: number;
+
+  @OneToMany(
+    type => RolPermiso,
+    rolPermiso => rolPermiso.Permiso,
+    { cascade: true, eager: true },
+  )
+  RolPermiso: RolPermiso[];
 
   @Column({ type: 'varchar', nullable: false })
   Ruta: string;
