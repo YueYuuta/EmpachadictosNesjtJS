@@ -35,8 +35,11 @@ export class Permiso extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   Ruta: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   Icono: string;
+
+  @Column({ type: 'boolean', nullable: true, default: false })
+  Menu: boolean;
 
   @Column({ type: 'varchar', nullable: false })
   Titulo: string;

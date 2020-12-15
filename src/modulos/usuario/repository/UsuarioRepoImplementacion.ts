@@ -185,7 +185,7 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
   async obtenerUsuarios(): Promise<Usuario[]> {
     try {
       return await this._usuarioRepository.find({
-        where: { Estado: 'ACTIVE' },
+        where: { Estado: EntityStatus.ACTIVE },
       });
     } catch (error) {
       throw new InternalServerErrorException(
@@ -219,9 +219,12 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
     usuario: Partial<UsuarioModel>,
     UsuarioID: number,
   ): Promise<any> {
+    // console.log(usuario);
     try {
       const usuarioIntance = await this.obtenerPodId(UsuarioID);
       this._usuarioRepository.merge(usuarioIntance, usuario);
+      usuarioIntance.Rol = usuario.Rol;
+
       return await this._usuarioRepository.save(usuarioIntance);
     } catch (error) {
       throw new InternalServerErrorException(

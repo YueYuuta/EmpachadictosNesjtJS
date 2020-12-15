@@ -2,7 +2,7 @@ import { UsuarioDetalleModel } from './usuario-detalle';
 export class UsuarioModel {
   Usuario: string;
   Correo: string;
-  Rol: string;
+  Rol: any;
   Detalle: UsuarioDetalleModel;
   Fecha?: string;
   Contraseña?: string;

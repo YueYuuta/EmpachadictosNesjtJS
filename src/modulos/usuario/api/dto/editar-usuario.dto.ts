@@ -1,3 +1,4 @@
+import { IsNumber } from 'class-validator';
 import {
   IsNotEmpty,
   IsOptional,
@@ -27,11 +28,8 @@ export class EditarUsuarioDto {
   Correo: string | null;
 
   @IsOptional()
-  @IsString({ message: 'El rol del usuario debe ser string!' })
-  @MaxLength(150, {
-    message: 'El rol del usuario debe llevar un maximo de 150 caracteres!',
-  })
-  Rol: string | null;
+  @IsNotEmpty({ message: 'El rol del usuario no debe ir vacio!' })
+  Rol: number | null;
 
   // @IsOptional()
   // @IsString({ message: 'la contraseña del usuario debe ser string!' })

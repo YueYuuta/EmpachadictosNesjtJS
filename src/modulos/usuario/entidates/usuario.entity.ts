@@ -4,8 +4,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToOne,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { UsuarioDetalle } from './usuario-detalle.entity';
+import { Rol } from '../../rol/entidades/rol.entity';
 
 @Entity('Usuario')
 export class Usuario extends BaseEntity {
@@ -28,8 +31,12 @@ export class Usuario extends BaseEntity {
   @Column({ type: 'varchar', nullable: false, length: 150 })
   Contraseña: string;
 
-  @Column({ type: 'varchar', nullable: false, length: 20 })
-  Rol: string;
+  @ManyToOne(type => Rol, {
+    nullable: false,
+    eager: true,
+  })
+  @JoinColumn({ name: 'RolID' })
+  Rol: number;
 
   @Column({ type: 'boolean', default: true })
   Estado: boolean;

@@ -20,6 +20,9 @@ import { CrearAlmacenDto, LeerAlmacenDto, EditarAlmacenDto } from './dto';
 import { SalidaApi } from '@modulos/shared/models/salida-api';
 import { AlmacenMapper } from '@utils/Mappers/almacen';
 import { EliminarAlmacenCasoUso } from '../almacen-caso-uso/eliminar';
+import { Ruta } from '@modulos/shared/decorador/ruta.decorador';
+import { RoleGuard } from '../../rol/guard/ruta.guard';
+import { AlmacenAlias } from '../../../utils/enums/rutas.enum';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('almacen')
@@ -30,7 +33,7 @@ export class AlmacenController {
     private readonly _leerAlmacenService: LeerAlmacenCasoUso,
     private readonly _eliminarAlmacenService: EliminarAlmacenCasoUso,
   ) {}
-
+  @Ruta(AlmacenAlias.AlmacenCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(@Body() almacen: CrearAlmacenDto): Promise<SalidaApi> {
@@ -44,6 +47,7 @@ export class AlmacenController {
     };
   }
 
+  @Ruta(AlmacenAlias.AlmacenEditar)
   @Patch('editar/:id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
@@ -72,6 +76,7 @@ export class AlmacenController {
     };
   }
 
+  @Ruta(AlmacenAlias.AlmacenPaginado)
   @Get('obtener/almacenes/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,
@@ -111,6 +116,8 @@ export class AlmacenController {
   //     data: respuesta,
   //   };
   // }
+
+  @Ruta(AlmacenAlias.AlmacenElmininar)
   @Delete('eliminar/:id')
   async eliminar(@Param('id') AlmacenID: number): Promise<SalidaApi> {
     const respuesta = await this._eliminarAlmacenService.eliminar(AlmacenID);

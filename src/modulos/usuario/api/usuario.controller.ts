@@ -11,12 +11,10 @@ import {
   Get,
   UseGuards,
   Delete,
-  Res,
 } from '@nestjs/common';
 import { CrearUsuarioCasoUso } from '../usuario-caso-uso/crear';
 import { LeerUsuarioDto } from '../api/dto/leer-usuario.dto';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
-import { ValidarRole } from '../pipe/role.pipe';
 import { UserMapper } from '@utils/Mappers/User';
 import { EditarUsuarioCasoUso } from '../usuario-caso-uso/editar';
 import { EditarUsuarioDto } from './dto/editar-usuario.dto';
@@ -28,6 +26,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { LeerUsuarioCasoUso } from '../usuario-caso-uso/leer';
 import { EliminarUsuarioCasoUso } from '../usuario-caso-uso/eliminar';
 import { ObtenerUsuario } from '../decoradores/obtenerUsuario';
+import { Ruta } from '@modulos/shared/decorador/ruta.decorador';
+import { UsuarioAlias } from '@utils/enums/rutas.enum';
+import { RoleGuard } from '../../rol/guard/ruta.guard';
+import { ValidarRoleId } from '../pipe/rol-id.pipe';
 @UseGuards(AuthGuard('jwt'))
 @Controller('usuario')
 export class UsuarioController {
@@ -39,11 +41,12 @@ export class UsuarioController {
     private readonly _eliminarUsuarioService: EliminarUsuarioCasoUso,
   ) {}
 
+  @Ruta(UsuarioAlias.UsuarioCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(
     @Request() req: any,
-    @Body(ValidarRole) usuario: CrearUsuarioDto,
+    @Body(ValidarRoleId) usuario: CrearUsuarioDto,
   ): Promise<SalidaApi> {
     const respuesta: LeerUsuarioDto = await this._crearUsuarioService.crear(
       UserMapper.crear(usuario),
@@ -55,11 +58,11 @@ export class UsuarioController {
       message: `Usuario creado correctamente`,
     };
   }
-
+  @Ruta(UsuarioAlias.UsuarioEditar)
   @Patch('editar/:id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
-    @Body(ValidarRole) usuario: EditarUsuarioDto,
+    @Body(ValidarRoleId) usuario: EditarUsuarioDto,
     @Param('id', ParseIntPipe) UsuarioID: number,
     @Request() req: any,
   ): Promise<SalidaApi> {
@@ -75,6 +78,7 @@ export class UsuarioController {
     };
   }
 
+  @Ruta(UsuarioAlias.UsuarioResContra)
   @Patch('resetear/contrasena/:id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async resetContraseña(
@@ -102,7 +106,7 @@ export class UsuarioController {
       data: respuesta,
     };
   }
-
+  @Ruta(UsuarioAlias.UsuarioPaginado)
   @Get('obtener/usuarios/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,
@@ -166,6 +170,7 @@ export class UsuarioController {
     };
   }
 
+  @Ruta(UsuarioAlias.UsuarioElmininar)
   @Delete('eliminar/:id')
   async eliminar(
     @Param('id', ParseIntPipe) UsuarioID: number,
@@ -184,9 +189,9 @@ export class UsuarioController {
     };
   }
 
-  @Get('mostrar/avatar/:img')
-  async serveAvatar(@Param('img') img: string, @Res() res: any): Promise<any> {
-    const ruta: string = await this._leerUsuarioService.getAvatar(img);
-    res.sendFile(img, { root: ruta });
-  }
+  // @Get('mostrar/avatar/:img')
+  // async serveAvatar(@Param('img') img: string, @Res() res: any): Promise<any> {
+  //   const ruta: string = await this._leerUsuarioService.getAvatar(img);
+  //   res.sendFile(img, { root: ruta });
+  // }
 }

@@ -9,13 +9,6 @@ export class LeerRolPermisoDto {
   readonly RolPermisoID: number;
 
   @Expose()
-  @IsString()
-  readonly Nombre: string;
-
-  @Expose()
   @Type(type => LeerPermisoDto)
   readonly Permiso: LeerPermisoDto;
-
-  @Expose()
-  readonly Fecha: string;
 }

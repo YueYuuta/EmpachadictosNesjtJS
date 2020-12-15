@@ -14,6 +14,7 @@ import { EntityStatus } from '@utils/enums';
 import { Brackets, Not } from 'typeorm';
 import { RolPermisoRepository } from './rol-permiso.repository';
 import { RolPermiso } from '../entidades/rol-permiso.entity';
+import { threadId } from 'worker_threads';
 
 @Injectable()
 export class RolRepoService implements IRolCasoUso {
@@ -122,11 +123,24 @@ export class RolRepoService implements IRolCasoUso {
   async cambiarEstado(estado: boolean, RolID: number): Promise<void> {
     try {
       await this._rolPermisoRepository
-        .createQueryBuilder('RolPermiso')
-        .update('RolPermiso')
+        .createQueryBuilder()
+        .update(RolPermiso)
         .set({ Estado: estado })
-        .where('RolID = :id', { id: RolID })
+        .where('Rol = :id', { id: RolID })
         .execute();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async eliminarBd(RolID: number): Promise<boolean> {
+    try {
+      await this._rolPermisoRepository
+        .createQueryBuilder('RolPermiso')
+        .delete()
+        .where('Rol=:RolID', { RolID })
+        .execute();
+      return true;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -134,8 +148,10 @@ export class RolRepoService implements IRolCasoUso {
 
   async editar(RolID: number, rol: RolModel): Promise<boolean> {
     try {
-      await this.cambiarEstado(EntityStatus.INACTIVE, RolID);
-      const rolInstance = await this.obtenerPodId(RolID);
+      // await this.cambiarEstado(EntityStatus.INACTIVE, RolID);
+      await this.eliminarBd(RolID);
+      const rolInstance = await this.obtenerPorId(RolID);
+      console.log(rolInstance);
       this._rolRepository.merge(rolInstance, rol);
       await this._rolRepository.save(rolInstance);
       return true;
@@ -160,11 +176,13 @@ export class RolRepoService implements IRolCasoUso {
       );
     }
   }
-  async obtenerPodId(RolID: number): Promise<Rol> {
+  async obtenerPorId(RolID: number): Promise<Rol> {
     try {
-      const rol: Rol = await this._rolRepository.findOne(RolID, {
-        where: { Estado: EntityStatus.ACTIVE },
-      });
+      const rol: Rol = await this._rolRepository
+        .createQueryBuilder('Rol')
+        .where('Rol.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Rol.RolID=:RolID', { RolID })
+        .getOne();
 
       if (!rol) {
         throw new NotFoundException(`El rol con id: ${RolID} no existe`);

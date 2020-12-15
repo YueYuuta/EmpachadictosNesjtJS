@@ -35,4 +35,7 @@ export class RolPermiso extends BaseEntity {
 
   @Column({ type: 'boolean', default: EntityStatus.ACTIVE, nullable: true })
   Estado: boolean;
+
+  @Column({ type: 'boolean', default: EntityStatus.INACTIVE, nullable: true })
+  PermisoEstado: boolean;
 }

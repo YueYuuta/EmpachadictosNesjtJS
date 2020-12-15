@@ -25,9 +25,11 @@ import {
 import { SalidaApi } from '@modulos/shared/models/salida-api';
 import { UsuarioAlmacenMapper } from '@utils/Mappers/usuario-almacen';
 import { ObtenerUsuario } from '@modulos/usuario/decoradores/obtenerUsuario';
-import { UalmacenBodyGuard } from '../guard/ualmacen-body.guard';
+import { Ruta } from '@modulos/shared/decorador/ruta.decorador';
+import { RoleGuard } from '../../rol/guard/ruta.guard';
+import { ConfiguracionAlias } from '@utils/enums/rutas.enum';
 
-@UseGuards(AuthGuard('jwt'), UalmacenBodyGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('usuario-almacen')
 export class UsuarioAlmacenController {
   constructor(
@@ -37,6 +39,8 @@ export class UsuarioAlmacenController {
     private readonly _eliminarUsuarioAlmacenService: EliminarUsuarioAlmacenCasoUso,
   ) {}
 
+  @Ruta(ConfiguracionAlias.UsuarioAlmacenCrear)
+  // @UseGuards(RoleGuard)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(
@@ -52,6 +56,8 @@ export class UsuarioAlmacenController {
     };
   }
 
+  @Ruta(ConfiguracionAlias.UsuarioAlmacenEditar)
+  // @UseGuards(RoleGuard)
   @Patch('editar/:UsuarioAlmacenID')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
@@ -69,6 +75,7 @@ export class UsuarioAlmacenController {
     };
   }
 
+  // @UseGuards(RoleGuard)
   @Get('obtener/:UsuarioALmacenID')
   async obtenerPorId(
     @Param('UsuarioALmacenID', ParseIntPipe) UsuarioAlmacenID: number,
@@ -97,6 +104,8 @@ export class UsuarioAlmacenController {
     };
   }
 
+  @Ruta(ConfiguracionAlias.UsuarioAlmacenPaginado)
+  // @UseGuards(RoleGuard)
   @Get('obtener/paginado/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,
@@ -114,6 +123,7 @@ export class UsuarioAlmacenController {
     };
   }
 
+  // @UseGuards(RoleGuard)
   @Get('obtener')
   async obtener(): Promise<SalidaApi> {
     const respuesta: LeerUsuarioAlmacenDto[] = await this._leerUsuarioAlmacenService.obtener();
@@ -135,6 +145,8 @@ export class UsuarioAlmacenController {
   //     data: respuesta,
   //   };
   // }
+  @Ruta(ConfiguracionAlias.UsuarioAlmacenPorUsuario)
+  // @UseGuards(RoleGuard)
   @Get('obtener/usuario/:desde/:limite/:termino?')
   async obtenerPorUsuario(
     @ObtenerUsuario() usuario: any,
@@ -165,11 +177,13 @@ export class UsuarioAlmacenController {
       data: respuesta,
     };
   }
+
+  @Ruta(ConfiguracionAlias.UsuarioAlmacenElmininar)
+  // @UseGuards(RoleGuard)
   @Delete('eliminar/:UsuarioAlmacenID')
   async eliminar(
     @Param('UsuarioAlmacenID') usuarioAlmacenID: number,
   ): Promise<SalidaApi> {
-    console.log(usuarioAlmacenID);
     const respuesta = await this._eliminarUsuarioAlmacenService.eliminar(
       usuarioAlmacenID,
     );

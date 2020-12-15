@@ -8,7 +8,7 @@ export class EliminarRolCasoUso {
   constructor(@RolRepo() private readonly _rolRepository: IRolCasoUso) {}
 
   async eliminar(RoleID: number): Promise<boolean> {
-    await this._rolRepository.obtenerPodId(RoleID);
+    await this._rolRepository.obtenerPorId(RoleID);
     return await this._rolRepository.eliminar(RoleID);
   }
 }

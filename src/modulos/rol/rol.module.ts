@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { RolController } from './api/rol.controller';
 import { CrearRoleCasoUso } from './role-caso-uso/crear';
 import { RolRepoProvider } from './repository/rol-provider';
@@ -9,7 +9,7 @@ import { PermisoRepository } from './repository/permiso.repository';
 import { EditarRoleCasoUso } from './role-caso-uso/editar';
 import { EliminarRolCasoUso } from './role-caso-uso/eliminar';
 import { LeerRolCasoUso } from './role-caso-uso/leer';
-
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -26,5 +26,6 @@ import { LeerRolCasoUso } from './role-caso-uso/leer';
     EliminarRolCasoUso,
     LeerRolCasoUso,
   ],
+  exports: [LeerRolCasoUso],
 })
 export class RolModule {}

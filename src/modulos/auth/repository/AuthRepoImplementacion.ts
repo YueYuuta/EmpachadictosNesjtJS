@@ -5,10 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { EntityStatus } from '@utils/enums';
 import { IJwtPayload } from '../interface/jwt';
 import { IAuthCasoUso } from '../login-caso-uso/IAuthCasoUso';
 import { AuthRepository } from './auth.repository';
-import { LeerUsuarioAlmacenDto } from '../../usuario-almacen/api/dto/leer-usuario-almacen.dto';
 
 @Injectable()
 export class AuthRepoService implements IAuthCasoUso {
@@ -17,7 +17,7 @@ export class AuthRepoService implements IAuthCasoUso {
     private readonly _jwtService: JwtService,
   ) {}
 
-  async obtenerPodId(UsuarioID: number): Promise<Usuario> {
+  async obtenerPorId(UsuarioID: number): Promise<Usuario> {
     try {
       const usuario: Usuario = await this._authRepository.findOne(UsuarioID);
       if (!usuario) {
@@ -36,7 +36,7 @@ export class AuthRepoService implements IAuthCasoUso {
   async existeUsuario(Usuario: string): Promise<Usuario> {
     try {
       return await this._authRepository.findOne({
-        where: { Estado: true, Usuario },
+        where: { Estado: EntityStatus.ACTIVE, Usuario },
       });
     } catch (error) {
       throw new InternalServerErrorException(

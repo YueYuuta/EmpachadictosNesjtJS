@@ -14,6 +14,11 @@ export class CrearRoleCasoUso {
   constructor(@RolRepo() private readonly _rolRepository: IRolCasoUso) {}
 
   async crear(rol: CrearRolDto): Promise<LeerRolDto> {
+    if (rol.RolPermiso.length < 1) {
+      throw new ConflictException(
+        `El rol debe costar de una ruta principal para funcionar correctamente!`,
+      );
+    }
     const rolLimpio: RolModel = Variables.limpiarVariables(rol);
 
     const nombreMayuscula = rolLimpio.Nombre.toUpperCase();

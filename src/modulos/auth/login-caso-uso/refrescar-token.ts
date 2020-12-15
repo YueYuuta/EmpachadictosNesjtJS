@@ -16,7 +16,7 @@ export class TokenCasoUso {
     private readonly _usuarioAlmacenService: LeerUsuarioAlmacenCasoUso,
   ) {}
   async refrescar(UsuarioID: number): Promise<Login> {
-    const usuario: Usuario = await this._authService.obtenerPodId(UsuarioID);
+    const usuario: Usuario = await this._authService.obtenerPorId(UsuarioID);
 
     const numeroDeAlmacenes = await this._usuarioAlmacenService.verificarCantidadAlmacenesAsignados(
       UsuarioID,

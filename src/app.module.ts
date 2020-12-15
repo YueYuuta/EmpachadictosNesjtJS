@@ -9,6 +9,7 @@ import { AuthModule } from './modulos/auth/auth.module';
 import { AlmacenModule } from './modulos/almacen/almacen.module';
 import { UsuarioAlmacenModule } from './modulos/usuario-almacen/usuario-almacen.module';
 import { RolModule } from './modulos/rol/rol.module';
+import { ClienteModule } from './modulos/cliente/cliente.module';
 
 const fileup = require('express-fileupload');
 
@@ -22,6 +23,7 @@ const fileup = require('express-fileupload');
     AlmacenModule,
     UsuarioAlmacenModule,
     RolModule,
+    ClienteModule,
   ],
   controllers: [],
   providers: [],

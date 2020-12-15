@@ -12,8 +12,7 @@ export class LeerUsuarioDto {
   readonly Correo: string;
 
   @Expose()
-  @IsEmail()
-  readonly Rol: string;
+  readonly Rol: any;
 
   @Expose()
   @IsString()

@@ -12,7 +12,6 @@ import { IAuthCasoUso } from '../login-caso-uso/IAuthCasoUso';
 import { LeerUsuarioAlmacenCasoUso } from '@modulos/usuario-almacen/usuario-almacen-caso-uso/leer';
 import { Login } from './models/login';
 import { plainToClass } from 'class-transformer';
-import { LeerUAlmacenLoginDto } from './dto/ualmacen-login.dto';
 import { LeerUsuarioDto } from '@modulos/auth/api/dto/leer-usuario.dto';
 import { UsuarioModel } from './models/usuario';
 

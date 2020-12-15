@@ -1,10 +1,7 @@
 import { Inject, Injectable, ConflictException } from '@nestjs/common';
-import { LeerRolDto } from '../api/dto/leer-rol.dto';
 import { RolModel } from './models/rol';
-import { Rol } from '../entidades/rol.entity';
 import { IRolCasoUso } from './IRolCasoUso';
 import { Variables } from '@utils/manejo-variables/variables';
-import { plainToClass } from 'class-transformer';
 import { CrearRolDto } from '../api/dto/crear-rol.dto';
 
 const RolRepo = () => Inject('RolRepo');
@@ -14,7 +11,12 @@ export class EditarRoleCasoUso {
   constructor(@RolRepo() private readonly _rolRepository: IRolCasoUso) {}
 
   async editar(RolID: number, rol: CrearRolDto): Promise<boolean> {
-    await this._rolRepository.obtenerPodId(RolID);
+    if (rol.RolPermiso.length < 1) {
+      throw new ConflictException(
+        `El rol debe costar de una ruta principal para funcionar correctamente!`,
+      );
+    }
+    await this._rolRepository.obtenerPorId(RolID);
     const rolLimpio: RolModel = Variables.limpiarVariables(rol);
 
     const nombreMayuscula = rolLimpio.Nombre.toUpperCase();

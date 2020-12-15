@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CrearUsuarioCasoUso } from './usuario-caso-uso/crear';
 import { UsuarioController } from './api/usuario.controller';
 import { UserRepoProvider } from './repository/user-provider';
@@ -10,7 +10,7 @@ import { LeerUsuarioCasoUso } from './usuario-caso-uso/leer';
 import { UsuarioDetalleRepository } from './repository/usuario-detalle.repository';
 import { EliminarUsuarioCasoUso } from './usuario-caso-uso/eliminar';
 import { ImagenUsuarioController } from './api/imagen-usuario.controller';
-
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([UsuarioRepository, UsuarioDetalleRepository]),

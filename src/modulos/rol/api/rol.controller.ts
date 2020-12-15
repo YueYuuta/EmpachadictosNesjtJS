@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -18,7 +19,14 @@ import { CrearRoleCasoUso } from '../role-caso-uso/crear';
 import { EditarRoleCasoUso } from '../role-caso-uso/editar';
 import { EliminarRolCasoUso } from '../role-caso-uso/eliminar';
 import { LeerRolCasoUso } from '../role-caso-uso/leer';
+import { Ruta } from '@modulos/shared/decorador/ruta.decorador';
 
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from '../guard/ruta.guard';
+import { ObtenerUsuario } from '@modulos/usuario/decoradores/obtenerUsuario';
+import { ConfiguracionAlias } from '../../../utils/enums/rutas.enum';
+
+@UseGuards(AuthGuard('jwt'))
 @Controller('rol')
 export class RolController {
   constructor(
@@ -28,6 +36,7 @@ export class RolController {
     private readonly _leerRolService: LeerRolCasoUso,
   ) {}
 
+  @Ruta(ConfiguracionAlias.RolCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(@Body() rol: CrearRolDto): Promise<SalidaApi> {
@@ -39,6 +48,7 @@ export class RolController {
     };
   }
 
+  @Ruta(ConfiguracionAlias.RolEditar)
   @Patch('editar/:RolID')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
@@ -52,7 +62,7 @@ export class RolController {
       message: `Rol editado correctamente`,
     };
   }
-
+  @Ruta(ConfiguracionAlias.RolElmininar)
   @Delete('eliminar/:RolID')
   @UsePipes(new ValidationPipe({ transform: true }))
   async eliminar(
@@ -65,17 +75,31 @@ export class RolController {
       message: `Rol eliminado correctamente`,
     };
   }
+
   @Get('obtener/:RolID')
   async obtenerPorId(
     @Param('RolID', ParseIntPipe) RolID: number,
   ): Promise<SalidaApi> {
-    const respuesta = await this._leerRolService.obtenerProId(RolID);
+    const respuesta = await this._leerRolService.obtenerPorId(RolID);
     return {
       status: HttpStatus.OK,
       data: respuesta,
     };
   }
 
+  @Get('guard/frontend')
+  async obtenerRolGuardFront(
+    @ObtenerUsuario() usuario: any,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerRolService.obtenerPorId(
+      usuario.Rol.RolID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+  @Ruta(ConfiguracionAlias.RolPaginado)
   @Get('obtener/roles/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,

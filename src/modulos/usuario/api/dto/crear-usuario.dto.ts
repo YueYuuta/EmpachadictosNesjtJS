@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, Matches, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  isNumber,
+  IsString,
+  Matches,
+  MaxLength,
+  IsNumber,
+} from 'class-validator';
 
 export class CrearUsuarioDto {
   @IsNotEmpty({ message: 'El nombre del usuario no debe ir vacio!' })
@@ -20,11 +27,7 @@ export class CrearUsuarioDto {
   Correo: string;
 
   @IsNotEmpty({ message: 'El rol del usuario no debe ir vacio!' })
-  @IsString({ message: 'El rol del usuario debe ser string!' })
-  @MaxLength(150, {
-    message: 'El rol del usuario debe llevar un maximo de 150 caracteres!',
-  })
-  Rol: string;
+  Rol: number;
 
   @IsNotEmpty({ message: 'la contraseña del usuario no debe ir vacio!' })
   @IsString({ message: 'la contraseña del usuario debe ser string!' })

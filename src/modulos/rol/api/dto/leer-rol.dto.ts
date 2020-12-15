@@ -1,6 +1,5 @@
 import { IsNumber, IsString } from 'class-validator';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { LeerAlmacenDto } from '@modulos/almacen/api/dto';
 import { LeerRolPermisoDto } from './leer-rol-permiso.dto';
 import { LeerPermisoDto } from './leer-permiso.dto';
 

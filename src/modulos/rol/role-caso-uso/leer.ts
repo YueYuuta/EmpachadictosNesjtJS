@@ -6,6 +6,8 @@ import { LeerRolDto } from '../api/dto/leer-rol.dto';
 import { Rol } from '../entidades/rol.entity';
 import { Permiso } from '../entidades/permiso.entity';
 import { LeerPermisoDto } from '../api/dto/leer-permiso.dto';
+import { LeerRolPermisoDto } from '../api/dto/leer-rol-permiso.dto';
+import { RolPermiso } from '../entidades/rol-permiso.entity';
 
 const RolRepo = () => Inject('RolRepo');
 
@@ -13,8 +15,12 @@ const RolRepo = () => Inject('RolRepo');
 export class LeerRolCasoUso {
   constructor(@RolRepo() private readonly _rolRepository: IRolCasoUso) {}
 
-  async obtenerProId(RolID: number): Promise<LeerRolDto> {
-    const rol = await this._rolRepository.obtenerPodId(RolID);
+  async obtenerPorId(RolID: number): Promise<LeerRolDto> {
+    const rol = await this._rolRepository.obtenerPorId(RolID);
+    const rolPermiso = await this._rolRepository.obtenerPermisosPorRole(
+      rol.RolID,
+    );
+    rol.RolPermiso = rolPermiso;
 
     return plainToClass(LeerRolDto, rol);
   }
@@ -32,6 +38,15 @@ export class LeerRolCasoUso {
     const permisos: Permiso[] = await this._rolRepository.obtenerPermisos();
     return permisos.map((permiso: Permiso) =>
       plainToClass(LeerPermisoDto, permiso),
+    );
+  }
+
+  async obtenerPermisosPorRole(RolID: number): Promise<LeerRolPermisoDto[]> {
+    const permisos: RolPermiso[] = await this._rolRepository.obtenerPermisosPorRole(
+      RolID,
+    );
+    return permisos.map((permiso: RolPermiso) =>
+      plainToClass(LeerRolPermisoDto, permiso),
     );
   }
   async obtenerPaginado(

@@ -9,10 +9,6 @@ export class LeerPermisoDto {
   readonly PermisoID: number;
 
   @Expose()
-  @IsString()
-  readonly Nombre: string;
-
-  @Expose()
   @Type(type => LeerModuloDto)
   readonly Modulo: LeerModuloDto;
 
@@ -31,4 +27,7 @@ export class LeerPermisoDto {
   @Expose()
   @IsString()
   readonly Descripcion: string;
+
+  @Expose()
+  readonly Menu: boolean;
 }
