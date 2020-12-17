@@ -10,6 +10,9 @@ import { AlmacenModule } from './modulos/almacen/almacen.module';
 import { UsuarioAlmacenModule } from './modulos/usuario-almacen/usuario-almacen.module';
 import { RolModule } from './modulos/rol/rol.module';
 import { ClienteModule } from './modulos/cliente/cliente.module';
+import { CategoriaModule } from './modulos/categoria/categoria.module';
+import { ProductoModule } from './modulos/producto/producto.module';
+import { MenuModule } from './modulos/menu/menu.module';
 
 const fileup = require('express-fileupload');
 
@@ -24,6 +27,9 @@ const fileup = require('express-fileupload');
     UsuarioAlmacenModule,
     RolModule,
     ClienteModule,
+    ProductoModule,
+    CategoriaModule,
+    MenuModule,
   ],
   controllers: [],
   providers: [],

@@ -28,6 +28,29 @@ export enum AlmacenAlias {
   AlmacenElmininar = 'almacen/eliminar-almacen',
 }
 
+export enum ProductoAlias {
+  ProductoCrear = 'producto/crear-producto',
+  ProductoEditar = 'producto/editar-producto',
+  // ProductoObtenerPorID = 'producto/obtener/id',
+  ProductoPaginado = 'producto/productos',
+  // ProductoObtener = 'producto/obtener',
+  ProductoElmininar = 'producto/eliminar-producto',
+
+  CategoriaCrear = 'producto/crear-categoria',
+  CategoriaEditar = 'producto/editar-categoria',
+  // CategoriaObtenerPorID = 'producto/obtener/id',
+  CategoriaPaginado = 'producto/categorias',
+  // CategoriaObtener = 'producto/obtener',
+  CategoriaElmininar = 'producto/eliminar-categoria',
+
+  MenuCrear = 'producto/crear-menu',
+  MenuEditar = 'producto/editar-menu',
+  // MenuObtenerPorID = 'producto/obtener/id',
+  MenuPaginado = 'producto/menus',
+  // MenuObtener = 'producto/obtener',
+  MenuElmininar = 'producto/eliminar-menu',
+}
+
 export enum ConfiguracionAlias {
   UsuarioAlmacenCrear = 'configuracion/crear-usuario-almacen',
   UsuarioAlmacenEditar = 'configuracion/editar-usuario-almacen',

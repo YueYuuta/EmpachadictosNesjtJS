@@ -1,3 +1,3 @@
-export { LeerClienteDto } from './leer-cliente.dto';
-export { CrearClienteDto } from './crear-cliente.dto';
-export { EditarClienteDto } from './editar-cliente.dto';
+export { LeerProductoDto } from './leer-producto.dto';
+export { CrearProductoDto } from './crear-producto.dto';
+export { EditarProductoDto } from './editar-producto.dto';

@@ -59,7 +59,7 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
     termino: string,
   ): Promise<any> {
     try {
-      const usuarios = await this._usuarioRepository
+      return await this._usuarioRepository
         .createQueryBuilder('Usuario')
         .innerJoinAndSelect('Usuario.Detalle', 'Detalle')
         .where('Usuario.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
@@ -86,8 +86,6 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
         .take(limite)
         .orderBy('Usuario.UsuarioID', 'DESC')
         .getManyAndCount();
-
-      return usuarios;
     } catch (error) {
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,

@@ -3,25 +3,22 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import { ImageDefault } from '@utils/enums';
-import { EntityStatus } from '@utils/enums/entity-status.enum';
-import { Categoria } from '@modulos/categoria/entidades/categoria.entity';
+import { EntityStatus, ImageDefault } from '@utils/enums';
+import { MenuDetalle } from './menu-detalle.entity';
 
-@Entity('Producto')
-export class Producto extends BaseEntity {
+@Entity('Menu')
+export class Menu extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  ProductoID: number;
+  MenuID: number;
 
-  @ManyToOne(type => Categoria, {
-    cascade: true,
-    nullable: false,
-    eager: true,
-  })
-  @JoinColumn({ name: 'CategoriaID' })
-  Categoria: number;
+  @OneToMany(
+    type => MenuDetalle,
+    meduDetalle => meduDetalle.Menu,
+    { cascade: true, eager: true },
+  )
+  Detalle: MenuDetalle[];
 
   @Column({ type: 'text', nullable: false })
   Descripcion: string;
@@ -33,9 +30,6 @@ export class Producto extends BaseEntity {
   PrecioSinIva: number;
 
   @Column({ type: 'float', nullable: false, default: 0 })
-  PrecioSinIvaDescuento: number;
-
-  @Column({ type: 'float', nullable: false, default: 0 })
   PrecioVenta: number;
 
   @Column({ type: 'float', nullable: false, default: 0 })
@@ -45,13 +39,7 @@ export class Producto extends BaseEntity {
   EstadoIva: boolean;
 
   @Column({ type: 'boolean', default: false, nullable: false })
-  EstadoDescuento: boolean;
-
-  @Column({ type: 'float', nullable: false, default: 0 })
-  PrecioVentaConDescuento: number;
-
-  @Column({ type: 'float', nullable: false, default: 0 })
-  PorcentajeGananciaDescuento: number;
+  EstadoPrecioVentaDinamico: boolean;
 
   @Column({
     type: 'text',
