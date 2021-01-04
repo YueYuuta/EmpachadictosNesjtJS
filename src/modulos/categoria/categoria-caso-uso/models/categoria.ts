@@ -4,4 +4,5 @@ export class CategoriaModel {
   Nombre: string;
 
   Fecha: string;
+  Imagen?: string;
 }

@@ -21,6 +21,18 @@ export class MenuRepoService implements IMenuCasoUso {
     @InjectRepository(MenuDetalleRepository)
     private readonly _menuDetalleRepository: MenuDetalleRepository,
   ) {}
+
+  async eliminarDefinitivamente(MenuID: number): Promise<boolean> {
+    try {
+      await this._menuRepository.delete(MenuID);
+      await this.eliminarBd(MenuID);
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async verificarDescripcion(descripcion: string): Promise<Menu> {
     try {
       return await this._menuRepository.findOne({

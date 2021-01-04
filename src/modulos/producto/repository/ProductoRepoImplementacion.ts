@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { EntityStatus } from '@utils/enums';
-import { Brackets, Not, Raw } from 'typeorm';
+import { Brackets, Not } from 'typeorm';
 import { IProductoCasoUso } from '../producto-caso-uso/IProductoCasoUso';
 import { Producto } from '../entidates/producto.entity';
 import { ProductoRepository } from './producto.repository';
@@ -13,6 +13,16 @@ import { ProductoModel } from '../producto-caso-uso/models/producto';
 @Injectable()
 export class ProductoRepoService implements IProductoCasoUso {
   constructor(private readonly _productoRepository: ProductoRepository) {}
+  async eliminarDefinitivamente(ProductoID: number): Promise<boolean> {
+    try {
+      await this._productoRepository.delete(ProductoID);
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async verificarDescripcion(descripcion: string): Promise<Producto> {
     try {
       return await this._productoRepository.findOne({

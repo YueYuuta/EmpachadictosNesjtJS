@@ -13,6 +13,7 @@ import {
   UseGuards,
   HttpStatus,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProductoAlias } from '@utils/enums/rutas.enum';
@@ -64,6 +65,24 @@ export class ProductoController {
     };
   }
 
+  @Patch('crear/imagen/:ProductoID/:tipo')
+  async crearImagen(
+    @Param('ProductoID', ParseIntPipe) ProductoID: number,
+    @Param('tipo') tipo: string,
+    @Request() req: any,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._crearProductoService.crearImagen(
+      ProductoID,
+      req,
+      tipo,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Imagen guardada correctamente`,
+    };
+  }
+
   @Get('obtener/:ProductoID')
   async obtenerPorId(
     @Param('ProductoID', ParseIntPipe) ProductoID: number,
@@ -101,12 +120,14 @@ export class ProductoController {
     @Param('termino') termino: string,
     @Param('CategoriaID') CategoriaID: number,
   ): Promise<SalidaApi> {
+    console.log(desde, limite, CategoriaID, termino);
     const respuesta = await this._leerProductoService.obtenerPaginadoPorCategoria(
       desde,
       limite,
       CategoriaID,
       termino,
     );
+    console.log(respuesta);
     return {
       status: HttpStatus.OK,
       data: respuesta,

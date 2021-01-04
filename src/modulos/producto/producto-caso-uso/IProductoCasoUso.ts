@@ -16,6 +16,8 @@ export interface IProductoCasoUso {
   crear(producto: ProductoModel): Promise<Producto>;
   eliminar(ProductoID: number): Promise<boolean>;
 
+  eliminarDefinitivamente(ProductoID: number): Promise<boolean>;
+
   verificarDescripcion(descripcion: string): Promise<Producto>;
 
   verificarDescripcionEditar(

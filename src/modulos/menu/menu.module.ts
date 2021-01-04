@@ -10,6 +10,7 @@ import { MenuRepoProvider } from './repository/menu-provider';
 import { EliminarMenuCasoUso } from './menu-caso-uso/eliminar';
 import { ProductoModule } from '../producto/producto.module';
 import { MenuDetalleRepository } from './repository/menu-detalle.repository';
+import { ImagenMenuController } from './api/imagen-menu.controller';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { MenuDetalleRepository } from './repository/menu-detalle.repository';
     MenuRepoProvider,
     EliminarMenuCasoUso,
   ],
-  controllers: [MenuController],
+  controllers: [MenuController, ImagenMenuController],
   exports: [],
 })
 export class MenuModule {}

@@ -38,7 +38,7 @@ export class Menu extends BaseEntity {
   @Column({ type: 'boolean', default: false, nullable: false })
   EstadoIva: boolean;
 
-  @Column({ type: 'boolean', default: false, nullable: false })
+  @Column({ type: 'boolean', default: true, nullable: false })
   EstadoPrecioVentaDinamico: boolean;
 
   @Column({

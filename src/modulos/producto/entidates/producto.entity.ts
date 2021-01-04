@@ -47,7 +47,7 @@ export class Producto extends BaseEntity {
   @Column({ type: 'boolean', default: false, nullable: false })
   EstadoDescuento: boolean;
 
-  @Column({ type: 'float', nullable: false, default: 0 })
+  @Column({ type: 'float', nullable: true })
   PrecioVentaConDescuento: number;
 
   @Column({ type: 'float', nullable: false, default: 0 })

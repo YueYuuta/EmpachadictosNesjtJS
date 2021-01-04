@@ -13,6 +13,7 @@ import {
   UseGuards,
   HttpStatus,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProductoAlias } from '@utils/enums/rutas.enum';
@@ -61,6 +62,25 @@ export class MenuController {
       status: HttpStatus.OK,
       data: respuesta,
       message: `Menu editado correctamente`,
+    };
+  }
+
+  @Patch('crear/imagen/:ProductoID/:tipo')
+  async crearImagen(
+    @Param('ProductoID', ParseIntPipe) ProductoID: number,
+    @Param('tipo') tipo: string,
+    @Request() req: any,
+  ): Promise<SalidaApi> {
+    console.log(ProductoID, req.files);
+    const respuesta = await this._crearMenuService.crearImagen(
+      ProductoID,
+      req,
+      tipo,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Imagen guardada correctamente`,
     };
   }
 

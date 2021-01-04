@@ -15,6 +15,8 @@ export interface IMenuCasoUso {
 
   verificarDescripcion(descripcion: string): Promise<Menu>;
 
+  eliminarDefinitivamente(ProductoID: number): Promise<boolean>;
+
   verificarDescripcionEditar(
     descripcion: string,
     MenuID: number,

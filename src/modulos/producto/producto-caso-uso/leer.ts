@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ImageDefault, PathFile } from '@utils/enums';
 import { plainToClass } from 'class-transformer';
 import { LeerProductoDto } from '../api/dto';
 import { IProductoCasoUso } from './IProductoCasoUso';
@@ -62,5 +63,13 @@ export class LeerProductoCasoUso {
     return productos.map((producto: any) =>
       plainToClass(LeerProductoDto, producto),
     );
+  }
+
+  async obtenerImagen(nombreImagen: string): Promise<string> {
+    if (nombreImagen === ImageDefault.PRODUCT) {
+      return PathFile.DEFAULT;
+    } else {
+      return PathFile.PRODUCTS;
+    }
   }
 }

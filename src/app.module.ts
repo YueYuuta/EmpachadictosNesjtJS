@@ -44,6 +44,14 @@ export class AppModule {
         { path: 'usuario/crear', method: RequestMethod.POST },
         // { path: 'usuario/avatar/:userId', method: RequestMethod.PATCH },
         { path: 'usuario/editar/:id', method: RequestMethod.PATCH },
+
+        { path: 'categoria/crear', method: RequestMethod.POST },
+        // { path: 'usuario/avatar/:userId', method: RequestMethod.PATCH },
+        { path: 'categoria/editar/:CategoriaID', method: RequestMethod.PATCH },
+        {
+          path: 'producto/crear/imagen/:ProductoID/:tipo',
+          method: RequestMethod.PATCH,
+        },
         // { path: 'producto/:id', method: RequestMethod.PATCH },
         // { path: 'producto', method: RequestMethod.POST },
         // { path: 'producto/guardar/imagen/:id', method: RequestMethod.PUT },

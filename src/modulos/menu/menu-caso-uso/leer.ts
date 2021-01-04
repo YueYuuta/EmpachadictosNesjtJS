@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ImageDefault, PathFile } from '@utils/enums';
 import { plainToClass } from 'class-transformer';
 import { LeerMenuDto } from '../api/dto';
 import { IMenuCasoUso } from './IMenuCasoUso';
@@ -56,5 +57,13 @@ export class LeerMenuCasoUso {
       );
     }
     return menus.map((menu: any) => plainToClass(LeerMenuDto, menu));
+  }
+
+  async obtenerImagen(nombreImagen: string): Promise<string> {
+    if (nombreImagen === ImageDefault.MENU) {
+      return PathFile.DEFAULT;
+    } else {
+      return PathFile.MENU;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { EntityStatus } from '@utils/enums';
+import { EntityStatus, ImageDefault } from '@utils/enums';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('Categoria')
@@ -11,6 +11,9 @@ export class Categoria extends BaseEntity {
 
   @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
   Estado: boolean;
+
+  @Column({ type: 'text', default: ImageDefault.CATEGORIA, nullable: true })
+  Imagen: string;
 
   @Column({
     type: 'timestamp',

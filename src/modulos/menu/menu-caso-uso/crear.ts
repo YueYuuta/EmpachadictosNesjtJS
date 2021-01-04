@@ -1,4 +1,9 @@
-import { Inject, Injectable, ConflictException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { LeerMenuDto } from '../api/dto';
 
@@ -10,9 +15,10 @@ import { MenuModel } from './models/menu';
 import { MenuDetalleModel } from './models/menu-detalle';
 
 import { LeerProductoDto } from '@modulos/producto/api/dto';
-import { TipoVariable } from '@utils/enums';
+import { PathFile, TipoVariable } from '@utils/enums';
 import { Menu } from '../entidates/menu.entity';
 import { LeerProductoCasoUso } from '@modulos/producto/producto-caso-uso/leer';
+import { manejoDeImagenes } from '@utils/manejo-imagenes/imagen-express-fileup';
 
 const MenuRepo = () => Inject('MenuRepo');
 
@@ -86,5 +92,26 @@ export class CrearMenuCasoUso {
       }
     }
     return { precioVenta, precioCompra, precioSinIva };
+  }
+
+  async crearImagen(MenuID: number, req: any, tipo?: string): Promise<boolean> {
+    const menu: Menu = await this._menuRepository.obtenerPodId(MenuID);
+    let response = false;
+    let nombreImagen: string;
+    try {
+      if (req.files) {
+        nombreImagen = await manejoDeImagenes(req, PathFile.MENU);
+      }
+      if (nombreImagen) {
+        menu.Imagen = nombreImagen;
+        response = await this._menuRepository.editar(menu, MenuID);
+      }
+      return response;
+    } catch (error) {
+      if (tipo === 'crear') {
+        await this._menuRepository.eliminarDefinitivamente(MenuID);
+      }
+      throw new InternalServerErrorException(error);
+    }
   }
 }

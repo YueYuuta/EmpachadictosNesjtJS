@@ -20,7 +20,7 @@ export class MenuDetalle extends BaseEntity {
     type => Menu,
     menu => menu.Detalle,
   )
-  @JoinColumn({ name: 'FacturaID' })
+  @JoinColumn({ name: 'MenuID' })
   Menu: number;
 
   @ManyToOne(type => Producto, {

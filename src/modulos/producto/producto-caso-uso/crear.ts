@@ -1,4 +1,9 @@
-import { Inject, Injectable, ConflictException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { LeerProductoDto } from '../api/dto';
 
@@ -8,6 +13,8 @@ import { Producto } from '../entidates/producto.entity';
 import { ProductoModel } from './models/producto';
 import { SharedService } from '../../shared/services/shared.service';
 import { LeerCategoriaCasoUso } from '../../categoria/categoria-caso-uso/leer';
+import { manejoDeImagenes } from '@utils/manejo-imagenes/imagen-express-fileup';
+import { PathFile } from '@utils/enums';
 
 const ProductoRepo = () => Inject('ProductoRepo');
 
@@ -71,5 +78,32 @@ export class CrearProductoCasoUso {
       producto,
     );
     return plainToClass(LeerProductoDto, productoGuardado);
+  }
+
+  async crearImagen(
+    ProductoID: number,
+    req: any,
+    tipo?: string,
+  ): Promise<boolean> {
+    const producto: Producto = await this._productoRepository.obtenerPodId(
+      ProductoID,
+    );
+    let response = false;
+    let nombreImagen: string;
+    try {
+      if (req.files) {
+        nombreImagen = await manejoDeImagenes(req, PathFile.PRODUCTS);
+      }
+      if (nombreImagen) {
+        producto.Imagen = nombreImagen;
+        response = await this._productoRepository.editar(producto, ProductoID);
+      }
+      return response;
+    } catch (error) {
+      if (tipo === 'crear') {
+        await this._productoRepository.eliminarDefinitivamente(ProductoID);
+      }
+      throw new InternalServerErrorException(error);
+    }
   }
 }

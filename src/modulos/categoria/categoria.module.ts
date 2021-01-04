@@ -7,6 +7,7 @@ import { CategoriaRepoProvider } from './repository/categoria-provider';
 import { CategoriaRepository } from './repository/categoria.repository';
 import { EditarCategoriaCasoUso } from './categoria-caso-uso/editar';
 import { LeerCategoriaCasoUso } from './categoria-caso-uso/leer';
+import { ImagenCategoriaController } from './api/imagen-categoria.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoriaRepository])],
@@ -17,7 +18,7 @@ import { LeerCategoriaCasoUso } from './categoria-caso-uso/leer';
     CategoriaRepoProvider,
     EliminarCategoriaCasoUso,
   ],
-  controllers: [CategoriaController],
+  controllers: [CategoriaController, ImagenCategoriaController],
   exports: [LeerCategoriaCasoUso, CategoriaRepoProvider],
 })
 export class CategoriaModule {}

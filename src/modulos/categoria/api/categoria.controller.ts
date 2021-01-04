@@ -13,6 +13,7 @@ import {
   UseGuards,
   HttpStatus,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -37,9 +38,13 @@ export class CategoriaController {
   @Ruta(ProductoAlias.CategoriaCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async crear(@Body() categoria: CrearCategoriaDto): Promise<SalidaApi> {
+  async crear(
+    @Body() categoria: CrearCategoriaDto,
+    @Request() req: any,
+  ): Promise<SalidaApi> {
     const respuesta: LeerCategoriaDto = await this._crearCategoriaService.crear(
       CategoriaMapper.crear(categoria),
+      req,
     );
     return {
       status: HttpStatus.CREATED,
@@ -54,10 +59,12 @@ export class CategoriaController {
   async editar(
     @Body() categoria: EditarCategoriaDto,
     @Param('CategoriaID', ParseIntPipe) CategoriaID: number,
+    @Request() req: any,
   ): Promise<SalidaApi> {
     const respuesta = await this._editarCategoriaService.editar(
       CategoriaMapper.editar(categoria),
       CategoriaID,
+      req,
     );
     return {
       status: HttpStatus.OK,

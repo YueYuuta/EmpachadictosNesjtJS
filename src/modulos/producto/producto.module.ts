@@ -9,6 +9,7 @@ import { LeerProductoCasoUso } from './producto-caso-uso/leer';
 import { EditarProductoCasoUso } from './producto-caso-uso/editar';
 import { SharedModule } from '@modulos/shared/shared.module';
 import { CategoriaModule } from '@modulos/categoria/categoria.module';
+import { ImagenProductoController } from './api/imagen-producto.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { CategoriaModule } from '@modulos/categoria/categoria.module';
     ProductoRepoProvider,
     EliminarProductoCasoUso,
   ],
-  controllers: [ProductoController],
+  controllers: [ProductoController, ImagenProductoController],
   exports: [LeerProductoCasoUso],
 })
 export class ProductoModule {}

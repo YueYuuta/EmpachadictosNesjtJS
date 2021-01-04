@@ -10,4 +10,7 @@ export class LeerCategoriaDto {
 
   @Expose()
   readonly Fecha: string;
+
+  @Expose()
+  readonly Imagen: string;
 }
