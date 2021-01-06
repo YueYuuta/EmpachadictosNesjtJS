@@ -1,4 +1,10 @@
-import { IsString, MaxLength, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsString,
+  MaxLength,
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 export class EditarClienteDto {
   @IsNotEmpty({ message: 'El nombre del cliente no debe ir vacio' })
   @IsString()
@@ -6,6 +12,31 @@ export class EditarClienteDto {
     message: 'El nombre del cliente debe tener menos de 150 caracteres',
   })
   readonly Nombre: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'La referencia del cliente no debe ir vacio' })
+  @IsString()
+  readonly Referencia: string;
+
+  @IsNotEmpty({ message: 'El enlace no debe ir vacio' })
+  @IsNumber()
+  readonly Enlace: number;
+
+  @IsNotEmpty({ message: 'El enlace no debe ir vacio' })
+  @IsNumber()
+  readonly Parroquia: number;
+
+  @IsNotEmpty({ message: 'El enlace no debe ir vacio' })
+  @IsNumber()
+  readonly Termino: number;
+
+  @IsNotEmpty({ message: 'El enlace no debe ir vacio' })
+  @IsNumber()
+  readonly Publicidad: number;
+
+  @IsNotEmpty({ message: 'El enlace no debe ir vacio' })
+  @IsNumber()
+  readonly Antiguo: number;
 
   @IsOptional()
   @IsNotEmpty({ message: 'La dirreccion del cliente no debe ir vacio' })
