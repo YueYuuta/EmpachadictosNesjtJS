@@ -5,6 +5,11 @@ import { LeerClienteDto } from '../api/dto/leer-cliente.dto';
 import { Cliente } from '../entidates/cliente.entity';
 import { plainToClass } from 'class-transformer';
 import { ValidarIdentificacion } from '@utils/validaciones/entidad-documento';
+import { LeerEnlaceCasoUso } from '../../enlace/enlace-caso-uso/leer';
+import { LeerParroquiaCasoUso } from '@modulos/parroquia/parroquia-caso-uso/leer';
+import { LeerTerminoCasoUso } from '@modulos/termino/termino-caso-uso/leer';
+import { LeerPublicidadCasoUso } from '@modulos/publicidad/publicidad-caso-uso/leer';
+import { LeerAntiguoCasoUso } from '@modulos/antiguo/antiguo-caso-uso/leer';
 
 const ClienteRepo = () => Inject('ClienteRepo');
 
@@ -12,9 +17,15 @@ const ClienteRepo = () => Inject('ClienteRepo');
 export class CrearClienteCasoUso {
   constructor(
     @ClienteRepo() private readonly _clienteRepository: IClienteCasoUso,
+    private readonly _enlaceService: LeerEnlaceCasoUso,
+    private readonly _parroquiaService: LeerParroquiaCasoUso,
+    private readonly _terminoService: LeerTerminoCasoUso,
+    private readonly _publicidadService: LeerPublicidadCasoUso,
+    private readonly _antiguoService: LeerAntiguoCasoUso,
   ) {}
 
   async crear(cliente: Partial<ClienteModel>): Promise<LeerClienteDto> {
+    await this.validacionesLLavesForaneas(cliente);
     await this.validacionesCrear(cliente);
     const clienteGuardado: Cliente = await this._clienteRepository.crear(
       cliente,
@@ -69,6 +80,20 @@ export class CrearClienteCasoUso {
           `El documento de identificacion: ${Otro} ya esta en uso por otro cliente!`,
         );
       }
+    }
+  }
+
+  async validacionesLLavesForaneas(
+    cliente: Partial<ClienteModel>,
+  ): Promise<void> {
+    await this._enlaceService.obtenerProId(cliente.Enlace);
+    await this._parroquiaService.obtenerProId(cliente.Parroquia);
+    await this._terminoService.obtenerProId(cliente.Termino);
+    if (cliente.Publicidad) {
+      await this._publicidadService.obtenerProId(cliente.Publicidad);
+    }
+    if (cliente.Antiguo) {
+      await this._antiguoService.obtenerProId(cliente.Antiguo);
     }
   }
 }
