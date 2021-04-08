@@ -1,5 +1,5 @@
 export class MenuDetalleDto {
-  Producto: number;
+  ProductoID: number;
 
   Cantidad: number;
 }

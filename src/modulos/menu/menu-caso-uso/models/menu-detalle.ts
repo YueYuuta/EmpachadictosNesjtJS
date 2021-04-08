@@ -3,7 +3,7 @@ export class MenuDetalleModel {
 
   Menu?: number;
 
-  Producto: number;
+  ProductoID: number;
 
   Cantidad: number;
 }

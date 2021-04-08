@@ -71,12 +71,13 @@ export class CrearMenuCasoUso {
     precioCompra: number;
     precioSinIva: number;
   }> {
+    console.log('♀♀♀', detalle);
     let precioVenta: number = 0;
     let precioCompra: number = 0;
     let precioSinIva: number = 0;
     for (const producto of detalle) {
       const productoBd: LeerProductoDto = await this._productoSercive.obtenerProId(
-        producto.Producto,
+        producto.ProductoID,
       );
       precioVenta = precioVenta + productoBd.PrecioVenta * producto.Cantidad;
       precioCompra = precioCompra + productoBd.PrecioCompra * producto.Cantidad;

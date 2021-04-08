@@ -63,7 +63,7 @@ export class EditarMenuCasoUso {
     let precioSinIva: number = 0;
     for (const producto of detalle) {
       const productoBd: LeerProductoDto = await this._productoSercive.obtenerProId(
-        producto.Producto,
+        producto.ProductoID,
       );
       precioVenta = precioVenta + productoBd.PrecioVenta * producto.Cantidad;
       precioCompra = precioCompra + productoBd.PrecioCompra * producto.Cantidad;

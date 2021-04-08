@@ -29,7 +29,7 @@ export class MenuDetalle extends BaseEntity {
     eager: true,
   })
   @JoinColumn({ name: 'ProductoID' })
-  Producto: number;
+  ProductoID: number;
 
   @Column({ type: 'float', nullable: false })
   Cantidad: number;

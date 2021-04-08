@@ -8,7 +8,7 @@ export class LeerMenuDetalleDto {
 
   @Expose()
   @Type(type => LeerProductoDto)
-  readonly Producto: LeerProductoDto;
+  readonly ProductoID: LeerProductoDto;
 
   @Expose()
   readonly Cantidad: number;
