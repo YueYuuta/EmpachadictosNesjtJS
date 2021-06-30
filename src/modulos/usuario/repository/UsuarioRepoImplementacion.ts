@@ -234,6 +234,7 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
     try {
       const usuarioIntance = new Usuario();
       Object.assign(usuarioIntance, usuario);
+      console.log(usuarioIntance,"♀♀♀")
       return await usuarioIntance.save();
     } catch (error) {
       throw new InternalServerErrorException(

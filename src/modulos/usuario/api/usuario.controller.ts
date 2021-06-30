@@ -30,7 +30,7 @@ import { Ruta } from '@modulos/shared/decorador/ruta.decorador';
 import { UsuarioAlias } from '@utils/enums/rutas.enum';
 import { RoleGuard } from '../../rol/guard/ruta.guard';
 import { ValidarRoleId } from '../pipe/rol-id.pipe';
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 @Controller('usuario')
 export class UsuarioController {
   constructor(

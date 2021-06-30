@@ -4,7 +4,6 @@ export class UsuarioModel {
   Correo: string;
   Rol: any;
   Detalle: UsuarioDetalleModel;
-  Fecha?: string;
   Contraseña?: string;
   NombreCompleto?: string;
   UsuarioID?: number;

@@ -23,6 +23,7 @@ export class CrearUsuarioCasoUso {
   constructor(@UserRepo() private readonly _userRepository: IUsuarioCasoUso) {}
 
   async crear(usuario: UsuarioModel, req: any): Promise<LeerUsuarioDto> {
+    console.log(usuario)
     let nombreImagen: string;
     const { Contraseña, Correo, Usuario } = usuario;
     const existeUsuarioCorreo = await this._userRepository.existeUsuarioCorreo(
