@@ -17,7 +17,7 @@ export class RoleGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    let salida: number = 0;
+    let salida = 0;
     const ruta: string = this._reflector.get<string>(
       'ruta',
       context.getHandler(),

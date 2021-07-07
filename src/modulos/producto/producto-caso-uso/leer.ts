@@ -47,6 +47,7 @@ export class LeerProductoCasoUso {
     let productos: any;
     if (termino) {
       termino = termino.trim();
+      console.log('termino', termino);
       productos = await this._productoRepository.obtenerPorBusquedaYCategoria(
         desde,
         limite,

@@ -6,7 +6,6 @@ import { CrearClienteDto } from '../../modulos/cliente/api/dto/crear-cliente.dto
 export class ClienteMapper {
   public static editar(cliente: EditarClienteDto): Partial<ClienteModel> {
     const partiaAlmacen: Partial<EditarClienteDto> = {
-      Direccion: cliente.Direccion ?? null,
       Correo: cliente.Correo ?? null,
       Ruc: cliente.Ruc ?? null,
       Telefono: cliente.Telefono ?? null,
@@ -26,7 +25,7 @@ export class ClienteMapper {
 
   public static crear(cliente: CrearClienteDto): Partial<ClienteModel> {
     const partiaAlmacen: Partial<CrearClienteDto> = {
-      Direccion: cliente.Direccion ?? null,
+      // Direccion: cliente.Direccion ?? null,
       Correo: cliente.Correo ?? null,
       Ruc: cliente.Ruc ?? null,
       Telefono: cliente.Telefono ?? null,

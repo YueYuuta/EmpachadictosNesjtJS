@@ -13,15 +13,9 @@ import { ClienteModule } from './modulos/cliente/cliente.module';
 import { CategoriaModule } from './modulos/categoria/categoria.module';
 import { ProductoModule } from './modulos/producto/producto.module';
 import { MenuModule } from './modulos/menu/menu.module';
-import { ProvinciaModule } from './modulos/provincia/provincia.module';
-import { CantonModule } from './modulos/canton/canton.module';
-import { ParroquiaModule } from './modulos/parroquia/canton.module';
-import { PlanModule } from './modulos/plan/plan.module';
-import { EnlaceModel } from './modulos/enlace/enlace-caso-uso/models/enlace';
-import { TerminoModule } from './modulos/termino/termino.module';
-import { PublicidadModule } from './modulos/publicidad/publicidad.module';
-import { EnlaceModule } from './modulos/enlace/enlace.module';
-import { AntiguoModule } from './modulos/antiguo/publicidad.module';
+
+import { PedidoModule } from '@modulos/pedido/pedido.module';
+import { MesaModule } from '@modulos/mesa/Mesa.module';
 
 const fileup = require('express-fileupload');
 
@@ -39,15 +33,8 @@ const fileup = require('express-fileupload');
     ProductoModule,
     CategoriaModule,
     MenuModule,
-    ProvinciaModule,
-    CantonModule,
-    ParroquiaModule,
-    PlanModule,
-    EnlaceModel,
-    TerminoModule,
-    PublicidadModule,
-    EnlaceModule,
-    AntiguoModule,
+    PedidoModule,
+    MesaModule,
   ],
   controllers: [],
   providers: [],

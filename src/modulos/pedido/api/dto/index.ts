@@ -1,3 +1,3 @@
-export { LeerMenuDto } from './leer-menu.dto';
-export { CrearMenuDto } from './crear-menu.dto';
-export { EditarMenuDto } from './editar-menu.dto';
+export { LeerPedidoDto } from './leer-pedido.dto';
+export { CrearPedidoDto } from './crear-pedido.dto';
+export { EditarPedidoDto } from './editar-pedido.dto';

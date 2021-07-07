@@ -3,6 +3,7 @@ import {
   Injectable,
   ConflictException,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { LeerMenuDto } from '../api/dto';
@@ -31,6 +32,10 @@ export class CrearMenuCasoUso {
   ) {}
 
   async crear(menu: MenuModel): Promise<LeerMenuDto> {
+    console.log(menu.Detalle.length);
+    if (menu.Detalle.length === 0) {
+      throw new NotFoundException('El detalle no puede ir vacio!');
+    }
     const { EstadoPrecioVentaDinamico, EstadoIva, PrecioVenta } = menu;
     const calculo = await this.validarDetalle(menu.Detalle);
 
@@ -72,9 +77,9 @@ export class CrearMenuCasoUso {
     precioSinIva: number;
   }> {
     console.log('♀♀♀', detalle);
-    let precioVenta: number = 0;
-    let precioCompra: number = 0;
-    let precioSinIva: number = 0;
+    let precioVenta = 0;
+    let precioCompra = 0;
+    let precioSinIva = 0;
     for (const producto of detalle) {
       const productoBd: LeerProductoDto = await this._productoSercive.obtenerProId(
         producto.ProductoID,

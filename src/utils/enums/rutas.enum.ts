@@ -111,6 +111,11 @@ export enum PlanAlias {
 }
 
 export enum ConfiguracionAlias {
+  MesaCrear = 'mesa/crear-mesa',
+  MesaEditar = 'mesa/editar-mesa',
+  MesaPaginado = 'mesa/mesas',
+  MesaElmininar = 'mesa/eliminar-mesa',
+
   UsuarioAlmacenCrear = 'configuracion/crear-usuario-almacen',
   UsuarioAlmacenEditar = 'configuracion/editar-usuario-almacen',
   // UsuarioAlmacenObtenerPorID = 'configuracion/obtener/id',

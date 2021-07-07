@@ -174,9 +174,7 @@ export class ClienteRepoService implements IClienteCasoUso {
       }
       return cliente;
     } catch (error) {
-      throw new InternalServerErrorException(
-        `no se pudo establecer conexion, ${error}`,
-      );
+      throw new InternalServerErrorException(`${error}`);
     }
   }
 

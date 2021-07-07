@@ -26,6 +26,6 @@ import { ImagenMenuController } from './api/imagen-menu.controller';
     EliminarMenuCasoUso,
   ],
   controllers: [MenuController, ImagenMenuController],
-  exports: [],
+  exports: [LeerMenuCasoUso],
 })
 export class MenuModule {}

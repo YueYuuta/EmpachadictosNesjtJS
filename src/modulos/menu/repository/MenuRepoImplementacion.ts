@@ -153,21 +153,21 @@ export class MenuRepoService implements IMenuCasoUso {
       return await this._menuRepository
         .createQueryBuilder('Menu')
         .innerJoinAndSelect('Menu.Detalle', 'Detalle')
-        .innerJoinAndSelect('Detalle.Producto', 'Producto')
+        .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
         .innerJoinAndSelect('Producto.Categoria', 'Categoria')
         .where('Menu.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere('Producto.Categoria=:CategoriaID', { CategoriaID })
         .andWhere(
           new Brackets(qb => {
-            qb.where('Categoria.Nombre ILIKE :Nombre', {
-              Nombre: `%${termino}%`,
-            })
-              .orWhere('Menu.Descripcion ILIKE :Descripcion', {
-                Descripcion: `%${termino}%`,
-              })
-              .orWhere('Producto.Descripcion ILIKE :Descripcion', {
-                Descripcion: `%${termino}%`,
-              });
+            // qb.where('Categoria.Nombre ILIKE :Nombre', {
+            //   Nombre: `%${termino}%`,
+            // })
+            qb.where('Menu.Descripcion ILIKE :Descripcion', {
+              Descripcion: `%${termino}%`,
+            });
+            // .orWhere('Producto.Descripcion ILIKE :Descripcion', {
+            //   Descripcion: `%${termino}%`,
+            // });
           }),
         )
         .skip(desde)
@@ -190,7 +190,7 @@ export class MenuRepoService implements IMenuCasoUso {
       return await this._menuRepository
         .createQueryBuilder('Menu')
         .innerJoinAndSelect('Menu.Detalle', 'Detalle')
-        .innerJoinAndSelect('Detalle.Producto', 'Producto')
+        .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
         .innerJoinAndSelect('Producto.Categoria', 'Categoria')
         .where('Menu.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere('Producto.Categoria=:CategoriaID', { CategoriaID })
@@ -199,6 +199,7 @@ export class MenuRepoService implements IMenuCasoUso {
         .orderBy('Menu.MenuID', 'DESC')
         .getManyAndCount();
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );

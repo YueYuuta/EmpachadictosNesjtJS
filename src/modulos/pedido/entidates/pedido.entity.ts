@@ -12,6 +12,7 @@ import { PedidoDetalle } from './pedido-detalle.entity';
 import { Cliente } from '@modulos/cliente/entidates/cliente.entity';
 import { Almacen } from '@modulos/almacen/entidates/almacen.entity';
 import { tipoPago } from './tipo.enum';
+import { Usuario } from '@modulos/usuario/entidates/usuario.entity';
 
 @Entity('Pedido')
 export class Pedido extends BaseEntity {
@@ -20,7 +21,7 @@ export class Pedido extends BaseEntity {
 
   @OneToMany(
     type => PedidoDetalle,
-    pedidoDetalle => pedidoDetalle.Pedido,
+    pedidoDetalle => pedidoDetalle.PedidoID,
     { cascade: true, eager: true },
   )
   Detalle: PedidoDetalle[];
@@ -41,13 +42,29 @@ export class Pedido extends BaseEntity {
   @JoinColumn({ name: 'AlmacenID' })
   AlmacenID: number;
 
+  @ManyToOne(type => Almacen, {
+    cascade: true,
+    nullable: true,
+    eager: true,
+  })
+  @JoinColumn({ name: 'MesaID' })
+  MesaID: number;
+
+  @ManyToOne(type => Usuario, {
+    cascade: true,
+    nullable: false,
+    eager: true,
+  })
+  @JoinColumn({ name: 'UsuarioID' })
+  UsuarioID: number;
+
   @Column({ type: 'text', nullable: true })
   Observacion: string;
 
   @Column({ type: 'text', nullable: true })
   TipoFactura: TipoFactura;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text', nullable: true })
   TipoPago: tipoPago;
 
   @Column({ type: 'float', nullable: false, default: 0 })

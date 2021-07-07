@@ -6,7 +6,7 @@ export class Variables {
     //   timeZone: 'America/Guayaquil',
     // });
 
-    for (var key in variables) {
+    for (const key in variables) {
       if (typeof variables[key] === TipoVariable.STRING) {
         variables[key] = variables[key].trim();
       }

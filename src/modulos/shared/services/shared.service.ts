@@ -5,7 +5,6 @@ import { Iva } from '@utils/enums';
 export class SharedService {
   private porcentaje: number;
   private precio: number;
-  constructor() {}
 
   async calcularPrecioSinIva(
     EstadoIva: boolean,
@@ -27,6 +26,15 @@ export class SharedService {
       this.precio = PrecioSinVenta * Iva.ivaCalculoDirecto;
     } else {
       this.precio = PrecioSinVenta;
+    }
+    return this.precio;
+  }
+
+  async calcularIva(EstadoIva: boolean, PrecioVenta: number): Promise<number> {
+    if (EstadoIva) {
+      this.precio = PrecioVenta * Iva.ivaCalculado;
+    } else {
+      this.precio = 0;
     }
     return this.precio;
   }

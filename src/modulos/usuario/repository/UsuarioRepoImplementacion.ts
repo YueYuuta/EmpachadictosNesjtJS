@@ -62,6 +62,7 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
       return await this._usuarioRepository
         .createQueryBuilder('Usuario')
         .innerJoinAndSelect('Usuario.Detalle', 'Detalle')
+        .innerJoinAndSelect('Usuario.Rol', 'Rol')
         .where('Usuario.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere(
           new Brackets(qb => {
@@ -234,7 +235,7 @@ export class UsuarioRepoService implements IUsuarioCasoUso {
     try {
       const usuarioIntance = new Usuario();
       Object.assign(usuarioIntance, usuario);
-      console.log(usuarioIntance,"♀♀♀")
+      console.log(usuarioIntance, '♀♀♀');
       return await usuarioIntance.save();
     } catch (error) {
       throw new InternalServerErrorException(
