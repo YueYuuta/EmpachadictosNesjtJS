@@ -28,4 +28,6 @@ export class PedidoDetalleModel {
   Iva?: number;
 
   TotalIva?: number;
+
+  MenuAlmacenID?: number;
 }

@@ -20,6 +20,8 @@ import { LeerAlmacenCasoUso } from '@modulos/almacen/almacen-caso-uso/leer';
 import { LeerClienteCasoUso } from '@modulos/cliente/cliente-caso-uso/leer';
 import { plainToClass } from 'class-transformer';
 import { LeerPedidoDto } from '../api/dto';
+import { LeerMenuAlmacenCasoUso } from '@modulos/menu-almacen/menu-almacen-caso-uso/leer';
+import { CrearMenuAlmacenCasoUso } from '@modulos/menu-almacen/menu-almacen-caso-uso/crear';
 
 const MenuRepo = () => Inject('PedidoRepo');
 
@@ -31,6 +33,9 @@ export class CrearPedidoCasoUso {
     private readonly _menuSercive: LeerMenuCasoUso,
     private readonly _almacenService: LeerAlmacenCasoUso,
     private readonly _clienteService: LeerClienteCasoUso,
+    private readonly _menuAlmacen: LeerMenuAlmacenCasoUso,
+
+    private readonly _crearMenuAlmacen: CrearMenuAlmacenCasoUso,
   ) {}
 
   async crear(pedido: PedidoModel): Promise<LeerPedidoDto> {
@@ -48,6 +53,13 @@ export class CrearPedidoCasoUso {
     pedido.Iva = totales.Totales.Iva;
     pedido.TotalCompra = totales.Totales.TotalCompra;
     const pedidoGuardado = await this._pedidoRepository.crear(pedido);
+    for (const menu of pedido.Detalle) {
+      await this._crearMenuAlmacen.crearEgreso({
+        AlmacenID: pedidoGuardado.AlmacenID,
+        Egreso: menu.Cantidad,
+        MenuID: menu.MenuID,
+      });
+    }
     return plainToClass(LeerPedidoDto, pedidoGuardado);
     // return pedido;
     // return plainToClass(LeerPedidoDto, pedidoGuardado);
@@ -65,6 +77,17 @@ export class CrearPedidoCasoUso {
       const menuBd: LeerMenuDto = await this._menuSercive.obtenerProId(
         menu.MenuID,
       );
+      const menuAlmacen = await this._menuAlmacen.obtenerProId(
+        menu.MenuAlmacenID,
+      );
+      const stock: number = menuAlmacen.Ingreso - menuAlmacen.Egreso;
+
+      if (stock < menu.Cantidad) {
+        throw new ConflictException(
+          `La cantidad de: ${menuBd.Descripcion} super al stock el cual es: ${stock}`,
+        );
+      }
+
       if (
         menu.Cantidad <= 0 ||
         !menu.Cantidad ||

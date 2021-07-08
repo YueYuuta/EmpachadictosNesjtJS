@@ -54,6 +54,13 @@ export enum ProductoAlias {
   // ProductoObtener = 'producto/obtener',
   ProductoElmininar = 'producto/eliminar-producto',
 
+  MenuAlmacenCrear = 'producto/crear-menu-almacen',
+  MenuAlmacenEditar = 'producto/editar-menu-almacen',
+  // MenuAlmacenObtenerPorID = 'producto/obtener/id',
+  MenuAlmacenPaginado = 'producto/menus-almacen',
+  // MenuAlmacenObtener = 'producto/obtener',
+  MenuAlmacenElmininar = 'producto/eliminar-menu-almacen',
+
   CategoriaCrear = 'producto/crear-categoria',
   CategoriaEditar = 'producto/editar-categoria',
   // CategoriaObtenerPorID = 'producto/obtener/id',
