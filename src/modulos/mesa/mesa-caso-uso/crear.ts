@@ -6,6 +6,7 @@ import { MesaModel } from './models/mesa';
 import { LeerMesaDto } from '../api/dto';
 import { IMesaCasoUso } from './IMesaCasoUso';
 import { Mesa } from '../entidades/mesa.entity';
+import { CambiarMesaDto } from '../api/dto/cambiar-mesa.dto';
 
 const MesaRepo = () => Inject('MesaRepo');
 
@@ -24,5 +25,12 @@ export class CrearMesaCasoUso {
     }
     const mesaGuardado: Mesa = await this._mesaRepository.crear(mesa);
     return plainToClass(LeerMesaDto, mesaGuardado);
+  }
+  async OcuparMesa(
+    cambioMesa: CambiarMesaDto,
+    MesaID: number,
+  ): Promise<boolean> {
+    await this._mesaRepository.obtenerPodId(MesaID);
+    return await this._mesaRepository.ocuparMesa(cambioMesa, MesaID);
   }
 }

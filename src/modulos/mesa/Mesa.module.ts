@@ -7,6 +7,7 @@ import { MesaRepoProvider } from './repository/mesa-provider';
 import { MesaRepository } from './repository/mesa.repository';
 import { EditarMesaCasoUso } from './mesa-caso-uso/editar';
 import { LeerMesaCasoUso } from './mesa-caso-uso/leer';
+import { MesaGateway } from './gateway/mesa.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MesaRepository])],
@@ -16,6 +17,7 @@ import { LeerMesaCasoUso } from './mesa-caso-uso/leer';
     LeerMesaCasoUso,
     MesaRepoProvider,
     EliminarMesaCasoUso,
+    MesaGateway,
   ],
   controllers: [MesaController],
   exports: [LeerMesaCasoUso, MesaRepoProvider],

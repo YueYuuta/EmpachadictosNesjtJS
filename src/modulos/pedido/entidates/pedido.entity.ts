@@ -13,6 +13,7 @@ import { Cliente } from '@modulos/cliente/entidates/cliente.entity';
 import { Almacen } from '@modulos/almacen/entidates/almacen.entity';
 import { tipoPago } from './tipo.enum';
 import { Usuario } from '@modulos/usuario/entidates/usuario.entity';
+import { Mesa } from '@modulos/mesa/entidades/mesa.entity';
 
 @Entity('Pedido')
 export class Pedido extends BaseEntity {
@@ -42,7 +43,7 @@ export class Pedido extends BaseEntity {
   @JoinColumn({ name: 'AlmacenID' })
   AlmacenID: number;
 
-  @ManyToOne(type => Almacen, {
+  @ManyToOne(type => Mesa, {
     cascade: true,
     nullable: true,
     eager: true,

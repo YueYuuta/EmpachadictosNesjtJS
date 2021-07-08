@@ -13,15 +13,29 @@ import { MesaRepository } from './mesa.repository';
 
 @Injectable()
 export class MesaRepoService implements IMesaCasoUso {
-  constructor(private readonly _planRepository: MesaRepository) {}
+  constructor(private readonly _mesaRepository: MesaRepository) {}
+  async cambiarEstadoMesa(estado: boolean, MesaID: number): Promise<boolean> {
+    try {
+      await this._mesaRepository.update(MesaID, {
+        Ocupado: estado,
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async ocuparMesa(
     ocuparMesa: CambiarMesaDto,
     MesaID: number,
   ): Promise<boolean> {
     try {
-      await this._planRepository.update(MesaID, ocuparMesa);
+      await this._mesaRepository.update(MesaID, ocuparMesa);
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -29,11 +43,20 @@ export class MesaRepoService implements IMesaCasoUso {
   }
 
   async obtener(AlmacenID: number): Promise<Mesa[]> {
+    console.log(AlmacenID);
     try {
-      return await this._planRepository.find({
-        where: { Estado: EntityStatus.ACTIVE, AlmacenID },
+      const usuarios = await this._mesaRepository.find({
+        where: {
+          Estado: EntityStatus.ACTIVE,
+          AlmacenID,
+        },
+        order: {
+          MesaID: 'ASC',
+        },
       });
+      return usuarios;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -41,7 +64,7 @@ export class MesaRepoService implements IMesaCasoUso {
   }
   async verificarNombre(descripcion: string, AlmacenID: number): Promise<Mesa> {
     try {
-      return await this._planRepository.findOne({
+      return await this._mesaRepository.findOne({
         where: {
           Estado: EntityStatus.ACTIVE,
           Descripcion: descripcion,
@@ -61,7 +84,7 @@ export class MesaRepoService implements IMesaCasoUso {
     AlmacenID: number,
   ): Promise<Mesa> {
     try {
-      return await this._planRepository.findOne({
+      return await this._mesaRepository.findOne({
         where: {
           Estado: EntityStatus.ACTIVE,
           Descripcion: descripcion,
@@ -78,7 +101,7 @@ export class MesaRepoService implements IMesaCasoUso {
 
   async eliminar(MesaID: any): Promise<boolean> {
     try {
-      await this._planRepository.update(MesaID, {
+      await this._mesaRepository.update(MesaID, {
         Estado: EntityStatus.INACTIVE,
       });
       return true;
@@ -95,7 +118,7 @@ export class MesaRepoService implements IMesaCasoUso {
     AlmacenID: number,
   ): Promise<any> {
     try {
-      return await this._planRepository.findAndCount({
+      return await this._mesaRepository.findAndCount({
         where: [
           {
             Estado: EntityStatus.ACTIVE,
@@ -119,7 +142,7 @@ export class MesaRepoService implements IMesaCasoUso {
     AlmacenID: number,
   ): Promise<any> {
     try {
-      return await this._planRepository.findAndCount({
+      return await this._mesaRepository.findAndCount({
         where: { Estado: EntityStatus.ACTIVE, AlmacenID },
         skip: desde,
         take: limite,
@@ -136,7 +159,7 @@ export class MesaRepoService implements IMesaCasoUso {
 
   async obtenerPodId(MesaID: number): Promise<Mesa> {
     try {
-      const plan: Mesa = await this._planRepository.findOne(MesaID, {
+      const plan: Mesa = await this._mesaRepository.findOne(MesaID, {
         where: { Estado: EntityStatus.ACTIVE },
       });
 
@@ -153,7 +176,7 @@ export class MesaRepoService implements IMesaCasoUso {
 
   async editar(plan: MesaModel, MesaID: number): Promise<boolean> {
     try {
-      await this._planRepository.update(MesaID, plan);
+      await this._mesaRepository.update(MesaID, plan);
       return true;
     } catch (error) {
       throw new InternalServerErrorException(

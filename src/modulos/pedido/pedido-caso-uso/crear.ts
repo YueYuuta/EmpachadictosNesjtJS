@@ -39,6 +39,7 @@ export class CrearPedidoCasoUso {
   ) {}
 
   async crear(pedido: PedidoModel): Promise<LeerPedidoDto> {
+    console.log('lo que llega al crear un pedido', pedido);
     if (pedido.Detalle.length === 0) {
       throw new NotFoundException('Igrese el detalle del pedido!');
     }

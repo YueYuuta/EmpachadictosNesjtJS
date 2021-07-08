@@ -267,6 +267,7 @@ export class PedidoRepoService implements IPedidoCasoUso {
       Object.assign(pedidoIntance, pedido);
       return await pedidoIntance.save();
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );

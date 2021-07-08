@@ -23,6 +23,8 @@ import { CrearMesaCasoUso } from '../mesa-caso-uso/crear';
 import { EditarMesaCasoUso } from '../mesa-caso-uso/editar';
 import { LeerMesaCasoUso } from '../mesa-caso-uso/leer';
 import { EliminarMesaCasoUso } from '../mesa-caso-uso/eliminar';
+import { CambiarMesaDto } from './dto/cambiar-mesa.dto';
+import { MesaGateway } from '../gateway/mesa.gateway';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('mesa')
@@ -32,6 +34,7 @@ export class MesaController {
     private readonly _editarMesaService: EditarMesaCasoUso,
     private readonly _leerMesaService: LeerMesaCasoUso,
     private readonly _eliminarMesaService: EliminarMesaCasoUso,
+    private readonly _mesaGateway: MesaGateway,
   ) {}
   @Ruta(ConfiguracionAlias.MesaCrear)
   @Post('crear')
@@ -62,6 +65,25 @@ export class MesaController {
       status: HttpStatus.OK,
       data: respuesta,
       message: `Mesa editado correctamente`,
+    };
+  }
+
+  // @Ruta(ConfiguracionAlias.MesaEditar)
+  @Patch('ocupar-mesa/:MesaID')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async ocuparMesa(
+    @Body() mesa: CambiarMesaDto,
+    @Param('MesaID', ParseIntPipe) MesaID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._crearMesaService.OcuparMesa(mesa, MesaID);
+
+    const mesaDb = await this._leerMesaService.obtenerProId(MesaID);
+    this._mesaGateway.emitirEventoCambioOcupado(mesaDb);
+
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Mesa asignada correctamente`,
     };
   }
 

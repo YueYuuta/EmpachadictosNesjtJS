@@ -30,4 +30,5 @@ export interface IMesaCasoUso {
   ): Promise<Mesa>;
 
   ocuparMesa(ocuparMesa: CambiarMesaDto, MesaID: number): Promise<boolean>;
+  cambiarEstadoMesa(estado: boolean, MesaID: number): Promise<boolean>;
 }

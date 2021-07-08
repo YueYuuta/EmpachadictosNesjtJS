@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
 export class EditarMesaDto {
   @IsNotEmpty({ message: 'La descripcion no debe ir vacio' })
   @IsString()
