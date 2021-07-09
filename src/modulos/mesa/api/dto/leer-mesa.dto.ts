@@ -13,8 +13,11 @@ export class LeerMesaDto {
   readonly Fecha: string;
 
   @Expose()
-  readonly PedidoID: LeerPedidoDto | null;
+  readonly PedidoID: number | null;
 
   @Expose()
   readonly Ocupado: boolean;
+
+  @Expose()
+  readonly AlmacenID: number;
 }

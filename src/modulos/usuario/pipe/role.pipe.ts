@@ -8,7 +8,7 @@ export class ValidarRole implements PipeTransform {
     UsuarioRol.VENDEDOR,
   ];
   transform(value: any) {
-    let rol = value.Rol;
+    const rol = value.Rol;
     if (rol) {
       const Rol = rol.toUpperCase();
       if (!this.esUnRoleValido(Rol)) {

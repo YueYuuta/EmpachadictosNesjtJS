@@ -9,6 +9,7 @@ import {
 import { ImageDefault } from '@utils/enums';
 import { EntityStatus } from '@utils/enums/entity-status.enum';
 import { Categoria } from '@modulos/categoria/entidades/categoria.entity';
+import { PantallaEnum } from './pantalla.enum';
 
 @Entity('Producto')
 export class Producto extends BaseEntity {
@@ -25,6 +26,9 @@ export class Producto extends BaseEntity {
 
   @Column({ type: 'text', nullable: false })
   Descripcion: string;
+
+  @Column({ type: 'text', nullable: false })
+  Pantalla: PantallaEnum;
 
   @Column({ type: 'float', nullable: false, default: 0 })
   PrecioCompra: number;

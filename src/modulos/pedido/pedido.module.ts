@@ -14,6 +14,7 @@ import { PedidoController } from './api/menu.controller';
 import { ClienteModule } from '@modulos/cliente/cliente.module';
 import { AlmacenModule } from '@modulos/almacen/almacen.module';
 import { MenuAlmacenModule } from '@modulos/menu-almacen/menu-almacen.module';
+import { DespacharModule } from '@modulos/despachar/despachar.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MenuAlmacenModule } from '@modulos/menu-almacen/menu-almacen.module';
     ClienteModule,
     AlmacenModule,
     MenuAlmacenModule,
+    DespacharModule,
   ],
   providers: [CrearPedidoCasoUso, PedidoRepoProvider, PedidoGateway],
   controllers: [PedidoController],

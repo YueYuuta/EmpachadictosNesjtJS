@@ -14,6 +14,9 @@ export class LeerProductoDto {
   readonly Descripcion: string;
 
   @Expose()
+  readonly Pantalla: string;
+
+  @Expose()
   readonly PrecioCompra: number;
 
   @Expose()

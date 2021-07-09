@@ -22,13 +22,14 @@ import { plainToClass } from 'class-transformer';
 import { LeerPedidoDto } from '../api/dto';
 import { LeerMenuAlmacenCasoUso } from '@modulos/menu-almacen/menu-almacen-caso-uso/leer';
 import { CrearMenuAlmacenCasoUso } from '@modulos/menu-almacen/menu-almacen-caso-uso/crear';
+import { LeerProductoDto } from '@modulos/producto/api/dto';
 
-const MenuRepo = () => Inject('PedidoRepo');
+const PedidoRepo = () => Inject('PedidoRepo');
 
 @Injectable()
 export class CrearPedidoCasoUso {
   constructor(
-    @MenuRepo() private readonly _pedidoRepository: IPedidoCasoUso,
+    @PedidoRepo() private readonly _pedidoRepository: IPedidoCasoUso,
     private readonly _sharedService: SharedService,
     private readonly _menuSercive: LeerMenuCasoUso,
     private readonly _almacenService: LeerAlmacenCasoUso,
@@ -61,6 +62,7 @@ export class CrearPedidoCasoUso {
         MenuID: menu.MenuID,
       });
     }
+
     return plainToClass(LeerPedidoDto, pedidoGuardado);
     // return pedido;
     // return plainToClass(LeerPedidoDto, pedidoGuardado);
@@ -78,6 +80,8 @@ export class CrearPedidoCasoUso {
       const menuBd: LeerMenuDto = await this._menuSercive.obtenerProId(
         menu.MenuID,
       );
+
+      console.log('detalle del menu', menuBd.Detalle);
       const menuAlmacen = await this._menuAlmacen.obtenerProId(
         menu.MenuAlmacenID,
       );
@@ -141,5 +145,9 @@ export class CrearPedidoCasoUso {
         TotalCompra: TotalCompra,
       },
     };
+  }
+
+  async validarProductosParaDespachar(Producto: LeerProductoDto): Promise<any> {
+    return Producto;
   }
 }

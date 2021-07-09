@@ -17,6 +17,7 @@ import { MenuModule } from './modulos/menu/menu.module';
 import { PedidoModule } from '@modulos/pedido/pedido.module';
 import { MesaModule } from '@modulos/mesa/Mesa.module';
 import { MenuAlmacenModule } from '@modulos/menu-almacen/menu-almacen.module';
+import { DespacharModule } from '@modulos/despachar/despachar.module';
 
 const fileup = require('express-fileupload');
 
@@ -37,6 +38,7 @@ const fileup = require('express-fileupload');
     PedidoModule,
     MesaModule,
     MenuAlmacenModule,
+    DespacharModule,
   ],
   controllers: [],
   providers: [],

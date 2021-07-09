@@ -2,7 +2,7 @@ import { PipeTransform, BadGatewayException } from '@nestjs/common';
 
 export class ValidarRoleId implements PipeTransform {
   transform(value: any) {
-    let rol = value.Rol;
+    const rol = value.Rol;
     try {
       value.Rol = Number(rol);
       return value;

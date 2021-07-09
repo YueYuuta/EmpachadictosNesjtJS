@@ -1,3 +1,4 @@
+import { PantallaEnum } from '@modulos/producto/entidates/pantalla.enum';
 import {
   IsString,
   IsNotEmpty,
@@ -13,6 +14,9 @@ export class EditarProductoDto {
   @IsNotEmpty({ message: 'La descripcion no debe ir vacio!' })
   @IsString()
   readonly Descripcion: string;
+  @IsNotEmpty({ message: 'La pantalla no debe ir vacio!' })
+  @IsString()
+  readonly Pantalla: PantallaEnum;
 
   @IsNotEmpty({ message: 'El precio de compra no debe ir vacio!' })
   @IsNumber()

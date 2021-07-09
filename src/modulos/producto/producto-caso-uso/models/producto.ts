@@ -1,7 +1,11 @@
+import { PantallaEnum } from '@modulos/producto/entidates/pantalla.enum';
+
 export class ProductoModel {
   Categoria: number;
 
   Descripcion: string;
+
+  Pantalla: PantallaEnum;
 
   PrecioCompra: number;
 

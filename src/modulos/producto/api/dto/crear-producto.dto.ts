@@ -1,3 +1,4 @@
+import { PantallaEnum } from '@modulos/producto/entidates/pantalla.enum';
 import { IsBoolean, IsOptional } from 'class-validator';
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 export class CrearProductoDto {
@@ -8,6 +9,10 @@ export class CrearProductoDto {
   @IsNotEmpty({ message: 'La descripcion no debe ir vacio!' })
   @IsString()
   readonly Descripcion: string;
+
+  @IsNotEmpty({ message: 'La pantalla no debe ir vacio!' })
+  @IsString()
+  readonly Pantalla: PantallaEnum;
 
   @IsNotEmpty({ message: 'El precio de compra no debe ir vacio!' })
   @IsNumber()

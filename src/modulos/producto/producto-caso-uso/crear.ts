@@ -15,16 +15,28 @@ import { SharedService } from '../../shared/services/shared.service';
 import { LeerCategoriaCasoUso } from '../../categoria/categoria-caso-uso/leer';
 import { manejoDeImagenes } from '@utils/manejo-imagenes/imagen-express-fileup';
 import { PathFile } from '@utils/enums';
+import { PantallaEnum } from '../entidates/pantalla.enum';
 
 const ProductoRepo = () => Inject('ProductoRepo');
 
 @Injectable()
 export class CrearProductoCasoUso {
+  readonly PantallaValidas = [
+    PantallaEnum.BAR,
+    PantallaEnum.COCINA,
+    PantallaEnum.DESPACHAR,
+    PantallaEnum.PARRILLA,
+  ];
   constructor(
     @ProductoRepo() private readonly _productoRepository: IProductoCasoUso,
     private readonly _sharedService: SharedService,
     private readonly _categoriaService: LeerCategoriaCasoUso,
   ) {}
+
+  private esUnaPantallaValida(pantalla: PantallaEnum): boolean {
+    const idx = this.PantallaValidas.indexOf(pantalla);
+    return idx !== -1;
+  }
 
   async crear(producto: ProductoModel): Promise<LeerProductoDto> {
     const {
@@ -38,6 +50,11 @@ export class CrearProductoCasoUso {
 
     await this._categoriaService.obtenerProId(Categoria);
     producto.Descripcion = producto.Descripcion.toUpperCase();
+    if (!this.esUnaPantallaValida(producto.Pantalla)) {
+      throw new ConflictException(
+        `La pantalla: ${producto.Pantalla}, no es un dato valido!`,
+      );
+    }
     const descripcionProducto = await this._productoRepository.verificarDescripcion(
       producto.Descripcion,
     );
