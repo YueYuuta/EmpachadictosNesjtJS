@@ -38,7 +38,7 @@ export class PedidoController {
     @Body() pedido: CrearPedidoDto,
     @ObtenerUsuario() usuario: any,
   ): Promise<SalidaApi> {
-    this._pedidoGateway.sendToAll('hola como estas');
+    // this._pedidoGateway.sendToAll('hola como estas');
     const respuesta = await this._crearPedidoService.crear(
       PedidoMapper.crear(pedido, usuario.UsuarioID),
     );

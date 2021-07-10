@@ -40,10 +40,11 @@ export class CrearPedidoCasoUso {
   ) {}
 
   async crear(pedido: PedidoModel): Promise<LeerPedidoDto> {
-    console.log('lo que llega al crear un pedido', pedido);
+    console.log('holaaaa');
     if (pedido.Detalle.length === 0) {
       throw new NotFoundException('Igrese el detalle del pedido!');
     }
+    console.log(pedido.Detalle);
     await this._almacenService.obtenerProId(pedido.AlmacenID);
     await this._clienteService.obtenerProId(pedido.ClienteID);
     const totales = await this.validarDetalle(pedido.Detalle);
@@ -56,6 +57,8 @@ export class CrearPedidoCasoUso {
     pedido.TotalCompra = totales.Totales.TotalCompra;
     const pedidoGuardado = await this._pedidoRepository.crear(pedido);
     for (const menu of pedido.Detalle) {
+      // const menuBd = await this._menuSercive.obtenerProId(menu.MenuID);
+      // console.log('detalle del menu', menuBd.Detalle);
       await this._crearMenuAlmacen.crearEgreso({
         AlmacenID: pedidoGuardado.AlmacenID,
         Egreso: menu.Cantidad,
@@ -69,7 +72,7 @@ export class CrearPedidoCasoUso {
   }
 
   async validarDetalle(
-    detalle: PedidoDetalleModel[],
+    detalle: any[],
   ): Promise<{ Detalle: PedidoDetalleModel[]; Totales: CalculoModel }> {
     let Subtotal0 = 0;
     let Subtotal12 = 0;
@@ -77,13 +80,11 @@ export class CrearPedidoCasoUso {
     let TotalCompra = 0;
     for (let index = 0; index < detalle.length; index++) {
       const menu = detalle[index];
-      const menuBd: LeerMenuDto = await this._menuSercive.obtenerProId(
-        menu.MenuID,
-      );
+      // console.log('lo que llega al crear un pedido', detalle[2]);
+      const menuBd = await this._menuSercive.obtenerProId(menu.MenuID);
 
-      console.log('detalle del menu', menuBd.Detalle);
       const menuAlmacen = await this._menuAlmacen.obtenerProId(
-        menu.MenuAlmacenID,
+        detalle[index].MenuAlmacenID,
       );
       const stock: number = menuAlmacen.Ingreso - menuAlmacen.Egreso;
 

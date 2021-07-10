@@ -195,6 +195,7 @@ export class MenuAlmacenRepoService implements IMenuAlmacenCasoUso {
   }
 
   async obtenerPodId(MenuAlmacenID: number): Promise<MenuAlmacen> {
+    console.log('id que llega a menu almacen', MenuAlmacenID);
     try {
       const menuAlmacen: MenuAlmacen = await this._menuAlmacenRepository.findOne(
         MenuAlmacenID,
@@ -205,7 +206,7 @@ export class MenuAlmacenRepoService implements IMenuAlmacenCasoUso {
 
       if (!menuAlmacen) {
         throw new NotFoundException(
-          `el menu con id: ${MenuAlmacenID} no existe`,
+          `el menu almacen con id: ${MenuAlmacenID} no existe`,
         );
       }
       return menuAlmacen;

@@ -1,9 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
-import { CrearMenuAlmacenIngresoDto, LeerMenuAlmacenDto } from '../api/dto';
-
-import { plainToClass } from 'class-transformer';
-import { SharedService } from '@modulos/shared/services/shared.service';
+import { CrearMenuAlmacenIngresoDto } from '../api/dto';
 
 import { IMenuAlmacenCasoUso } from './IMenuAlmacenCasoUso';
 import { LeerMenuAlmacenCasoUso } from './leer';
@@ -24,7 +21,7 @@ export class CrearMenuAlmacenCasoUso {
 
   async crearIngreso(Ingreso: CrearMenuAlmacenIngresoDto): Promise<boolean> {
     let menuAlmacenGuaradado;
-    await this._menuService.obtenerProId(Ingreso.MenuID);
+    // await this._menuService.obtenerProId(Ingreso.MenuID);
     await this._almacenService.obtenerProId(Ingreso.AlmacenID);
     const menuAlmacen = await this._menuAlmacenService.ExisteMenuEnELAlmacen(
       Ingreso.AlmacenID,
@@ -45,7 +42,7 @@ export class CrearMenuAlmacenCasoUso {
 
   async crearEgreso(Egreso: CrearMenuAlmacenEgresoModel): Promise<boolean> {
     let menuAlmacenGuaradado;
-    await this._menuService.obtenerProId(Egreso.MenuID);
+    // await this._menuService.obtenerProId(Egreso.MenuAlmacenID);
     await this._almacenService.obtenerProId(Egreso.AlmacenID);
     const menuAlmacen = await this._menuAlmacenService.ExisteMenuEnELAlmacen(
       Egreso.AlmacenID,
