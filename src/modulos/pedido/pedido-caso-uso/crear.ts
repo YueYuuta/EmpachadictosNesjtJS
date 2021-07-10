@@ -12,7 +12,6 @@ import { TipoVariable } from '@utils/enums';
 import { IPedidoCasoUso } from './IPedidoCasoUso';
 
 import { PedidoDetalleModel } from './models/pedido-detalle.model';
-import { LeerMenuDto } from '@modulos/menu/api/dto';
 import { CalculoModel } from './models/calculo.model';
 import { LeerMenuCasoUso } from '@modulos/menu/menu-caso-uso/leer';
 import { PedidoModel } from './models/pedido.model';
@@ -22,12 +21,24 @@ import { plainToClass } from 'class-transformer';
 import { LeerPedidoDto } from '../api/dto';
 import { LeerMenuAlmacenCasoUso } from '@modulos/menu-almacen/menu-almacen-caso-uso/leer';
 import { CrearMenuAlmacenCasoUso } from '@modulos/menu-almacen/menu-almacen-caso-uso/crear';
+import { LeerProductoCasoUso } from '@modulos/producto/producto-caso-uso/leer';
+import { PantallaEnum } from '@modulos/producto/entidates/pantalla.enum';
+import { DespacharDetalleModel } from '@modulos/despachar/pedido-caso-uso/models/despachar-detalle.model';
 import { LeerProductoDto } from '@modulos/producto/api/dto';
+import { DespacharModel } from '@modulos/despachar/pedido-caso-uso/models/despachar.model';
+import { LeerDespacharDto } from '@modulos/despachar/api/dto';
+import { CrearDespacharCasoUso } from '@modulos/despachar/pedido-caso-uso/crear';
 
 const PedidoRepo = () => Inject('PedidoRepo');
 
 @Injectable()
 export class CrearPedidoCasoUso {
+  readonly PantallaValidas = [
+    PantallaEnum.BAR,
+    PantallaEnum.COCINA,
+    PantallaEnum.DESPACHAR,
+    PantallaEnum.PARRILLA,
+  ];
   constructor(
     @PedidoRepo() private readonly _pedidoRepository: IPedidoCasoUso,
     private readonly _sharedService: SharedService,
@@ -35,19 +46,21 @@ export class CrearPedidoCasoUso {
     private readonly _almacenService: LeerAlmacenCasoUso,
     private readonly _clienteService: LeerClienteCasoUso,
     private readonly _menuAlmacen: LeerMenuAlmacenCasoUso,
-
+    private readonly _productoService: LeerProductoCasoUso,
+    private readonly _despacharService: CrearDespacharCasoUso,
     private readonly _crearMenuAlmacen: CrearMenuAlmacenCasoUso,
   ) {}
 
   async crear(pedido: PedidoModel): Promise<LeerPedidoDto> {
-    console.log('holaaaa');
+    // console.log('holaaaa');
     if (pedido.Detalle.length === 0) {
       throw new NotFoundException('Igrese el detalle del pedido!');
     }
-    console.log(pedido.Detalle);
+    // console.log('lo que me llega al crar ', pedido);
     await this._almacenService.obtenerProId(pedido.AlmacenID);
     await this._clienteService.obtenerProId(pedido.ClienteID);
     const totales = await this.validarDetalle(pedido.Detalle);
+
     pedido.Detalle = totales.Detalle;
     pedido.Subtotal0 = totales.Totales.Subtotal0;
     pedido.Subtotal12 = totales.Totales.Subtotal12;
@@ -65,23 +78,99 @@ export class CrearPedidoCasoUso {
         MenuID: menu.MenuID,
       });
     }
+    const extra = {
+      MesaID: pedidoGuardado.MesaID,
+      PedidoID: pedidoGuardado.PedidoID,
 
+      UsuarioID: pedidoGuardado.UsuarioID,
+      AlmacenID: pedidoGuardado.AlmacenID,
+    };
+    const despachar = await this.guardarDespachar(totales.Despachar, extra);
+    console.log(despachar);
     return plainToClass(LeerPedidoDto, pedidoGuardado);
     // return pedido;
     // return plainToClass(LeerPedidoDto, pedidoGuardado);
   }
 
+  async guardarDespachar(despacharDetalle: any, extra: any): Promise<any> {
+    let despacharBar: LeerDespacharDto;
+    let despacharCocina: LeerDespacharDto;
+    let despacharParrilla: LeerDespacharDto;
+    if (despacharDetalle.Bar.length != 0) {
+      const despachar: DespacharModel = {
+        Detalle: despacharDetalle.Bar,
+        MesaID: extra.MesaID,
+        PedidoID: extra.PedidoID,
+        Tipo: PantallaEnum.BAR,
+        UsuarioID: extra.UsuarioID,
+        AlmacenID: extra.AlmacenID,
+      };
+      despacharBar = await this._despacharService.crear(despachar);
+    }
+
+    if (despacharDetalle.Cocina.length != 0) {
+      const despachar: DespacharModel = {
+        Detalle: despacharDetalle.Cocina,
+        MesaID: extra.MesaID,
+        PedidoID: extra.PedidoID,
+        Tipo: PantallaEnum.COCINA,
+        UsuarioID: extra.UsuarioID,
+        AlmacenID: extra.AlmacenID,
+      };
+      despacharCocina = await this._despacharService.crear(despachar);
+    }
+
+    if (despacharDetalle.Parrilla.length != 0) {
+      const despachar: DespacharModel = {
+        Detalle: despacharDetalle.Parrilla,
+        MesaID: extra.MesaID,
+        PedidoID: extra.PedidoID,
+        Tipo: PantallaEnum.PARRILLA,
+        UsuarioID: extra.UsuarioID,
+        AlmacenID: extra.AlmacenID,
+      };
+      despacharParrilla = await this._despacharService.crear(despachar);
+    }
+    return {
+      Bar: despacharBar,
+      Cocina: despacharCocina,
+      Parrilla: despacharParrilla,
+    };
+  }
+
   async validarDetalle(
     detalle: any[],
-  ): Promise<{ Detalle: PedidoDetalleModel[]; Totales: CalculoModel }> {
+  ): Promise<{
+    Detalle: PedidoDetalleModel[];
+    Totales: CalculoModel;
+    Despachar: any;
+  }> {
+    let detalleDespacharBar = [];
+    let detalleDespacharCocina = [];
+    let detalleDespacharParrilla = [];
     let Subtotal0 = 0;
     let Subtotal12 = 0;
     let Iva = 0;
     let TotalCompra = 0;
     for (let index = 0; index < detalle.length; index++) {
       const menu = detalle[index];
-      // console.log('lo que llega al crear un pedido', detalle[2]);
       const menuBd = await this._menuSercive.obtenerProId(menu.MenuID);
+      // console.log('lo que llega al crear un pedido', menuBd.Detalle);
+      const despacharItem = await this.validarProductosParaDespachar(
+        menuBd.Detalle,
+        menu.Descripcion,
+        menu.Cantidad,
+      );
+      // console.log('sasasdasda', despacharItem.Bar);
+      detalleDespacharBar = detalleDespacharBar.concat(despacharItem.Bar);
+      detalleDespacharCocina = detalleDespacharCocina.concat(
+        despacharItem.Cocina,
+      );
+      detalleDespacharParrilla = detalleDespacharParrilla.concat(
+        despacharItem.Parrilla,
+      );
+
+      // console.log('pinches totales', detalleDespacharBar);
 
       const menuAlmacen = await this._menuAlmacen.obtenerProId(
         detalle[index].MenuAlmacenID,
@@ -131,6 +220,11 @@ export class CrearPedidoCasoUso {
     const subtotal = Subtotal0 + Subtotal12;
     const total = subtotal + Iva;
     return {
+      Despachar: {
+        Bar: detalleDespacharBar,
+        Cocina: detalleDespacharCocina,
+        Parrilla: detalleDespacharParrilla,
+      },
       Detalle: detalle,
       Totales: {
         Subtotal0: Subtotal0,
@@ -148,7 +242,67 @@ export class CrearPedidoCasoUso {
     };
   }
 
-  async validarProductosParaDespachar(Producto: LeerProductoDto): Promise<any> {
-    return Producto;
+  async validarProductosParaDespachar(
+    Producto: any,
+    menuDescripcion: string,
+    menuCantidad: number,
+  ): Promise<any> {
+    // console.log('ver la cantidad', Producto);
+    let detalleDespacharBar = [];
+    let detalleDespacharCocina = [];
+    let detalleDespacharParrilla = [];
+    for (const producto of Producto) {
+      const productoBd = await this._productoService.obtenerProId(
+        producto.ProductoID.ProductoID,
+      );
+
+      if (!this.esUnaPantallaValida(productoBd.Pantalla)) {
+        throw new ConflictException(
+          `La pantalla: ${productoBd.Pantalla}, no es un dato valido en el producto : ${productoBd.Descripcion} del menu ${menuDescripcion}!`,
+        );
+      }
+      const item = producto.Cantidad * menuCantidad;
+      // console.log('item', item);
+      switch (productoBd.Pantalla) {
+        case PantallaEnum.BAR:
+          detalleDespacharBar = await this.guardarArray(item, productoBd);
+
+          break;
+        case PantallaEnum.COCINA:
+          detalleDespacharCocina = await this.guardarArray(item, productoBd);
+          break;
+        case PantallaEnum.PARRILLA:
+          detalleDespacharParrilla = await this.guardarArray(item, productoBd);
+          break;
+
+        default:
+          break;
+      }
+    }
+    return {
+      Bar: detalleDespacharBar,
+      Parrilla: detalleDespacharParrilla,
+      Cocina: detalleDespacharCocina,
+    };
+  }
+  private esUnaPantallaValida(pantalla: PantallaEnum): boolean {
+    const idx = this.PantallaValidas.indexOf(pantalla);
+    return idx !== -1;
+  }
+
+  private async guardarArray(
+    item: number,
+    productoBd: LeerProductoDto,
+  ): Promise<any[]> {
+    const detalleDespachar = [];
+    for (let index = 0; index < item; index++) {
+      const itemDespachar: DespacharDetalleModel = {
+        Cantidad: 1,
+        ProductoID: productoBd.ProductoID,
+        Observacion: 'sasdasd',
+      };
+      detalleDespachar.push(itemDespachar);
+    }
+    return detalleDespachar;
   }
 }

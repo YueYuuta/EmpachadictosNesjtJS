@@ -1,5 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { LeerCategoriaDto } from '@modulos/categoria/api/dto/leer-categoria.dto';
+import { PantallaEnum } from '@modulos/producto/entidates/pantalla.enum';
 
 @Exclude()
 export class LeerProductoDto {
@@ -14,7 +15,7 @@ export class LeerProductoDto {
   readonly Descripcion: string;
 
   @Expose()
-  readonly Pantalla: string;
+  readonly Pantalla: PantallaEnum;
 
   @Expose()
   readonly PrecioCompra: number;
