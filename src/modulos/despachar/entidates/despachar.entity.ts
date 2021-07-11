@@ -58,7 +58,7 @@ export class Despachar extends BaseEntity {
   @JoinColumn({ name: 'UsuarioID' })
   UsuarioID: number;
 
-  @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
+  @Column({ type: 'boolean', default: EntityStatus.INACTIVE })
   EstadoDespachar: boolean;
 
   @Column({ type: 'boolean', default: EntityStatus.ACTIVE })

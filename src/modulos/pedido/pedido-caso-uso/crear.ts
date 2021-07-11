@@ -28,6 +28,7 @@ import { LeerProductoDto } from '@modulos/producto/api/dto';
 import { DespacharModel } from '@modulos/despachar/pedido-caso-uso/models/despachar.model';
 import { LeerDespacharDto } from '@modulos/despachar/api/dto';
 import { CrearDespacharCasoUso } from '@modulos/despachar/pedido-caso-uso/crear';
+import { PedidoGateway } from '../gateway/pedido.gateway';
 
 const PedidoRepo = () => Inject('PedidoRepo');
 
@@ -49,6 +50,7 @@ export class CrearPedidoCasoUso {
     private readonly _productoService: LeerProductoCasoUso,
     private readonly _despacharService: CrearDespacharCasoUso,
     private readonly _crearMenuAlmacen: CrearMenuAlmacenCasoUso,
+    private readonly _pedidoGateway: PedidoGateway,
   ) {}
 
   async crear(pedido: PedidoModel): Promise<LeerPedidoDto> {
@@ -86,6 +88,7 @@ export class CrearPedidoCasoUso {
       AlmacenID: pedidoGuardado.AlmacenID,
     };
     const despachar = await this.guardarDespachar(totales.Despachar, extra);
+    this._pedidoGateway.enviarDespachar(despachar);
     console.log(despachar);
     return plainToClass(LeerPedidoDto, pedidoGuardado);
     // return pedido;

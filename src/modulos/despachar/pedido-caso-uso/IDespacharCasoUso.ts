@@ -4,6 +4,7 @@ import { DespacharModel } from './models/despachar.model';
 export interface IDespacharCasoUso {
   obtenerPodId(DespcharID: number): Promise<Despachar>;
   obtenerTodos(AlmacenID: number): Promise<Despachar[]>;
+  obtenerTodosPorTipo(AlmacenID: number, tipo: string): Promise<Despachar[]>;
   obtenerPaginado(
     desde: number,
     limite: number,

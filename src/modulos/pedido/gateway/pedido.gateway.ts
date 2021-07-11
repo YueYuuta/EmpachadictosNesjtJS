@@ -34,4 +34,8 @@ export class PedidoGateway
   sendToAll(msg: string) {
     this.wss.emit('alertToClient', { type: 'Alert', message: msg });
   }
+
+  enviarDespachar(despachar: any) {
+    this.wss.emit('enviarDespachar', { type: 'Alert', data: despachar });
+  }
 }

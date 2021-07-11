@@ -69,6 +69,20 @@ export class DespacharController {
       data: respuesta,
     };
   }
+  @Get('obtener-todo-tipo/:AlmacenID/:tipo')
+  async obtenerTodosPorTipo(
+    @Param('AlmacenID', ParseIntPipe) AlmacenID: number,
+    @Param('tipo') tipo: string,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerDespacharService.obtenerTodosPorTipo(
+      AlmacenID,
+      tipo,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
 
   @Get('obtener-por-id/:DespacharID')
   async obtenerPorId(

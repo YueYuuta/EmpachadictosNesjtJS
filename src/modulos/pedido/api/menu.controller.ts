@@ -27,10 +27,7 @@ import { CrearPedidoDto, LeerPedidoDto } from './dto';
 @UseGuards(AuthGuard('jwt'))
 @Controller('pedido')
 export class PedidoController {
-  constructor(
-    private readonly _crearPedidoService: CrearPedidoCasoUso,
-    private readonly _pedidoGateway: PedidoGateway,
-  ) {}
+  constructor(private readonly _crearPedidoService: CrearPedidoCasoUso) {}
   @Ruta(ProductoAlias.MenuCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))

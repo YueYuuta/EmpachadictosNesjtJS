@@ -22,6 +22,25 @@ export class DespacharRepoService implements IDespacharCasoUso {
     @InjectRepository(DespacharDetalleRepository)
     private readonly _despacharDetalleRepository: DespacharDetalleRepository,
   ) {}
+  async obtenerTodos(AlmacenID: number): Promise<Despachar[]> {
+    try {
+      return await this._despacharRepository
+        .createQueryBuilder('Despachar')
+        .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+        .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+        .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+        .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+        .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.AlmacenID=:AlmacenID', { AlmacenID })
+        .getMany();
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async obtenerPodId(DespacharID: number): Promise<Despachar> {
     return await this._despacharRepository
       .createQueryBuilder('Despachar')
@@ -55,18 +74,22 @@ export class DespacharRepoService implements IDespacharCasoUso {
       );
     }
   }
-  async obtenerTodos(AlmacenID: number): Promise<Despachar[]> {
+  async obtenerTodosPorTipo(
+    AlmacenID: number,
+    tipo: string,
+  ): Promise<Despachar[]> {
     try {
-      const despachar = await this._despacharRepository.find({
-        where: {
-          Estado: EntityStatus.ACTIVE,
-          AlmacenID,
-        },
-        order: {
-          DespacharID: 'ASC',
-        },
-      });
-      return despachar;
+      return await this._despacharRepository
+        .createQueryBuilder('Despachar')
+        .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+        .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+        .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+        .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+        .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.AlmacenID=:AlmacenID', { AlmacenID })
+        .andWhere('Despachar.Tipo=:Tipo', { Tipo: tipo })
+        .getMany();
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(

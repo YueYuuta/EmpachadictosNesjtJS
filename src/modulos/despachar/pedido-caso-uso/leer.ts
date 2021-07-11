@@ -19,6 +19,21 @@ export class LeerDespacharCasoUso {
 
   async obtenerTodos(AlmacenID: number): Promise<LeerDespacharDto[]> {
     const despachars = await this._despacharRepository.obtenerTodos(AlmacenID);
+    console.log(despachars);
+    return despachars.map((despachar: any) =>
+      plainToClass(LeerDespacharDto, despachar),
+    );
+  }
+
+  async obtenerTodosPorTipo(
+    AlmacenID: number,
+    tipo: string,
+  ): Promise<LeerDespacharDto[]> {
+    const despachars = await this._despacharRepository.obtenerTodosPorTipo(
+      AlmacenID,
+      tipo,
+    );
+    console.log(despachars);
     return despachars.map((despachar: any) =>
       plainToClass(LeerDespacharDto, despachar),
     );
