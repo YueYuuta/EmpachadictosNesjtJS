@@ -47,9 +47,9 @@ export class DespacharRepoService implements IDespacharCasoUso {
       .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
       .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
       .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
-      .innerJoinAndSelect('Detalle.Producto', 'Producto')
+      .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
       .where('Despachar.DespacharID=:DespacharID', { DespacharID })
-      .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+      .andWhere('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
       .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
       .getOne();
   }
