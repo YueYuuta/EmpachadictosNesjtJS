@@ -25,6 +25,9 @@ export class LeerDespacharDto {
   readonly EstadoDespachar: boolean;
 
   @Expose()
+  readonly EstadoDespacharPrincipal: boolean;
+
+  @Expose()
   readonly Tipo: string;
 
   @Expose()

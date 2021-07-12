@@ -7,11 +7,12 @@ import { DespacharRepository } from './repository/despachar.repository';
 import { DespacharRepoProvider } from './repository/despachar-provider';
 import { DespacharDetalleRepository } from './repository/despachar-detalle.repository';
 import { CrearDespacharCasoUso } from './pedido-caso-uso/crear';
-import { DespacharGateway } from './gateway/pedido.gateway';
+import { DespacharGateway } from './gateway/despachar.gateway';
 
 import { DespacharController } from './api/despachar.controller';
 
 import { LeerDespacharCasoUso } from './pedido-caso-uso/leer';
+import { EditarDespacharCasoUso } from './pedido-caso-uso/editar';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LeerDespacharCasoUso } from './pedido-caso-uso/leer';
     CrearDespacharCasoUso,
     LeerDespacharCasoUso,
     DespacharRepoProvider,
+    EditarDespacharCasoUso,
     DespacharGateway,
   ],
   controllers: [DespacharController],

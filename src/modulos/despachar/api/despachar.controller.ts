@@ -8,10 +8,13 @@ import {
   Get,
   UseGuards,
   HttpStatus,
+  Patch,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { DespacharGateway } from '../gateway/pedido.gateway';
+import { DespacharGateway } from '../gateway/despachar.gateway';
+import { EditarDespacharCasoUso } from '../pedido-caso-uso/editar';
 import { LeerDespacharCasoUso } from '../pedido-caso-uso/leer';
 
 @UseGuards(AuthGuard('jwt'))
@@ -19,7 +22,8 @@ import { LeerDespacharCasoUso } from '../pedido-caso-uso/leer';
 export class DespacharController {
   constructor(
     private readonly _leerDespacharService: LeerDespacharCasoUso,
-    private readonly _pedidoGateway: DespacharGateway,
+    private readonly _editarDespacharService: EditarDespacharCasoUso,
+    private readonly _despacharGateway: DespacharGateway,
   ) {}
 
   // @Ruta(ProductoAlias.MenuEditar)
@@ -58,6 +62,54 @@ export class DespacharController {
   //     message: `Imagen guardada correctamente`,
   //   };
   // }
+
+  @Patch('cambiar-estado-tipo-detalle/:DespacharDetalleID/:EstadoDespachar')
+  async cambiarEstadoDespacharTipoDetalle(
+    @Param('DespacharDetalleID', ParseIntPipe) DespacharDetalleID: number,
+    @Param('EstadoDespachar', ParseBoolPipe) EstadoDespachar: boolean,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._editarDespacharService.cambiarEstadoDespacharTipoDetalle(
+      DespacharDetalleID,
+      EstadoDespachar,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Estado cambiado correctamente!`,
+    };
+  }
+
+  @Patch('cambiar-estado-detalle/:DespacharDetalleID/:EstadoDespachar')
+  async cambiarEstadoDespacharDetalle(
+    @Param('DespacharDetalleID', ParseIntPipe) DespacharDetalleID: number,
+    @Param('EstadoDespachar', ParseBoolPipe) EstadoDespachar: boolean,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._editarDespacharService.cambiarEstadoDespacharDetalle(
+      DespacharDetalleID,
+      EstadoDespachar,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Estado cambiado correctamente!`,
+    };
+  }
+
+  @Patch('cambiar-estado/:DespacharID/:EstadoDespachar')
+  async cambiarEstadoDespachar(
+    @Param('DespacharID', ParseIntPipe) DespacharID: number,
+    @Param('EstadoDespachar', ParseBoolPipe) EstadoDespachar: boolean,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._editarDespacharService.cambiarEstadoDespachar(
+      DespacharID,
+      EstadoDespachar,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Estado cambiado correctamente!`,
+    };
+  }
 
   @Get('obtener-todo/:AlmacenID')
   async obtenerTodos(

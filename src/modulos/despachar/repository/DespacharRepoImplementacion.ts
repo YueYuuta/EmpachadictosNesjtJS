@@ -33,6 +33,12 @@ export class DespacharRepoService implements IDespacharCasoUso {
         .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere('Despachar.AlmacenID=:AlmacenID', { AlmacenID })
+        .andWhere(
+          'Despachar.EstadoDespacharPrincipal=:EstadoDespacharPrincipal',
+          {
+            EstadoDespacharPrincipal: EntityStatus.INACTIVE,
+          },
+        )
         .getMany();
     } catch (error) {
       console.log(error);
@@ -44,7 +50,11 @@ export class DespacharRepoService implements IDespacharCasoUso {
   async obtenerPodId(DespacharID: number): Promise<Despachar> {
     return await this._despacharRepository
       .createQueryBuilder('Despachar')
-      .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+      .innerJoinAndSelect(
+        'Despachar.Detalle',
+        'Detalle',
+        'Detalle.EstadoDespacharTipo = false',
+      )
       .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
       .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
       .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
@@ -86,6 +96,9 @@ export class DespacharRepoService implements IDespacharCasoUso {
         .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
         .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
         .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .where('Despachar.EstadoDespachar=:EstadoDespachar', {
+          EstadoDespachar: EntityStatus.INACTIVE,
+        })
         .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere('Despachar.AlmacenID=:AlmacenID', { AlmacenID })
         .andWhere('Despachar.Tipo=:Tipo', { Tipo: tipo })

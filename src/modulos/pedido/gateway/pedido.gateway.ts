@@ -1,4 +1,5 @@
-import { Logger } from '@nestjs/common';
+import { Bind, Logger } from '@nestjs/common';
+import { ConnectedSocket, MessageBody } from '@nestjs/websockets';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -14,6 +15,7 @@ import { Server, Socket } from 'socket.io';
 @WebSocketGateway()
 export class PedidoGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+  @WebSocketServer() wss: Server;
   private Logger: Logger = new Logger('PedidoGateway');
   afterInit(server: Server) {
     this.Logger.log(`inicializado! ${server}`);
@@ -24,12 +26,6 @@ export class PedidoGateway
   handleDisconnect(client: any) {
     this.Logger.log(`cliente desconectado ${client}`);
   }
-  @SubscribeMessage('message')
-  handleMessage(payload: any): WsResponse<string> {
-    return { event: 'message', data: payload };
-  }
-
-  @WebSocketServer() wss: Server;
 
   sendToAll(msg: string) {
     this.wss.emit('alertToClient', { type: 'Alert', message: msg });
