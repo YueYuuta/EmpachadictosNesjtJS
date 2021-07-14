@@ -3,6 +3,7 @@ import { DespacharModel } from './models/despachar.model';
 
 export interface IDespacharCasoUso {
   obtenerPodId(DespcharID: number): Promise<Despachar>;
+  obtenerPodIdDespachar(DespcharID: number): Promise<Despachar>;
   obtenerTodos(AlmacenID: number): Promise<Despachar[]>;
   obtenerTodosPorTipo(AlmacenID: number, tipo: string): Promise<Despachar[]>;
   obtenerPaginado(
@@ -22,6 +23,19 @@ export interface IDespacharCasoUso {
   eliminarDetalle(DespacharID: number): Promise<boolean>;
   obtenerPodIdTodo(DespcharID: number): Promise<Despachar>;
   cambiarEstadoDespachar(
+    DespacharID: number,
+    EstadoDespachar: boolean,
+  ): Promise<boolean>;
+
+  cambiarEstadoNotificacionDespachar(
+    DespacharID: number,
+    EstadoNorificacionDespachar: boolean,
+  ): Promise<boolean>;
+  cambiarEstadoNotificacionTipo(
+    DespacharID: number,
+    EstadoNotificacionTipo: boolean,
+  ): Promise<boolean>;
+  cambiarEstadoDespacharPrincipal(
     DespacharID: number,
     EstadoDespachar: boolean,
   ): Promise<boolean>;

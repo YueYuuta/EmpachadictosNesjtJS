@@ -48,4 +48,26 @@ export class EditarDespacharCasoUso {
       EstadoDespachar,
     );
   }
+
+  async cambiarEstadoDespacharPrincipal(
+    DespacharID: number,
+    EstadoDespachar: boolean,
+  ): Promise<boolean> {
+    await this._despacharRepository.obtenerPodId(DespacharID);
+    return await this._despacharRepository.cambiarEstadoDespacharPrincipal(
+      DespacharID,
+      EstadoDespachar,
+    );
+  }
+
+  async cambiarEstadoNotificacionDespachar(
+    DespacharID: number,
+    EstadoDespachar: boolean,
+  ): Promise<boolean> {
+    await this._despacharRepository.obtenerPodId(DespacharID);
+    return await this._despacharRepository.cambiarEstadoNotificacionDespachar(
+      DespacharID,
+      EstadoDespachar,
+    );
+  }
 }

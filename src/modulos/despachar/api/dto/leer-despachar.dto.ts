@@ -28,6 +28,12 @@ export class LeerDespacharDto {
   readonly EstadoDespacharPrincipal: boolean;
 
   @Expose()
+  readonly EstadoNotificacionDespachar: boolean;
+
+  @Expose()
+  readonly EstadoNotificacionTipo: boolean;
+
+  @Expose()
   readonly Tipo: string;
 
   @Expose()

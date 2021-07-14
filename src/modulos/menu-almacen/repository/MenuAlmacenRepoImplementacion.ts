@@ -138,8 +138,8 @@ export class MenuAlmacenRepoService implements IMenuAlmacenCasoUso {
     try {
       return await this._menuAlmacenRepository
         .createQueryBuilder('MenuAlmacen')
-        .innerJoinAndSelect('MenuAlmacen.MenuID', 'MenuID')
-        .innerJoinAndSelect('MenuID.Detalle', 'Detalle')
+        .innerJoinAndSelect('MenuAlmacen.MenuID', 'Menu')
+        .innerJoinAndSelect('Menu.Detalle', 'Detalle')
         .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
         .innerJoinAndSelect('Producto.Categoria', 'Categoria')
         .where('MenuAlmacen.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
@@ -149,7 +149,7 @@ export class MenuAlmacenRepoService implements IMenuAlmacenCasoUso {
             // qb.where('Categoria.Nombre ILIKE :Nombre', {
             //   Nombre: `%${termino}%`,
             // })
-            qb.where('MenuAlmacen.Descripcion ILIKE :Descripcion', {
+            qb.where('Menu.Descripcion ILIKE :Descripcion', {
               Descripcion: `%${termino}%`,
             });
             // .orWhere('Producto.Descripcion ILIKE :Descripcion', {
@@ -181,7 +181,7 @@ export class MenuAlmacenRepoService implements IMenuAlmacenCasoUso {
         .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
         .innerJoinAndSelect('Producto.Categoria', 'Categoria')
         .where('MenuAlmacen.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
-        .andWhere('Producto.Categoria=:CategoriaID', { CategoriaID })
+        .andWhere('Categoria.CategoriaID=:CategoriaID', { CategoriaID })
         .skip(desde)
         .take(limite)
         .orderBy('MenuAlmacen.MenuAlmacenID', 'DESC')

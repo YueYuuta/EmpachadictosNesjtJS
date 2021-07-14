@@ -58,4 +58,52 @@ export class DespacharGateway
       data: payload,
     });
   }
+
+  @Bind(MessageBody(), ConnectedSocket())
+  @SubscribeMessage('EstadoDespacharCompletadoDespacharServer')
+  async handleMessageDespachar(
+    @MessageBody() payload: { DespacharID: number },
+  ) {
+    await this._editarDespacharService.cambiarEstadoDespacharPrincipal(
+      payload.DespacharID,
+      true,
+    );
+    console.log('esttooofdgdfgdfgdfg', payload);
+    this.wss.emit('EstadoDespacharCompletadoDespacharCliente', {
+      type: 'Alert',
+      data: payload,
+    });
+  }
+
+  @Bind(MessageBody(), ConnectedSocket())
+  @SubscribeMessage('notificarCambioADespacharServer')
+  async notificarCambioDespachar(
+    @MessageBody() payload: { DespacharID: number },
+  ) {
+    const respuesta = await this._editarDespacharService.cambiarEstadoNotificacionDespachar(
+      payload.DespacharID,
+      true,
+    );
+    console.log('payload', payload, respuesta);
+    console.log('esttooo', payload);
+    this.wss.emit('notificarCambioADespacharCliente', {
+      type: 'Alert',
+      data: payload,
+    });
+  }
+
+  @Bind(MessageBody(), ConnectedSocket())
+  @SubscribeMessage('notificarDesactivarNotificacionServer')
+  async cambioNotificacion(@MessageBody() payload: { DespacharID: number }) {
+    const respuesta = await this._editarDespacharService.cambiarEstadoNotificacionDespachar(
+      payload.DespacharID,
+      false,
+    );
+    console.log('payload', payload, respuesta);
+    console.log('esttooo', payload);
+    this.wss.emit('notificarDesactivarNotificacionCliente', {
+      type: 'Alert',
+      data: payload,
+    });
+  }
 }

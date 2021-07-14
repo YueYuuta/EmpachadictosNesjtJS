@@ -22,6 +22,60 @@ export class DespacharRepoService implements IDespacharCasoUso {
     @InjectRepository(DespacharDetalleRepository)
     private readonly _despacharDetalleRepository: DespacharDetalleRepository,
   ) {}
+  async cambiarEstadoNotificacionDespachar(
+    DespacharID: number,
+    EstadoNotificacionDespachar: boolean,
+  ): Promise<boolean> {
+    try {
+      await this._despacharRepository
+        .createQueryBuilder()
+        .update()
+        .set({ EstadoNotificacionDespachar })
+        .where('DespacharID = :DespacharID', { DespacharID })
+        .execute();
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async cambiarEstadoNotificacionTipo(
+    DespacharID: number,
+    EstadoNotificacionTipo: boolean,
+  ): Promise<boolean> {
+    try {
+      await this._despacharRepository
+        .createQueryBuilder()
+        .update()
+        .set({ EstadoNotificacionTipo })
+        .where('DespacharID = :DespacharID', { DespacharID })
+        .execute();
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async cambiarEstadoDespacharPrincipal(
+    DespacharID: number,
+    EstadoDespacharPrincipal: boolean,
+  ): Promise<boolean> {
+    try {
+      await this._despacharRepository
+        .createQueryBuilder()
+        .update()
+        .set({ EstadoDespacharPrincipal })
+        .where('DespacharID = :DespacharID', { DespacharID })
+        .execute();
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async obtenerTodos(AlmacenID: number): Promise<Despachar[]> {
     try {
       return await this._despacharRepository
@@ -54,6 +108,22 @@ export class DespacharRepoService implements IDespacharCasoUso {
         'Despachar.Detalle',
         'Detalle',
         'Detalle.EstadoDespacharTipo = false',
+      )
+      .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+      .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+      .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+      .where('Despachar.DespacharID=:DespacharID', { DespacharID })
+      .andWhere('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+      .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+      .getOne();
+  }
+  async obtenerPodIdDespachar(DespacharID: number): Promise<Despachar> {
+    return await this._despacharRepository
+      .createQueryBuilder('Despachar')
+      .innerJoinAndSelect(
+        'Despachar.Detalle',
+        'Detalle',
+        'Detalle.EstadoDespachar = false',
       )
       .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
       .innerJoinAndSelect('Despachar.MesaID', 'Mesa')

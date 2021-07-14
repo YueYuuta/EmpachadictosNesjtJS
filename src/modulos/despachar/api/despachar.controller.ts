@@ -149,6 +149,19 @@ export class DespacharController {
     };
   }
 
+  @Get('obtener-por-id-despachar/:DespacharID')
+  async obtenerPorIdDespachar(
+    @Param('DespacharID', ParseIntPipe) DespacharID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerDespacharService.obtenerProIdDespachar(
+      DespacharID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
   // @Ruta(ProductoAlias.MenuPaginado)
   // @Get('obtener/menus/:desde/:limite/:termino?')
   // async ObtenerPaginado(

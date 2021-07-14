@@ -67,6 +67,12 @@ export class Despachar extends BaseEntity {
   @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
   Estado: boolean;
 
+  @Column({ type: 'boolean', default: EntityStatus.INACTIVE })
+  EstadoNotificacionTipo: boolean;
+
+  @Column({ type: 'boolean', default: EntityStatus.INACTIVE })
+  EstadoNotificacionDespachar: boolean;
+
   @Column({ type: 'varchar' })
   Tipo: string;
 
