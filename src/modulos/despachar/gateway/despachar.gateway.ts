@@ -110,4 +110,38 @@ export class DespacharGateway
       data: payload,
     });
   }
+
+  @Bind(MessageBody(), ConnectedSocket())
+  @SubscribeMessage('notificarCambioADespacharTipoServer')
+  async notificarCambioDespacharTipo(
+    @MessageBody() payload: { DespacharID: number },
+  ) {
+    const respuesta = await this._editarDespacharService.cambiarEstadoNotificacionDespacharTipo(
+      payload.DespacharID,
+      true,
+    );
+    console.log('payload', payload, respuesta);
+    console.log('esttooo', payload);
+    this.wss.emit('notificarCambioADespacharTipoCliente', {
+      type: 'Alert',
+      data: payload,
+    });
+  }
+
+  @Bind(MessageBody(), ConnectedSocket())
+  @SubscribeMessage('desactivarNotificacionTipo')
+  async cambioNotificacionTipo(
+    @MessageBody() payload: { DespacharID: number },
+  ) {
+    const respuesta = await this._editarDespacharService.cambiarEstadoNotificacionDespacharTipo(
+      payload.DespacharID,
+      false,
+    );
+    console.log('payload', payload, respuesta);
+    console.log('esttooo', payload);
+    this.wss.emit('notificarDesactivarNotificacionTipoCliente', {
+      type: 'Alert',
+      data: payload,
+    });
+  }
 }
