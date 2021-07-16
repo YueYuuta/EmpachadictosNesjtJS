@@ -14,4 +14,12 @@ export class DespacharModel {
   UsuarioID: number;
 
   Tipo: string;
+
+  FechaPedido?: string;
+
+  FechaPedidoEntrega?: string;
+
+  EstadoPedido?: boolean;
+
+  Observacion?: string;
 }

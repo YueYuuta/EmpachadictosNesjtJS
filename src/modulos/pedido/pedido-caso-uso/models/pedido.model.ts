@@ -13,7 +13,7 @@ export class PedidoModel {
 
   ClienteID: number;
 
-  Observacion: string;
+  MesaID: number;
 
   Fecha: string;
 
@@ -32,4 +32,16 @@ export class PedidoModel {
   Total?: number;
 
   TotalCompra?: number;
+
+  FechaPedido?: string;
+
+  FechaPedidoEntrega: string;
+
+  EstadoPedido?: boolean;
+
+  ObservacionBar?: string;
+
+  ObservacionCocina?: string;
+
+  ObservacionParrilla?: string;
 }

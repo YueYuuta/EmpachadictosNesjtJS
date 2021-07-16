@@ -38,4 +38,16 @@ export class LeerDespacharDto {
 
   @Expose()
   readonly Fecha: string;
+
+  @Expose()
+  FechaPedido: string;
+
+  @Expose()
+  FechaPedidoEntrega: string;
+
+  @Expose()
+  EstadoPedido: boolean;
+
+  @Expose()
+  Observacion: string;
 }

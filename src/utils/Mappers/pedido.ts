@@ -25,10 +25,14 @@ export class PedidoMapper {
       AlmacenID: pedido.AlmacenID ?? null,
       ClienteID: pedido.ClienteID ?? null,
       Detalle: pedido.Detalle ?? null,
-      Observacion: pedido.Observacion ?? null,
       TipoFactura: pedido.TipoFactura ?? null,
       TipoPago: pedido.TipoPago ?? null,
       UsuarioID: UsuarioID ?? null,
+      FechaPedido: pedido.FechaPedido ?? null,
+      FechaPedidoEntrega: pedido.FechaPedidoEntrega ?? null,
+      ObservacionBar: pedido.ObservacionBar ?? null,
+      ObservacionCocina: pedido.ObservacionCocina ?? null,
+      ObservacionParrilla: pedido.ObservacionParrilla ?? null,
     };
     Object.keys(partiaPedido).forEach(
       key => partiaPedido[key] === null && delete partiaPedido[key],

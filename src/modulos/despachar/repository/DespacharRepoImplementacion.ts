@@ -22,6 +22,55 @@ export class DespacharRepoService implements IDespacharCasoUso {
     @InjectRepository(DespacharDetalleRepository)
     private readonly _despacharDetalleRepository: DespacharDetalleRepository,
   ) {}
+  async cambiarEstadoDormido(
+    DespacharID: number,
+    EstadoPedido: boolean,
+  ): Promise<boolean> {
+    try {
+      await this._despacharRepository
+        .createQueryBuilder()
+        .update()
+        .set({ EstadoPedido })
+        .where('DespacharID = :DespacharID', { DespacharID })
+        .execute();
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async obtenerTodosDormidos(FechaPedido: string): Promise<Despachar[]> {
+    try {
+      return await this._despacharRepository
+        .createQueryBuilder('Despachar')
+        .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+        .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+        .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+        .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+        .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.EstadoPedido=:EstadoPedido', {
+          EstadoPedido: EntityStatus.ACTIVE,
+        })
+        .andWhere('Despachar.FechaPedido=:FechaPedido', {
+          FechaPedido,
+        })
+
+        .andWhere(
+          'Despachar.EstadoDespacharPrincipal=:EstadoDespacharPrincipal',
+          {
+            EstadoDespacharPrincipal: EntityStatus.INACTIVE,
+          },
+        )
+        .getMany();
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async cambiarEstadoNotificacionDespachar(
     DespacharID: number,
     EstadoNotificacionDespachar: boolean,
@@ -86,6 +135,9 @@ export class DespacharRepoService implements IDespacharCasoUso {
         .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
         .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
         .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.EstadoPedido=:EstadoPedido', {
+          EstadoPedido: EntityStatus.INACTIVE,
+        })
         .andWhere('Despachar.AlmacenID=:AlmacenID', { AlmacenID })
         .andWhere(
           'Despachar.EstadoDespacharPrincipal=:EstadoDespacharPrincipal',
@@ -170,8 +222,14 @@ export class DespacharRepoService implements IDespacharCasoUso {
           EstadoDespachar: EntityStatus.INACTIVE,
         })
         .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.EstadoPedido=:EstadoPedido', {
+          EstadoPedido: EntityStatus.INACTIVE,
+        })
         .andWhere('Despachar.AlmacenID=:AlmacenID', { AlmacenID })
         .andWhere('Despachar.Tipo=:Tipo', { Tipo: tipo })
+        .orderBy('Despachar.FechaPedido', 'ASC')
+        .addOrderBy('Despachar.DespacharID')
+        // .addOrderBy('Despachar.DespacharID', 'ASC')
         .getMany();
     } catch (error) {
       console.log(error);

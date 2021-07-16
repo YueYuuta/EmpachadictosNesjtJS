@@ -76,9 +76,27 @@ export class Despachar extends BaseEntity {
   @Column({ type: 'varchar' })
   Tipo: string;
 
+  @Column({ type: 'text', nullable: true })
+  Observacion: string;
+
   @Column({
     type: 'timestamp',
     nullable: true,
   })
   Fecha: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  FechaPedido: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  FechaPedidoEntrega: string;
+
+  @Column({ type: 'boolean', default: EntityStatus.INACTIVE })
+  EstadoPedido: boolean;
 }

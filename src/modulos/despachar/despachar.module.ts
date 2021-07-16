@@ -13,11 +13,13 @@ import { DespacharController } from './api/despachar.controller';
 
 import { LeerDespacharCasoUso } from './pedido-caso-uso/leer';
 import { EditarDespacharCasoUso } from './pedido-caso-uso/editar';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([DespacharRepository, DespacharDetalleRepository]),
     SharedModule,
+    ScheduleModule.forRoot(),
   ],
   providers: [
     CrearDespacharCasoUso,

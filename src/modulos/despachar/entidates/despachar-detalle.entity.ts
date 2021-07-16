@@ -35,9 +35,6 @@ export class DespacharDetalle extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   Cantidad: number;
 
-  @Column({ type: 'text', nullable: false })
-  Observacion: string;
-
   @Column({ type: 'boolean', default: false, nullable: false })
   EstadoDespachar: boolean;
 

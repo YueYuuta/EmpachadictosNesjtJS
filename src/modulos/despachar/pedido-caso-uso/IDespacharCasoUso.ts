@@ -5,6 +5,7 @@ export interface IDespacharCasoUso {
   obtenerPodId(DespcharID: number): Promise<Despachar>;
   obtenerPodIdDespachar(DespcharID: number): Promise<Despachar>;
   obtenerTodos(AlmacenID: number): Promise<Despachar[]>;
+  obtenerTodosDormidos(FechaPedido: string): Promise<Despachar[]>;
   obtenerTodosPorTipo(AlmacenID: number, tipo: string): Promise<Despachar[]>;
   obtenerPaginado(
     desde: number,
@@ -46,5 +47,10 @@ export interface IDespacharCasoUso {
   cambiarEstadoDespacharTipoDetalle(
     DespacharDetalleID: number,
     EstadoDespacharTipo: boolean,
+  ): Promise<boolean>;
+
+  cambiarEstadoDormido(
+    DespacharID: number,
+    EstadoPedido: boolean,
   ): Promise<boolean>;
 }

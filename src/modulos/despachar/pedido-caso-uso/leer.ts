@@ -1,6 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToClass } from 'class-transformer';
 import { LeerDespacharDto } from '../api/dto/leer-despachar.dto';
+import { DespacharGateway } from '../gateway/despachar.gateway';
 
 import { IDespacharCasoUso } from './IDespacharCasoUso';
 
@@ -8,8 +10,10 @@ const DespacharRepo = () => Inject('DespacharRepo');
 
 @Injectable()
 export class LeerDespacharCasoUso {
+  private logger = new Logger('cron');
   constructor(
     @DespacharRepo() private readonly _despacharRepository: IDespacharCasoUso,
+    private readonly _despacharGateway: DespacharGateway,
   ) {}
 
   async obtenerProId(DespacharID: number): Promise<LeerDespacharDto> {
@@ -71,5 +75,28 @@ export class LeerDespacharCasoUso {
     return despachars.map((despachar: any) =>
       plainToClass(LeerDespacharDto, despachar),
     );
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async verLosPedidosDormidos(): Promise<any> {
+    const fechaLocal = new Date().toLocaleString('es-EC', {
+      timeZone: 'America/Guayaquil',
+    });
+    const n = fechaLocal.lastIndexOf(' ');
+    const fechaEnviar = fechaLocal.substring(n, fechaLocal.length - 3).trim();
+    //saca en consola la cadena de texto hasta la ultima ocurencia de un espacio vacio
+
+    // console.log('fechaaaaa', fechaLocal);
+    this.logger.log('esto se esa ejecutando cada 5 segundos');
+    const despachars = await this._despacharRepository.obtenerTodosDormidos(
+      fechaEnviar,
+    );
+    for (const despachar of despachars) {
+      await this._despacharRepository.cambiarEstadoDormido(
+        despachar.DespacharID,
+        false,
+      );
+      this._despacharGateway.pedidoDespertado(despachar);
+    }
   }
 }

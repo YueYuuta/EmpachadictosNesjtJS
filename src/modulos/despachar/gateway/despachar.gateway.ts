@@ -45,6 +45,10 @@ export class DespacharGateway
     this.wss.emit('pedidoCompletado', { type: 'Alert', data: msg });
   }
 
+  async pedidoDespertado(despachar: any) {
+    this.wss.emit('pedidoDespertado', { type: 'Alert', data: despachar });
+  }
+
   @Bind(MessageBody(), ConnectedSocket())
   @SubscribeMessage('EstadoDespacharCompletadoServer')
   async handleMessage(@MessageBody() payload: { DespacharID: number }) {

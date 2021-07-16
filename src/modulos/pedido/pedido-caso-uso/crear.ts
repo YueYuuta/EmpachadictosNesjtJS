@@ -83,13 +83,19 @@ export class CrearPedidoCasoUso {
     const extra = {
       MesaID: pedidoGuardado.MesaID,
       PedidoID: pedidoGuardado.PedidoID,
-
+      ObservacionBar: pedido.ObservacionBar,
+      ObservacionCocina: pedido.ObservacionCocina,
+      ObservacionParrilla: pedido.ObservacionParrilla,
       UsuarioID: pedidoGuardado.UsuarioID,
       AlmacenID: pedidoGuardado.AlmacenID,
+      FechaPedido: pedido.FechaPedido,
+      FechaPedidoEntrega: pedido.FechaPedidoEntrega,
     };
     const despachar = await this.guardarDespachar(totales.Despachar, extra);
-    this._pedidoGateway.enviarDespachar(despachar);
-    console.log(despachar);
+    if (pedido.MesaID != 2 && !pedido.FechaPedido) {
+      this._pedidoGateway.enviarDespachar(despachar);
+    }
+
     return plainToClass(LeerPedidoDto, pedidoGuardado);
     // return pedido;
     // return plainToClass(LeerPedidoDto, pedidoGuardado);
@@ -99,6 +105,10 @@ export class CrearPedidoCasoUso {
     let despacharBar: LeerDespacharDto;
     let despacharCocina: LeerDespacharDto;
     let despacharParrilla: LeerDespacharDto;
+    let estadoPedido = false;
+    if (extra.FechaPedido && extra.FechaPedidoEntrega) {
+      estadoPedido = true;
+    }
     if (despacharDetalle.Bar.length != 0) {
       const despachar: DespacharModel = {
         Detalle: despacharDetalle.Bar,
@@ -107,6 +117,10 @@ export class CrearPedidoCasoUso {
         Tipo: PantallaEnum.BAR,
         UsuarioID: extra.UsuarioID,
         AlmacenID: extra.AlmacenID,
+        Observacion: extra.ObservacionBar,
+        EstadoPedido: estadoPedido,
+        FechaPedido: extra.FechaPedido,
+        FechaPedidoEntrega: extra.FechaPedidoEntrega,
       };
       despacharBar = await this._despacharService.crear(despachar);
     }
@@ -119,6 +133,10 @@ export class CrearPedidoCasoUso {
         Tipo: PantallaEnum.COCINA,
         UsuarioID: extra.UsuarioID,
         AlmacenID: extra.AlmacenID,
+        Observacion: extra.ObservacionCocina,
+        EstadoPedido: estadoPedido,
+        FechaPedido: extra.FechaPedido,
+        FechaPedidoEntrega: extra.FechaPedidoEntrega,
       };
       despacharCocina = await this._despacharService.crear(despachar);
     }
@@ -131,6 +149,10 @@ export class CrearPedidoCasoUso {
         Tipo: PantallaEnum.PARRILLA,
         UsuarioID: extra.UsuarioID,
         AlmacenID: extra.AlmacenID,
+        Observacion: extra.ObservacionParrilla,
+        EstadoPedido: estadoPedido,
+        FechaPedido: extra.FechaPedido,
+        FechaPedidoEntrega: extra.FechaPedidoEntrega,
       };
       despacharParrilla = await this._despacharService.crear(despachar);
     }
