@@ -35,6 +35,9 @@ export class PedidoDetalle extends BaseEntity {
   @Column({ type: 'float', nullable: false })
   Cantidad: number;
 
+  @Column({ type: 'integer', nullable: false })
+  MenuAlmacenID: number;
+
   @Column({ type: 'float', nullable: false })
   Total: number;
 

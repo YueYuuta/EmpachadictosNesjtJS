@@ -1,69 +1,38 @@
-// import { Inject, Injectable } from '@nestjs/common';
-// import { ImageDefault, PathFile } from '@utils/enums';
-// import { plainToClass } from 'class-transformer';
-// import { LeerMenuDto } from '../api/dto';
-// import { IMenuCasoUso } from './IMenuCasoUso';
+import { Inject, Injectable } from '@nestjs/common';
+import { ImageDefault, PathFile } from '@utils/enums';
+import { plainToClass } from 'class-transformer';
+import { LeerPedidoDto } from '../api/dto';
+import { IPedidoCasoUso } from './IPedidoCasoUso';
 
-// const MenuRepo = () => Inject('MenuRepo');
+const PedidoRepo = () => Inject('PedidoRepo');
 
-// @Injectable()
-// export class LeerMenuCasoUso {
-//   constructor(@MenuRepo() private readonly _menuRepository: IMenuCasoUso) {}
+@Injectable()
+export class LeerPedidoCasoUso {
+  constructor(
+    @PedidoRepo() private readonly _pedidoRepository: IPedidoCasoUso,
+  ) {}
 
-//   async obtenerProId(MenuID: number): Promise<LeerMenuDto> {
-//     const menu = await this._menuRepository.obtenerPodId(MenuID);
-//     return plainToClass(LeerMenuDto, menu);
-//   }
+  async obtenerProId(PedidoID: number): Promise<LeerPedidoDto> {
+    const pedido = await this._pedidoRepository.obtenerPodId(PedidoID);
+    return plainToClass(LeerPedidoDto, pedido);
+  }
 
-//   async obtenerPaginado(
-//     desde: number,
-//     limite: number,
-//     termino?: string,
-//   ): Promise<LeerMenuDto[]> {
-//     let menus: any;
-//     if (termino) {
-//       termino = termino.trim();
-//       menus = await this._menuRepository.obtenerPorBusqueda(
-//         desde,
-//         limite,
-//         termino,
-//       );
-//     } else {
-//       menus = await this._menuRepository.obtenerPaginado(desde, limite);
-//     }
-//     return menus.map((menu: any) => plainToClass(LeerMenuDto, menu));
-//   }
-
-//   async obtenerPaginadoPorCategoria(
-//     desde: number,
-//     limite: number,
-//     CategoriaID: number,
-//     termino?: string,
-//   ): Promise<LeerMenuDto[]> {
-//     let menus: any;
-//     if (termino) {
-//       termino = termino.trim();
-//       menus = await this._menuRepository.obtenerPorBusquedaYCategoria(
-//         desde,
-//         limite,
-//         termino,
-//         CategoriaID,
-//       );
-//     } else {
-//       menus = await this._menuRepository.obtenerPaginadoPorCategoria(
-//         desde,
-//         limite,
-//         CategoriaID,
-//       );
-//     }
-//     return menus.map((menu: any) => plainToClass(LeerMenuDto, menu));
-//   }
-
-//   async obtenerImagen(nombreImagen: string): Promise<string> {
-//     if (nombreImagen === ImageDefault.MENU) {
-//       return PathFile.DEFAULT;
-//     } else {
-//       return PathFile.MENU;
-//     }
-//   }
-// }
+  async obtenerPaginado(
+    desde: number,
+    limite: number,
+    termino?: string,
+  ): Promise<LeerPedidoDto[]> {
+    let pedidos: any;
+    if (termino) {
+      termino = termino.trim();
+      pedidos = await this._pedidoRepository.obtenerPorBusqueda(
+        desde,
+        limite,
+        termino,
+      );
+    } else {
+      pedidos = await this._pedidoRepository.obtenerPaginado(desde, limite);
+    }
+    return pedidos.map((pedido: any) => plainToClass(LeerPedidoDto, pedido));
+  }
+}

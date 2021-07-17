@@ -22,12 +22,16 @@ import { MenuMapper } from '@utils/Mappers/menu';
 import { PedidoMapper } from '@utils/Mappers/pedido';
 import { PedidoGateway } from '../gateway/pedido.gateway';
 import { CrearPedidoCasoUso } from '../pedido-caso-uso/crear';
+import { LeerPedidoCasoUso } from '../pedido-caso-uso/leer';
 import { CrearPedidoDto, LeerPedidoDto } from './dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('pedido')
 export class PedidoController {
-  constructor(private readonly _crearPedidoService: CrearPedidoCasoUso) {}
+  constructor(
+    private readonly _crearPedidoService: CrearPedidoCasoUso,
+    private readonly _leerPedidoService: LeerPedidoCasoUso,
+  ) {}
   @Ruta(ProductoAlias.MenuCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -83,16 +87,16 @@ export class PedidoController {
   //   };
   // }
 
-  // @Get('obtener/:MenuID')
-  // async obtenerPorId(
-  //   @Param('MenuID', ParseIntPipe) MenuID: number,
-  // ): Promise<SalidaApi> {
-  //   const respuesta = await this._leerMenuService.obtenerProId(MenuID);
-  //   return {
-  //     status: HttpStatus.OK,
-  //     data: respuesta,
-  //   };
-  // }
+  @Get('obtener/:PedidoID')
+  async obtenerPorId(
+    @Param('PedidoID', ParseIntPipe) PedidoID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerPedidoService.obtenerProId(PedidoID);
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
 
   // @Ruta(ProductoAlias.MenuPaginado)
   // @Get('obtener/menus/:desde/:limite/:termino?')

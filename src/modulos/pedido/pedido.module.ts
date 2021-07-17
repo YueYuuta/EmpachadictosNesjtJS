@@ -10,12 +10,13 @@ import { CrearPedidoCasoUso } from './pedido-caso-uso/crear';
 import { PedidoGateway } from './gateway/pedido.gateway';
 
 import { MenuModule } from '@modulos/menu/menu.module';
-import { PedidoController } from './api/menu.controller';
+import { PedidoController } from './api/pedido.controller';
 import { ClienteModule } from '@modulos/cliente/cliente.module';
 import { AlmacenModule } from '@modulos/almacen/almacen.module';
 import { MenuAlmacenModule } from '@modulos/menu-almacen/menu-almacen.module';
 import { DespacharModule } from '@modulos/despachar/despachar.module';
 import { ProductoModule } from '@modulos/producto/producto.module';
+import { LeerPedidoCasoUso } from './pedido-caso-uso/leer';
 
 @Module({
   imports: [
@@ -28,7 +29,12 @@ import { ProductoModule } from '@modulos/producto/producto.module';
     DespacharModule,
     ProductoModule,
   ],
-  providers: [CrearPedidoCasoUso, PedidoRepoProvider, PedidoGateway],
+  providers: [
+    CrearPedidoCasoUso,
+    PedidoRepoProvider,
+    PedidoGateway,
+    LeerPedidoCasoUso,
+  ],
   controllers: [PedidoController],
   exports: [],
 })

@@ -40,26 +40,26 @@ export class LeerPedidoDto {
   readonly Fecha: string;
 
   @Expose()
-  TipoFactura: TipoFactura;
+  readonly TipoFactura: TipoFactura;
 
   @Expose()
-  TipoPago: tipoPago;
+  readonly TipoPago: tipoPago;
 
   @Expose()
-  Subtotal0: number;
+  readonly Subtotal0: number;
 
   @Expose()
-  Subtotal12: number;
+  readonly Subtotal12: number;
 
   @Expose()
-  Iva: number;
+  readonly Iva: number;
 
   @Expose()
-  Subtotal: number;
+  readonly Subtotal: number;
 
   @Expose()
-  Total: number;
+  readonly Total: number;
 
   @Expose()
-  TotalCompra: number;
+  readonly TotalCompra: number;
 }
