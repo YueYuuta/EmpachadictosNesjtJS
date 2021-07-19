@@ -22,6 +22,27 @@ export class DespacharRepoService implements IDespacharCasoUso {
     @InjectRepository(DespacharDetalleRepository)
     private readonly _despacharDetalleRepository: DespacharDetalleRepository,
   ) {}
+  async obtenerTodoPorPedidoId(PedidoID: number): Promise<Despachar[]> {
+    try {
+      return await this._despacharRepository
+        .createQueryBuilder('Despachar')
+        // .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+        // .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+        // .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+        // .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+        .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        // .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.PedidoID=:PedidoID', {
+          PedidoID,
+        })
+        .getMany();
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async cambiarEstadoDormido(
     DespacharID: number,
     EstadoPedido: boolean,

@@ -53,4 +53,5 @@ export interface IDespacharCasoUso {
     DespacharID: number,
     EstadoPedido: boolean,
   ): Promise<boolean>;
+  obtenerTodoPorPedidoId(PedidoID: number): Promise<Despachar[]>;
 }

@@ -121,6 +121,20 @@ export class DespacharController {
       data: respuesta,
     };
   }
+
+  @Get('obtener-todo-por-pedido/:PedidoID')
+  async obtenerTodosPorPedidoId(
+    @Param('PedidoID', ParseIntPipe) PedidoID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerDespacharService.obtenerTodosPorPedidoId(
+      PedidoID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
   @Get('obtener-todo-tipo/:AlmacenID/:tipo')
   async obtenerTodosPorTipo(
     @Param('AlmacenID', ParseIntPipe) AlmacenID: number,

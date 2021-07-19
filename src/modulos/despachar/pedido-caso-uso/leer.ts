@@ -99,4 +99,12 @@ export class LeerDespacharCasoUso {
       this._despacharGateway.pedidoDespertado(despachar);
     }
   }
+  async obtenerTodosPorPedidoId(PedidoID: number): Promise<LeerDespacharDto[]> {
+    const despachars = await this._despacharRepository.obtenerTodoPorPedidoId(
+      PedidoID,
+    );
+    return despachars.map((despachar: any) =>
+      plainToClass(LeerDespacharDto, despachar),
+    );
+  }
 }
