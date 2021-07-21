@@ -1,10 +1,15 @@
 import { Despachar } from '../entidates/despachar.entity';
+import { DespacharDetalleModel } from './models/despachar-detalle.model';
 import { DespacharModel } from './models/despachar.model';
 
 export interface IDespacharCasoUso {
   obtenerPodId(DespcharID: number): Promise<Despachar>;
   obtenerPodIdDespachar(DespcharID: number): Promise<Despachar>;
   obtenerTodos(AlmacenID: number): Promise<Despachar[]>;
+  obtenerTodosPorPedidoIdYTipo(
+    PedidoID: number,
+    tipo: string,
+  ): Promise<Despachar>;
   obtenerTodosDormidos(FechaPedido: string): Promise<Despachar[]>;
   obtenerTodosPorTipo(AlmacenID: number, tipo: string): Promise<Despachar[]>;
   obtenerPaginado(
@@ -18,7 +23,7 @@ export interface IDespacharCasoUso {
     termino: string,
     AlmacenID: number,
   ): Promise<any>;
-  editar(despachar: DespacharModel, DespacharID: number): Promise<boolean>;
+  editar(despachar: DespacharModel, DespacharID: number): Promise<Despachar>;
   crear(despchar: DespacharModel): Promise<Despachar>;
   eliminar(DespacharID: number): Promise<boolean>;
   eliminarDetalle(DespacharID: number): Promise<boolean>;
@@ -54,4 +59,5 @@ export interface IDespacharCasoUso {
     EstadoPedido: boolean,
   ): Promise<boolean>;
   obtenerTodoPorPedidoId(PedidoID: number): Promise<Despachar[]>;
+  crearDetalle(detalleDespachar: DespacharDetalleModel): Promise<boolean>;
 }

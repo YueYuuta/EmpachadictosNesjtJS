@@ -229,7 +229,8 @@ export class CrearPedidoCasoUso {
         menuBd.EstadoIva,
         menuBd.PrecioVenta,
       );
-      detalle[index].TotalIva = detalle[index].Iva * menu.Cantidad;
+      detalle[index].TotalIva =
+        (menuBd.PrecioVenta - menuBd.PrecioSinIva) * menu.Cantidad;
       detalle[index].TotalsinIva = menuBd.PrecioSinIva * menu.Cantidad;
       detalle[index].Total = menuBd.PrecioVenta * menu.Cantidad;
       detalle[index].TotalCompra = menuBd.PrecioCompra * menu.Cantidad;

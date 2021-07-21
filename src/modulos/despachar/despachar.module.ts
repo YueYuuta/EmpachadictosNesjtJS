@@ -29,6 +29,10 @@ import { ScheduleModule } from '@nestjs/schedule';
     DespacharGateway,
   ],
   controllers: [DespacharController],
-  exports: [CrearDespacharCasoUso],
+  exports: [
+    CrearDespacharCasoUso,
+    LeerDespacharCasoUso,
+    EditarDespacharCasoUso,
+  ],
 })
 export class DespacharModule {}

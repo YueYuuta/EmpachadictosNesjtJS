@@ -36,6 +36,18 @@ export class LeerDespacharCasoUso {
     );
   }
 
+  async obtenerTodosPorPedidoIdYTipo(
+    PedidoID: number,
+    tipo: string,
+  ): Promise<LeerDespacharDto> {
+    const despachar = await this._despacharRepository.obtenerTodosPorPedidoIdYTipo(
+      PedidoID,
+      tipo,
+    );
+
+    return plainToClass(LeerDespacharDto, despachar);
+  }
+
   async obtenerTodosPorTipo(
     AlmacenID: number,
     tipo: string,

@@ -9,6 +9,7 @@ import { Brackets, Not } from 'typeorm';
 import { DespacharDetalle } from '../entidates/despachar-detalle.entity';
 import { Despachar } from '../entidates/despachar.entity';
 import { IDespacharCasoUso } from '../pedido-caso-uso/IDespacharCasoUso';
+import { DespacharDetalleModel } from '../pedido-caso-uso/models/despachar-detalle.model';
 import { DespacharModel } from '../pedido-caso-uso/models/despachar.model';
 
 import { DespacharDetalleRepository } from './despachar-detalle.repository';
@@ -22,6 +23,47 @@ export class DespacharRepoService implements IDespacharCasoUso {
     @InjectRepository(DespacharDetalleRepository)
     private readonly _despacharDetalleRepository: DespacharDetalleRepository,
   ) {}
+  async crearDetalle(
+    detalleDespachar: DespacharDetalleModel,
+  ): Promise<boolean> {
+    try {
+      const despacharIntance = new DespacharDetalle();
+      Object.assign(despacharIntance, detalleDespachar);
+      await despacharIntance.save();
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async obtenerTodosPorPedidoIdYTipo(
+    PedidoID: number,
+    tipo: string,
+  ): Promise<Despachar> {
+    try {
+      return await this._despacharRepository
+        .createQueryBuilder('Despachar')
+        // .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+        // .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+        // .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+        // .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+        .where('Despachar.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        // .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere('Despachar.PedidoID=:PedidoID', {
+          PedidoID,
+        })
+        .andWhere('Despachar.Tipo=:Tipo', {
+          Tipo: tipo,
+        })
+        .getOne();
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async obtenerTodoPorPedidoId(PedidoID: number): Promise<Despachar[]> {
     try {
       return await this._despacharRepository
@@ -320,13 +362,21 @@ export class DespacharRepoService implements IDespacharCasoUso {
   async editar(
     despachar: DespacharModel,
     DespacharID: number,
-  ): Promise<boolean> {
+  ): Promise<Despachar> {
     try {
       await this.eliminarDetalle(DespacharID);
-      const despacharIntance = await this.obtenerPodId(DespacharID);
-      this._despacharRepository.merge(despacharIntance, despachar);
+      const despacharIntance = await this._despacharRepository.findOne(
+        DespacharID,
+        { where: { Estado: EntityStatus.ACTIVE } },
+      );
+      if (!despachar) {
+        throw new NotFoundException(
+          `el despachar con id: ${DespacharID} no existe`,
+        );
+      }
+      despacharIntance.Observacion = despachar.Observacion;
       await despacharIntance.save();
-      return true;
+      return despacharIntance;
     } catch (error) {
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,

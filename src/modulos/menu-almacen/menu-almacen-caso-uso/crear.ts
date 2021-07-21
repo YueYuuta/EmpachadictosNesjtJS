@@ -27,8 +27,9 @@ export class CrearMenuAlmacenCasoUso {
       Ingreso.AlmacenID,
       Ingreso.MenuID,
     );
-
+    console.log('sfsfkdkdkdkdkddkddkdkdkkd', Ingreso);
     if (menuAlmacen) {
+      console.log('sfsfkdkdkdkdkddkddkdkdkkd');
       const IngresoNuevo: number = menuAlmacen.Ingreso + Ingreso.Ingreso;
       menuAlmacenGuaradado = await this._menuAlmacenRepository.cambioIngreso(
         IngresoNuevo,

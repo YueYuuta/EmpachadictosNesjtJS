@@ -1,11 +1,19 @@
 import { LeerProductoCasoUso } from '@modulos/producto/producto-caso-uso/leer';
 import { SharedService } from '@modulos/shared/services/shared.service';
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { LeerProductoDto } from '@modulos/producto/api/dto';
 import { TipoVariable } from '@utils/enums';
 import { IDespacharCasoUso } from './IDespacharCasoUso';
 import { DespacharGateway } from '../gateway/despachar.gateway';
+import { DespacharModel } from './models/despachar.model';
+import { LeerDespacharDto } from '../api/dto';
+import { plainToClass } from 'class-transformer';
 
 const DespacharRepo = () => Inject('DespacharRepo');
 
@@ -80,5 +88,26 @@ export class EditarDespacharCasoUso {
       DespacharID,
       EstadoDespacharTipo,
     );
+  }
+
+  async editar(
+    despachar: DespacharModel,
+    DespacharID: number,
+  ): Promise<LeerDespacharDto> {
+    console.log('lo que llega al crear un despachar', despachar);
+    if (despachar.Detalle.length === 0) {
+      throw new NotFoundException('Igrese el detalle del despachar!');
+    }
+
+    const despacharGuardado = await this._despacharRepository.editar(
+      despachar,
+      DespacharID,
+    );
+    for (const ingresar of despachar.Detalle) {
+      await this._despacharRepository.crearDetalle(ingresar);
+    }
+    return plainToClass(LeerDespacharDto, despacharGuardado);
+    // return despachar;
+    // return plainToClass(LeerPedidoDto, despacharGuardado);
   }
 }

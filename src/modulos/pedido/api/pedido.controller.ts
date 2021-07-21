@@ -22,6 +22,7 @@ import { MenuMapper } from '@utils/Mappers/menu';
 import { PedidoMapper } from '@utils/Mappers/pedido';
 import { PedidoGateway } from '../gateway/pedido.gateway';
 import { CrearPedidoCasoUso } from '../pedido-caso-uso/crear';
+import { EditarPedidoCasoUso } from '../pedido-caso-uso/editar';
 import { LeerPedidoCasoUso } from '../pedido-caso-uso/leer';
 import { CrearPedidoDto, LeerPedidoDto } from './dto';
 
@@ -31,6 +32,7 @@ export class PedidoController {
   constructor(
     private readonly _crearPedidoService: CrearPedidoCasoUso,
     private readonly _leerPedidoService: LeerPedidoCasoUso,
+    private readonly _editarPedidoService: EditarPedidoCasoUso,
   ) {}
   @Ruta(ProductoAlias.MenuCrear)
   @Post('crear')
@@ -50,23 +52,24 @@ export class PedidoController {
     };
   }
 
-  // @Ruta(ProductoAlias.MenuEditar)
-  // @Patch('editar/:MenuID')
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  // async editar(
-  //   @Body() menu: EditarMenuDto,
-  //   @Param('MenuID', ParseIntPipe) MenuID: number,
-  // ): Promise<SalidaApi> {
-  //   const respuesta = await this._editarMenuService.editar(
-  //     MenuMapper.editar(menu),
-  //     MenuID,
-  //   );
-  //   return {
-  //     status: HttpStatus.OK,
-  //     data: respuesta,
-  //     message: `Menu editado correctamente`,
-  //   };
-  // }
+  @Ruta(ProductoAlias.MenuEditar)
+  @Patch('editar/:PedidoID')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async editar(
+    @Body() pedido: CrearPedidoDto,
+    @ObtenerUsuario() usuario: any,
+    @Param('PedidoID', ParseIntPipe) PedidoID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._editarPedidoService.editar(
+      PedidoMapper.crear(pedido, usuario.UsuarioID),
+      PedidoID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Menu editado correctamente`,
+    };
+  }
 
   // @Patch('crear/imagen/:ProductoID/:tipo')
   // async crearImagen(

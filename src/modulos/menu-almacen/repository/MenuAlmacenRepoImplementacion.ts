@@ -38,12 +38,14 @@ export class MenuAlmacenRepoService implements IMenuAlmacenCasoUso {
     ingreso: number,
     MenuAlmacenID: number,
   ): Promise<boolean> {
+    console.log(ingreso);
     try {
       const menuAlmacenIntance = await this.obtenerPodId(MenuAlmacenID);
       menuAlmacenIntance.Ingreso = ingreso;
       await menuAlmacenIntance.save();
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );

@@ -220,7 +220,7 @@ export class PedidoRepoService implements IPedidoCasoUso {
 
   async obtenerPodId(PedidoID: number): Promise<Pedido> {
     try {
-      const pedido: Pedido = await this._pedidoRepository.findOne(PedidoID, {
+      const pedido = await this._pedidoRepository.findOne(PedidoID, {
         where: { Estado: EntityStatus.ACTIVE },
       });
 
@@ -240,15 +240,17 @@ export class PedidoRepoService implements IPedidoCasoUso {
       await this._pedidoDetalleRepository
         .createQueryBuilder('PedidoDetalle')
         .delete()
-        .where('Pedido=:PedidoID', { PedidoID })
+        .where('PedidoID=:PedidoID', { PedidoID })
         .execute();
       return true;
     } catch (error) {
+      console.log('el de eliminiar', error);
       throw new InternalServerErrorException(error);
     }
   }
 
-  async editar(pedido: PedidoModel, PedidoID: number): Promise<boolean> {
+  async editar(pedido: any, PedidoID: number): Promise<boolean> {
+    console.log(pedido, 'el pedido id');
     try {
       await this.eliminarBd(PedidoID);
       const pedidoIntance = await this.obtenerPodId(PedidoID);
@@ -256,6 +258,7 @@ export class PedidoRepoService implements IPedidoCasoUso {
       await pedidoIntance.save();
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );

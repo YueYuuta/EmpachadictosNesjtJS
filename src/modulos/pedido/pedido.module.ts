@@ -17,6 +17,7 @@ import { MenuAlmacenModule } from '@modulos/menu-almacen/menu-almacen.module';
 import { DespacharModule } from '@modulos/despachar/despachar.module';
 import { ProductoModule } from '@modulos/producto/producto.module';
 import { LeerPedidoCasoUso } from './pedido-caso-uso/leer';
+import { EditarPedidoCasoUso } from './pedido-caso-uso/editar';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { LeerPedidoCasoUso } from './pedido-caso-uso/leer';
     PedidoRepoProvider,
     PedidoGateway,
     LeerPedidoCasoUso,
+    EditarPedidoCasoUso,
   ],
   controllers: [PedidoController],
   exports: [],
