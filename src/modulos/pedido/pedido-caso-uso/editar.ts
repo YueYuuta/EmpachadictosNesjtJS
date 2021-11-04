@@ -76,6 +76,8 @@ export class EditarPedidoCasoUso {
       despacharAgregar,
     );
 
+    console.log('pedido todo editado', pedidoBD);
+
     pedido.Detalle = totales.Detalle;
     pedido.Subtotal0 = totales.Totales.Subtotal0;
     pedido.Subtotal12 = totales.Totales.Subtotal12;
@@ -88,9 +90,9 @@ export class EditarPedidoCasoUso {
       PedidoID,
     );
     // return plainToClass(LeerPedidoDto, pedidoGuardado);
-    console.log('Sdasdadasdasd', pedido);
+    // console.log('Sdasdadasdasd', pedido);
     for (const menu of pedidoBD.Detalle) {
-      console.log(menu.Cantidad);
+      // console.log(menu.Cantidad);
       // const menuBd = await this._menuSercive.obtenerProId(menu.MenuID);
       // console.log('detalle del menu', menuBd.Detalle);
       await this._crearMenuAlmacen.crearEgreso({
@@ -101,7 +103,7 @@ export class EditarPedidoCasoUso {
     }
 
     for (const menu of pedido.Detalle) {
-      console.log(menu.Cantidad);
+      // console.log(menu.Cantidad);
       // const menuBd = await this._menuSercive.obtenerProId(menu.MenuID);
       // console.log('detalle del menu', menuBd.Detalle);
       await this._crearMenuAlmacen.crearEgreso({
@@ -110,7 +112,7 @@ export class EditarPedidoCasoUso {
         MenuID: menu.MenuID,
       });
     }
-    return plainToClass(LeerPedidoDto, pedidoGuardado);
+    // return plainToClass(LeerPedidoDto, pedidoGuardado);
     const extra = {
       MesaID: pedidoBD.MesaID,
       PedidoID: pedidoBD.PedidoID,
@@ -141,15 +143,21 @@ export class EditarPedidoCasoUso {
   ): Promise<any> {
     const salida = [];
     for (const nuevo of detalleNuevo) {
+      const nuevoCopia = { ...nuevo };
       let contador = 0;
       for (const viejo of detalleViejo) {
         let cantidad = 0;
-        if (nuevo.MenuID === viejo.MenuID) {
+        console.log(
+          nuevo.MenuID,
+          viejo.MenuID,
+          'sfdfsdfsdfsdf5555555555555555555555555',
+        );
+        if (nuevo.MenuID === viejo.MenuID.MenuID) {
           if (nuevo.Cantidad != viejo.Cantidad) {
             if (nuevo.Cantidad > viejo.Cantidad) {
               cantidad = Number(nuevo.Cantidad) - Number(viejo.Cantidad);
-              nuevo.Cantidad = cantidad;
-              salida.push(nuevo);
+              nuevoCopia.Cantidad = cantidad;
+              salida.push(nuevoCopia);
             }
           }
 
@@ -157,7 +165,7 @@ export class EditarPedidoCasoUso {
         }
       }
       if (contador === 0) {
-        salida.push(nuevo);
+        salida.push(nuevoCopia);
       }
     }
     return salida;
@@ -168,6 +176,7 @@ export class EditarPedidoCasoUso {
     detalleNuevo: any[],
   ): Promise<any> {
     for (const viejo of detalleViejo) {
+      const viejoCopia = { ...viejo };
       const salida = [];
       let contador = 0;
       for (const nuevo of detalleNuevo) {
@@ -176,8 +185,8 @@ export class EditarPedidoCasoUso {
           if (nuevo.Cantidad != viejo.Cantidad) {
             if (viejo.Cantidad > nuevo.Cantidad) {
               cantidad = Number(viejo.Cantidad) - Number(nuevo.Cantidad);
-              viejo.Cantidad = cantidad;
-              salida.push(viejo);
+              viejoCopia.Cantidad = cantidad;
+              salida.push(viejoCopia);
             }
           }
 
@@ -185,7 +194,7 @@ export class EditarPedidoCasoUso {
         }
       }
       if (contador === 0) {
-        salida.push(viejo);
+        salida.push(viejoCopia);
       }
     }
   }
@@ -283,6 +292,12 @@ export class EditarPedidoCasoUso {
       Cocina: despacharCocina,
       Parrilla: despacharParrilla,
     };
+  }
+
+  async crearArrayProductoEliminarDespachar(detalle: any[]): Promise<any> {
+    let detalleDespacharBar = [];
+    let detalleDespacharCocina = [];
+    let detalleDespacharParrilla = [];
   }
 
   async crearArrayProductoDespachar(detalle: any[]): Promise<any> {
@@ -383,7 +398,7 @@ export class EditarPedidoCasoUso {
       detalle[index].TotalsinIva = menuBd.PrecioSinIva * menu.Cantidad;
       detalle[index].Total = menuBd.PrecioVenta * menu.Cantidad;
       detalle[index].TotalCompra = menuBd.PrecioCompra * menu.Cantidad;
-      console.log('esta es disque el iva', detalle[index].Iva);
+      // console.log('esta es disque el iva', detalle[index].Iva);
       if (menu.EstadoIva) {
         Subtotal12 = Subtotal12 + detalle[index].TotalsinIva;
       } else {

@@ -1,3 +1,4 @@
+import { DespacharDetalle } from '../entidates/despachar-detalle.entity';
 import { Despachar } from '../entidates/despachar.entity';
 import { DespacharDetalleModel } from './models/despachar-detalle.model';
 import { DespacharModel } from './models/despachar.model';
@@ -60,4 +61,6 @@ export interface IDespacharCasoUso {
   ): Promise<boolean>;
   obtenerTodoPorPedidoId(PedidoID: number): Promise<Despachar[]>;
   crearDetalle(detalleDespachar: DespacharDetalleModel): Promise<boolean>;
+  obtenerdetallePorDespachar(DespacharID: number): Promise<DespacharDetalle[]>;
+  eliminarDetalleDespachar(DespacharDetalleID: number): Promise<boolean>;
 }

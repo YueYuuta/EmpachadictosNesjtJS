@@ -11,12 +11,14 @@ import { EliminarMenuCasoUso } from './menu-caso-uso/eliminar';
 import { ProductoModule } from '../producto/producto.module';
 import { MenuDetalleRepository } from './repository/menu-detalle.repository';
 import { ImagenMenuController } from './api/imagen-menu.controller';
+import { CategoriaModule } from '@modulos/categoria/categoria.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([MenuRepository, MenuDetalleRepository]),
     SharedModule,
     ProductoModule,
+    CategoriaModule,
   ],
   providers: [
     CrearMenuCasoUso,

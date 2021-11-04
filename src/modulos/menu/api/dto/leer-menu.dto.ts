@@ -1,3 +1,4 @@
+import { LeerCategoriaDto } from '@modulos/categoria/api/dto';
 import { Exclude, Expose, Type } from 'class-transformer';
 
 import { LeerMenuDetalleDto } from './leer-menu-detalle.dto';
@@ -10,6 +11,10 @@ export class LeerMenuDto {
   @Expose()
   @Type(type => LeerMenuDetalleDto)
   readonly Detalle: LeerMenuDetalleDto[];
+
+  @Expose()
+  @Type(type => LeerCategoriaDto)
+  readonly CategoriaID: LeerCategoriaDto;
 
   @Expose()
   readonly Descripcion: string;

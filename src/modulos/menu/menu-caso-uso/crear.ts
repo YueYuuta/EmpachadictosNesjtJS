@@ -20,6 +20,7 @@ import { PathFile, TipoVariable } from '@utils/enums';
 import { Menu } from '../entidates/menu.entity';
 import { LeerProductoCasoUso } from '@modulos/producto/producto-caso-uso/leer';
 import { manejoDeImagenes } from '@utils/manejo-imagenes/imagen-express-fileup';
+import { LeerCategoriaCasoUso } from '@modulos/categoria/categoria-caso-uso/leer';
 
 const MenuRepo = () => Inject('MenuRepo');
 
@@ -29,14 +30,20 @@ export class CrearMenuCasoUso {
     @MenuRepo() private readonly _menuRepository: IMenuCasoUso,
     private readonly _sharedService: SharedService,
     private readonly _productoSercive: LeerProductoCasoUso,
+    private readonly _categoriaService: LeerCategoriaCasoUso,
   ) {}
 
   async crear(menu: MenuModel): Promise<LeerMenuDto> {
-    console.log(menu.Detalle.length);
     if (menu.Detalle.length === 0) {
       throw new NotFoundException('El detalle no puede ir vacio!');
     }
-    const { EstadoPrecioVentaDinamico, EstadoIva, PrecioVenta } = menu;
+    const {
+      EstadoPrecioVentaDinamico,
+      EstadoIva,
+      PrecioVenta,
+      CategoriaID,
+    } = menu;
+    await this._categoriaService.obtenerProId(CategoriaID);
     const calculo = await this.validarDetalle(menu.Detalle);
 
     menu.Descripcion = menu.Descripcion.toUpperCase();
@@ -76,7 +83,6 @@ export class CrearMenuCasoUso {
     precioCompra: number;
     precioSinIva: number;
   }> {
-    console.log('♀♀♀', detalle);
     let precioVenta = 0;
     let precioCompra = 0;
     let precioSinIva = 0;

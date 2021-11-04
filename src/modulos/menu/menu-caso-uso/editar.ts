@@ -6,6 +6,7 @@ import { MenuModel } from './models/menu';
 import { MenuDetalleModel } from './models/menu-detalle';
 import { LeerProductoDto } from '@modulos/producto/api/dto';
 import { TipoVariable } from '@utils/enums';
+import { LeerCategoriaCasoUso } from '@modulos/categoria/categoria-caso-uso/leer';
 
 const MenuRepo = () => Inject('MenuRepo');
 
@@ -15,10 +16,17 @@ export class EditarMenuCasoUso {
     @MenuRepo() private readonly _menuRepository: IMenuCasoUso,
     private readonly _sharedService: SharedService,
     private readonly _productoSercive: LeerProductoCasoUso,
+    private readonly _categoriaService: LeerCategoriaCasoUso,
   ) {}
 
   async editar(menu: MenuModel, MenuID: number): Promise<boolean> {
-    const { EstadoPrecioVentaDinamico, EstadoIva, PrecioVenta } = menu;
+    const {
+      EstadoPrecioVentaDinamico,
+      EstadoIva,
+      PrecioVenta,
+      CategoriaID,
+    } = menu;
+    await this._categoriaService.obtenerProId(CategoriaID);
     const calculo = await this.validarDetalle(menu.Detalle);
 
     menu.Descripcion = menu.Descripcion.toUpperCase();
@@ -58,9 +66,9 @@ export class EditarMenuCasoUso {
     precioCompra: number;
     precioSinIva: number;
   }> {
-    let precioVenta: number = 0;
-    let precioCompra: number = 0;
-    let precioSinIva: number = 0;
+    let precioVenta = 0;
+    let precioCompra = 0;
+    let precioSinIva = 0;
     for (const producto of detalle) {
       const productoBd: LeerProductoDto = await this._productoSercive.obtenerProId(
         producto.ProductoID,

@@ -23,6 +23,39 @@ export class DespacharRepoService implements IDespacharCasoUso {
     @InjectRepository(DespacharDetalleRepository)
     private readonly _despacharDetalleRepository: DespacharDetalleRepository,
   ) {}
+  async obtenerdetallePorDespachar(
+    DespacharID: number,
+  ): Promise<DespacharDetalle[]> {
+    return await this._despacharDetalleRepository
+      .createQueryBuilder('DespacharDetalle')
+      // .innerJoinAndSelect('Despachar.Detalle', 'Detalle')
+      // .innerJoinAndSelect('Despachar.AlmacenID', 'Alamcen')
+      // .innerJoinAndSelect('Despachar.MesaID', 'Mesa')
+      // .innerJoinAndSelect('Detalle.ProductoID', 'Producto')
+      .where('DespacharDetalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+      // .andWhere('Detalle.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+      .andWhere('DespacharDetalle.DespacharID=:DespacharID', {
+        DespacharID,
+      })
+      .getMany();
+  }
+  async eliminarDetalleDespachar(DespacharDetalleID: number): Promise<boolean> {
+    try {
+      await this._despacharDetalleRepository
+        .createQueryBuilder()
+        .update()
+        .set({ Estado: EntityStatus.INACTIVE })
+        .where('DespacharDetalleID = :DespacharDetalleID', {
+          DespacharDetalleID,
+        })
+        .execute();
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async crearDetalle(
     detalleDespachar: DespacharDetalleModel,
   ): Promise<boolean> {

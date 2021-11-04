@@ -23,6 +23,10 @@ export class EditarMenuDto {
   @IsBoolean()
   readonly EstadoIva: boolean;
 
+  @IsNotEmpty({ message: 'La categoria no debe ir vacia!' })
+  @IsNumber()
+  readonly CategoriaID: string;
+
   @IsNotEmpty({ message: 'El estado del descuento no debe ir vacio!' })
   @IsBoolean()
   readonly EstadoPrecioVentaDinamico: boolean | null;

@@ -18,6 +18,9 @@ import { PedidoModule } from '@modulos/pedido/pedido.module';
 import { MesaModule } from '@modulos/mesa/Mesa.module';
 import { MenuAlmacenModule } from '@modulos/menu-almacen/menu-almacen.module';
 import { DespacharModule } from '@modulos/despachar/despachar.module';
+import { ProductoAlmacenModule } from '@modulos/producto-almacen/producto-almacen.module';
+import { ProveedorModule } from '@modulos/proveedor/proveedor.module';
+import { IngresoModule } from '@modulos/ingreso/ingreso.module';
 
 const fileup = require('express-fileupload');
 
@@ -39,6 +42,9 @@ const fileup = require('express-fileupload');
     MesaModule,
     MenuAlmacenModule,
     DespacharModule,
+    ProductoAlmacenModule,
+    ProveedorModule,
+    IngresoModule,
   ],
   controllers: [],
   providers: [],

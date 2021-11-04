@@ -12,20 +12,15 @@ export enum UsuarioAlias {
 export enum ClienteAlias {
   ClienteCrear = 'cliente/crear-cliente',
   ClienteEditar = 'cliente/editar-cliente',
-  //ClienteObtenerPorID = 'cliente/obtener/id',
   ClientePaginado = 'cliente/clientes',
-  //ClienteObener = 'cliente/obtener',
-  //ClienteValidar = 'cliente/validar',
   ClienteElmininar = 'cliente/eliminar-cliente',
+}
 
-  //
-
-  PublicidadCrear = 'cliente/crear-publicidad',
-  PublicidadEditar = 'cliente/editar-publicidad',
-
-  PublicidadPaginado = 'cliente/publicidades',
-
-  PublicidadElmininar = 'cliente/eliminar-publicidad',
+export enum ProveedorAlias {
+  ProveedorCrear = 'proveedor/crear-proveedor',
+  ProveedorEditar = 'proveedor/editar-proveedor',
+  ProveedorPaginado = 'proveedor/proveedores',
+  ProveedorElmininar = 'proveedor/eliminar-proveedor',
 }
 
 export enum AlmacenAlias {
@@ -61,6 +56,11 @@ export enum ProductoAlias {
   // MenuAlmacenObtener = 'producto/obtener',
   MenuAlmacenElmininar = 'producto/eliminar-menu-almacen',
 
+  ProductoAlmacenCrear = 'producto/crear-producto-almacen',
+  ProductoAlmacenEditar = 'producto/editar-producto-almacen',
+  ProductoAlmacenPaginado = 'producto/productos-almacen',
+  ProductoAlmacenElmininar = 'producto/eliminar-producto-almacen',
+
   CategoriaCrear = 'producto/crear-categoria',
   CategoriaEditar = 'producto/editar-categoria',
   // CategoriaObtenerPorID = 'producto/obtener/id',
@@ -74,6 +74,13 @@ export enum ProductoAlias {
   MenuPaginado = 'producto/menus',
   // MenuObtener = 'producto/obtener',
   MenuElmininar = 'producto/eliminar-menu',
+
+  IngresoCrear = 'producto/crear-ingreso',
+  IngresoEditar = 'producto/editar-ingreso',
+  // IngresoObtenerPorID = 'producto/obtener/id',
+  IngresoPaginado = 'producto/ingresos',
+  // IngresoObtener = 'producto/obtener',
+  IngresoElmininar = 'producto/eliminar-ingreso',
 }
 
 export enum UbicacionAlias {

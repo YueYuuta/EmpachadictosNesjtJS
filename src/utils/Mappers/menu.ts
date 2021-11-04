@@ -5,6 +5,7 @@ import { MenuModel } from '../../modulos/menu/menu-caso-uso/models/menu';
 export class MenuMapper {
   public static editar(menu: EditarMenuDto): MenuModel {
     const partiaMenu: EditarMenuDto = {
+      CategoriaID: menu.CategoriaID ?? null,
       Descripcion: menu.Descripcion ?? null,
       Detalle: menu.Detalle ?? null,
       EstadoIva: menu.EstadoIva ?? null,
@@ -21,6 +22,7 @@ export class MenuMapper {
 
   public static crear(menu: EditarMenuDto): MenuModel {
     const partiaMenu: EditarMenuDto = {
+      CategoriaID: menu.CategoriaID ?? null,
       Descripcion: menu.Descripcion ?? null,
       Detalle: menu.Detalle ?? null,
       EstadoIva: menu.EstadoIva ?? null,

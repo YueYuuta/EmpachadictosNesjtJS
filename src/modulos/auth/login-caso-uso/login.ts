@@ -37,7 +37,7 @@ export class LoginCasoUso {
 
     if (numeroDeAlmacenes === 0) {
       throw new UnauthorizedException(
-        'El usuario aun no ha sido asignado a un almacen porfacor comuniquese con un administrador!',
+        'El usuario aun no ha sido asignado a un almacen porfavor comuniquese con un administrador!',
       );
     }
 

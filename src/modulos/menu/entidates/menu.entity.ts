@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { EntityStatus, ImageDefault } from '@utils/enums';
 import { MenuDetalle } from './menu-detalle.entity';
+import { Categoria } from '@modulos/categoria/entidades/categoria.entity';
 
 @Entity('Menu')
 export class Menu extends BaseEntity {
@@ -19,6 +22,14 @@ export class Menu extends BaseEntity {
     { cascade: true, eager: true },
   )
   Detalle: MenuDetalle[];
+
+  @ManyToOne(type => Categoria, {
+    cascade: true,
+    nullable: false,
+    eager: true,
+  })
+  @JoinColumn({ name: 'CategoriaID' })
+  CategoriaID: number;
 
   @Column({ type: 'text', nullable: false })
   Descripcion: string;

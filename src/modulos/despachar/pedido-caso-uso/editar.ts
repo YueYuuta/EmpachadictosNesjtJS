@@ -94,7 +94,7 @@ export class EditarDespacharCasoUso {
     despachar: DespacharModel,
     DespacharID: number,
   ): Promise<LeerDespacharDto> {
-    console.log('lo que llega al crear un despachar', despachar);
+    // console.log('lo que llega al crear un despachar', despachar);
     if (despachar.Detalle.length === 0) {
       throw new NotFoundException('Igrese el detalle del despachar!');
     }
@@ -104,9 +104,37 @@ export class EditarDespacharCasoUso {
       DespacharID,
     );
     for (const ingresar of despachar.Detalle) {
+      ingresar.DespacharID = despacharGuardado.DespacharID;
       await this._despacharRepository.crearDetalle(ingresar);
     }
     return plainToClass(LeerDespacharDto, despacharGuardado);
+    // return despachar;
+    // return plainToClass(LeerPedidoDto, despacharGuardado);
+  }
+
+  async eliminarDetalle(
+    despachar: DespacharModel,
+    DespacharID: number,
+  ): Promise<boolean> {
+    // console.log('lo que llega al crear un despachar', despachar);
+    if (despachar.Detalle.length === 0) {
+      return true;
+    }
+    const detalle = await this._despacharRepository.obtenerdetallePorDespachar(
+      DespacharID,
+    );
+
+    const despacharGuardado = await this._despacharRepository.editar(
+      despachar,
+      DespacharID,
+    );
+    for (const ingresar of despachar.Detalle) {
+      // ingresar.DespacharID = despacharGuardado.DespacharID;
+      await this._despacharRepository.eliminarDetalle(
+        ingresar.DespacharDetalleID,
+      );
+    }
+    return true;
     // return despachar;
     // return plainToClass(LeerPedidoDto, despacharGuardado);
   }

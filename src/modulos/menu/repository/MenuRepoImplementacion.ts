@@ -249,6 +249,7 @@ export class MenuRepoService implements IMenuCasoUso {
       );
     }
   }
+
   async crear(menu: MenuModel): Promise<Menu> {
     try {
       const menuIntance = new Menu();
