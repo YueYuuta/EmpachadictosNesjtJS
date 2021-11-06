@@ -1,13 +1,13 @@
 import { tipoPago } from '@modulos/ingreso/entidates/tipo.enum';
 import { TipoCompra } from '@utils/enums';
-import { IsArray, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
-import { IngresoDetalleDto } from './ingreso-detalle.dto';
+import { IngresoDetalleEditarDto } from './editar-ingreso-detalle.dto';
+
 export class EditarIngresoDto {
   @IsOptional()
   @IsNotEmpty({ message: 'El detalle no debe ir vacio!' })
-  @IsArray({ message: 'formato incorrecto, formato correcto: Array' })
-  readonly Detalle: IngresoDetalleDto[];
+  readonly Detalle: IngresoDetalleEditarDto;
 
   @IsOptional()
   @IsNotEmpty({ message: 'La observacion no debe ir vacio!' })

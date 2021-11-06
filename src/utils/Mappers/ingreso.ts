@@ -1,10 +1,13 @@
 import { CrearIngresoDto } from '@modulos/ingreso/api/dto';
 import { Variables } from '@utils/manejo-variables/variables';
 import { EditarIngresoDto } from '../../modulos/ingreso/api/dto/editar-ingreso.dto';
-import { IngresoModel } from '../../modulos/ingreso/ingreso-caso-uso/models/ingreso.model';
+import {
+  IngresoEditarModel,
+  IngresoModel,
+} from '../../modulos/ingreso/ingreso-caso-uso/models/ingreso.model';
 
 export class IngresoMapper {
-  public static editar(ingreso: EditarIngresoDto): IngresoModel {
+  public static editar(ingreso: EditarIngresoDto): IngresoEditarModel {
     const partiaIngreso: EditarIngresoDto = {
       Detalle: ingreso.Detalle ?? null,
       Observacion: ingreso.Observacion ?? null,
@@ -15,7 +18,7 @@ export class IngresoMapper {
     Object.keys(partiaIngreso).forEach(
       key => partiaIngreso[key] === null && delete partiaIngreso[key],
     );
-    const ingresoLimpio: IngresoModel = Variables.limpiarVariables(
+    const ingresoLimpio: IngresoEditarModel = Variables.limpiarVariables(
       partiaIngreso,
     );
 
@@ -26,7 +29,7 @@ export class IngresoMapper {
     ingreso: CrearIngresoDto,
     UsuarioID: number,
   ): IngresoModel {
-    const partiaIngreso: CrearIngresoDto = {
+    const partiaIngreso: IngresoModel = {
       Detalle: ingreso.Detalle ?? null,
       Observacion: ingreso.Observacion ?? null,
       ProveedorID: ingreso.ProveedorID ?? null,

@@ -16,9 +16,12 @@ export class EliminarProductoAlmacenCasoUso {
     return await this._ProductoAlmacenRepository.eliminar(ProductoAlmacenID);
   }
 
-  async eliminarDetalle(productoAlmacenDetalleID: number): Promise<boolean> {
+  async eliminarDetalle(IngresoDetalleID: number): Promise<boolean> {
+    const productoAlmacen = await this._ProductoAlmacenRepository.obtenerDetallePorIngresoDetalleID(
+      IngresoDetalleID,
+    );
     return await this._ProductoAlmacenRepository.cambiarEstadoDetalle(
-      productoAlmacenDetalleID,
+      productoAlmacen.ProductoAlmacenDetalleID,
       EntityStatus.INACTIVE,
     );
   }

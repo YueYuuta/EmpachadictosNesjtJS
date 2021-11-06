@@ -11,6 +11,7 @@ import { ProductoAlmacenRepoProvider } from './repository/producto-almacen-provi
 import { EliminarProductoAlmacenCasoUso } from './producto-almacen-caso-uso/eliminar';
 import { ProductoAlmacenController } from './api/menu-almacen.controller';
 import { ProductoAlmacenDetalle } from './entidates/producto-almacen-detalle.entity';
+import { EditarProductoAlmacenCasoUso } from './producto-almacen-caso-uso/editar';
 
 @Module({
   imports: [
@@ -27,8 +28,14 @@ import { ProductoAlmacenDetalle } from './entidates/producto-almacen-detalle.ent
     LeerProductoAlmacenCasoUso,
     ProductoAlmacenRepoProvider,
     EliminarProductoAlmacenCasoUso,
+    EditarProductoAlmacenCasoUso,
   ],
   controllers: [ProductoAlmacenController],
-  exports: [LeerProductoAlmacenCasoUso, CrearProductoAlmacenCasoUso],
+  exports: [
+    LeerProductoAlmacenCasoUso,
+    CrearProductoAlmacenCasoUso,
+    EditarProductoAlmacenCasoUso,
+    EliminarProductoAlmacenCasoUso,
+  ],
 })
 export class ProductoAlmacenModule {}

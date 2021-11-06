@@ -21,11 +21,6 @@ export class CrearIngresoDto {
   @IsNumber()
   readonly ProveedorID: number;
 
-  @IsOptional()
-  @IsNotEmpty({ message: 'El usuario no debe ir vacio!' })
-  @IsNumber()
-  readonly UsuarioID: number;
-
   @IsNotEmpty({ message: 'El almacen no debe ir vacio!' })
   @IsNumber()
   readonly AlmacenID: number;

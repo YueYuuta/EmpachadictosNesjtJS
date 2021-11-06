@@ -40,7 +40,6 @@ export class CrearProductoAlmacenCasoUso {
         Ingreso.AlmacenID,
         Ingreso.ProductoID,
       );
-      console.log('ajaaaa', productoAlmacen);
 
       if (productoAlmacen !== undefined) {
         Detalle.ProductoAlmacenID = productoAlmacen.ProductoAlmacenID;

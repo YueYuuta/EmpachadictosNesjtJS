@@ -9,21 +9,25 @@ import {
   ValidationPipe,
   UseGuards,
   HttpStatus,
+  Patch,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProductoAlias } from '@utils/enums/rutas.enum';
 
 import { IngresoMapper } from '@utils/Mappers/ingreso';
 import { CrearIngresoCasoUso } from '../ingreso-caso-uso/crear';
-import { CrearIngresoDto } from './dto';
+import { EditarIngresoCasoUso } from '../ingreso-caso-uso/editar';
+import { CrearIngresoDto, EditarIngresoDto } from './dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('ingreso')
 export class IngresoController {
   constructor(
-    private readonly _crearIngresoService: CrearIngresoCasoUso, // private readonly _leerIngresoService: LeerIngresoCasoUso,
-  ) // private readonly _editarIngresoService: EditarIngresoCasoUso,
-  {}
+    private readonly _crearIngresoService: CrearIngresoCasoUso,
+    private readonly _editarIngresoService: EditarIngresoCasoUso, // private readonly _leerIngresoService: LeerIngresoCasoUso, // private readonly _editarIngresoService: EditarIngresoCasoUso,
+  ) {}
   @Ruta(ProductoAlias.IngresoCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -42,24 +46,24 @@ export class IngresoController {
     };
   }
 
-  // @Ruta(ProductoAlias.MenuEditar)
-  // @Patch('editar/:IngresoID')
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  // async editar(
-  //   @Body() ingreso: CrearIngresoDto,
-  //   @ObtenerUsuario() usuario: any,
-  //   @Param('IngresoID', ParseIntPipe) IngresoID: number,
-  // ): Promise<SalidaApi> {
-  //   const respuesta = await this._editarIngresoService.editar(
-  //     IngresoMapper.crear(ingreso, usuario.UsuarioID),
-  //     IngresoID,
-  //   );
-  //   return {
-  //     status: HttpStatus.OK,
-  //     data: respuesta,
-  //     message: `Menu editado correctamente`,
-  //   };
-  // }
+  @Ruta(ProductoAlias.IngresoEditar)
+  @Patch('editar/:IngresoID')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async editar(
+    @Body() ingreso: EditarIngresoDto,
+    // @ObtenerUsuario() usuario: any,
+    @Param('IngresoID', ParseIntPipe) IngresoID: number,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._editarIngresoService.editar(
+      IngresoMapper.editar(ingreso),
+      IngresoID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+      message: `Ingreso editado correctamente`,
+    };
+  }
 
   // // @Patch('crear/imagen/:ProductoID/:tipo')
   // // async crearImagen(

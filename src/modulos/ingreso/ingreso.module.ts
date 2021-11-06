@@ -17,6 +17,7 @@ import { IngresoDetalleRepository } from './repository/ingreso-detalle.repositor
 import { CrearIngresoCasoUso } from './ingreso-caso-uso/crear';
 import { IngresoRepoProvider } from './repository/ingreso-provider';
 import { ProveedorModule } from '@modulos/proveedor/proveedor.module';
+import { EditarIngresoCasoUso } from './ingreso-caso-uso/editar';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { ProveedorModule } from '@modulos/proveedor/proveedor.module';
     ProductoAlmacenModule,
     ProveedorModule,
   ],
-  providers: [CrearIngresoCasoUso, IngresoRepoProvider],
+  providers: [CrearIngresoCasoUso, IngresoRepoProvider, EditarIngresoCasoUso],
   controllers: [IngresoController],
   exports: [],
 })

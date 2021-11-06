@@ -4,15 +4,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-
 import { SharedService } from '@modulos/shared/services/shared.service';
-
 import { IIngresoCasoUso } from './IIngresoCasoUso';
-
-0;
 import { IngresoModel } from './models/ingreso.model';
 import { LeerAlmacenCasoUso } from '@modulos/almacen/almacen-caso-uso/leer';
-
 import { LeerProveedorCasoUso } from '@modulos/proveedor/proveedor-caso-uso/leer';
 import { LeerProductoCasoUso } from '@modulos/producto/producto-caso-uso/leer';
 import { IngresoDetalleModel } from './models/ingreso-detalle.model';
@@ -21,6 +16,7 @@ import { plainToClass } from 'class-transformer';
 import { LeerIngresoDto } from '../api/dto';
 import { CrearProductoAlmacenCasoUso } from '@modulos/producto-almacen/producto-almacen-caso-uso/crear';
 import { TipoVariable } from '@utils/enums';
+import { IngresoDetalle } from '../entidates/ingreso-detalle.entity';
 const IngresoRepo = () => Inject('IngresoRepo');
 
 @Injectable()
@@ -41,7 +37,6 @@ export class CrearIngresoCasoUso {
     }
     await this._almacenService.obtenerProId(ingreso.AlmacenID);
     await this._proveedorService.obtenerProId(ingreso.ProveedorID);
-
     //obtener los resultados
     const totales = await this.validarDetalle(ingreso.Detalle);
     ingreso.Detalle = totales.Detalle;
@@ -50,14 +45,11 @@ export class CrearIngresoCasoUso {
     ingreso.Subtotal = totales.Totales.Subtotal;
     ingreso.Total = totales.Totales.Total;
     ingreso.Iva = totales.Totales.Iva;
-
     const ingresoGuardado = await this._ingresoRepository.crear(ingreso);
     const ingresoBd = await this._ingresoRepository.obtenerPorId(
       ingresoGuardado.IngresoID,
     );
-
     await this.crearStock(ingreso.AlmacenID, ingresoBd.Detalle);
-
     return plainToClass(LeerIngresoDto, ingresoGuardado);
   }
 
@@ -158,5 +150,14 @@ export class CrearIngresoCasoUso {
         Total: total,
       },
     };
+  }
+
+  async crearDetalle(
+    ingresoDetalle: IngresoDetalleModel,
+  ): Promise<IngresoDetalle> {
+    const ingresoGuardado = await this._ingresoRepository.crearDetalle(
+      ingresoDetalle,
+    );
+    return ingresoGuardado;
   }
 }

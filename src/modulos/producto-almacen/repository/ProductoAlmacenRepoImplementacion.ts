@@ -34,6 +34,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
         where: { IngresoDetalleID },
       });
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -53,6 +54,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
 
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -67,6 +69,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
       await productoAlmacenDetalleIntance.save();
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -80,6 +83,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
         where: { ProductoAlmacenID, Estado: EntityStatus.ACTIVE },
       });
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -97,6 +101,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
         },
       });
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -116,6 +121,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
 
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -133,6 +139,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
       );
       return productoAlmacen;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -151,6 +158,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
       await productoAlmacenDetalleIntance.save();
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -169,6 +177,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
       await productoAlmacenDetalleIntance.save();
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -183,6 +192,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
 
       return true;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -330,6 +340,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
       }
       return productoAlmacen;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );
@@ -344,6 +355,7 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
       Object.assign(productoAlmacenIntance, productoAlmacen);
       return await productoAlmacenIntance.save();
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(
         `no se pudo establecer conexion, ${error}`,
       );

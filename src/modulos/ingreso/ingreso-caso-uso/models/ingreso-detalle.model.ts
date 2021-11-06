@@ -22,4 +22,6 @@ export class IngresoDetalleModel {
   Lote?: string;
 
   IngresoDetalleID?: number;
+
+  IngresoID?: number;
 }

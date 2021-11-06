@@ -6,4 +6,6 @@ export class IngresoDetalleDto {
   PrecioCompra: number;
 
   Lote: string;
+
+  IngresoDetalleID?: number;
 }
