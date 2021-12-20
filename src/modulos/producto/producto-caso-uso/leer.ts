@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ImageDefault, PathFile } from '@utils/enums';
 import { plainToClass } from 'class-transformer';
 import { LeerProductoDto } from '../api/dto';
+import { Producto } from '../entidates/producto.entity';
 import { IProductoCasoUso } from './IProductoCasoUso';
 
 const ProductoRepo = () => Inject('ProductoRepo');
@@ -72,5 +73,25 @@ export class LeerProductoCasoUso {
     } else {
       return PathFile.PRODUCTS;
     }
+  }
+
+  async obtenerProductoPorNombre(
+    Descripcion: string,
+  ): Promise<LeerProductoDto[]> {
+    const productos = await this._productoRepository.obtenerProductoPorNombre(
+      Descripcion,
+    );
+    return productos.map((producto: Producto) =>
+      plainToClass(LeerProductoDto, producto),
+    );
+  }
+  async obtenerProductoPorCodigoDeBarra(
+    CodigoBarra: string,
+  ): Promise<LeerProductoDto> {
+    const producto = await this._productoRepository.obtenerProductoPorCodigoDeBarra(
+      CodigoBarra,
+    );
+
+    return plainToClass(LeerProductoDto, producto);
   }
 }

@@ -27,6 +27,9 @@ export class Producto extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   Descripcion: string;
 
+  @Column({ type: 'text', nullable: true })
+  CodigoBarra: string;
+
   @Column({ type: 'text', nullable: false })
   Pantalla: PantallaEnum;
 

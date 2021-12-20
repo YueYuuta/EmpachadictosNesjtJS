@@ -31,8 +31,8 @@ export class LeerClienteDto {
   // @Type(type => LeerAntiguoDto)
   // readonly Antiguo: LeerAntiguoDto;
 
-  // @Expose()
-  // readonly Direccion: string;
+  @Expose()
+  readonly Direccion: string;
 
   @Expose()
   readonly Telefono: string;

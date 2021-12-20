@@ -32,10 +32,10 @@ export class EditarClienteDto {
   // @IsNumber()
   // readonly Antiguo: number;
 
-  // @IsOptional()
-  // @IsNotEmpty({ message: 'La dirreccion del cliente no debe ir vacio' })
-  // @IsString()
-  // readonly Direccion: string;
+  @IsOptional()
+  @IsNotEmpty({ message: 'La dirreccion del cliente no debe ir vacio' })
+  @IsString()
+  readonly Direccion: string;
 
   @IsOptional()
   @IsNotEmpty({ message: 'El telefono del cliente no debe ir vacio' })

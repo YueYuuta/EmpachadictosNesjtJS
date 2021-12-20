@@ -25,6 +25,55 @@ export class ProductoAlmacenRepoService implements IProductoAlmacenCasoUso {
     @InjectRepository(ProductoAlmacenDetalleRepository)
     private readonly _productoAlmacenDetalleRepository: ProductoAlmacenDetalleRepository,
   ) {}
+  async obtenerProductoPorNombre(
+    Descripcion: string,
+    AlmacenID: number,
+  ): Promise<ProductoAlmacen[]> {
+    try {
+      return await this._productoAlmacenRepository
+        .createQueryBuilder('ProductoAlmacen')
+        .innerJoinAndSelect('Producto.ProductoID', 'Producto')
+        .where('ProductoAlmacen.Estado=:Estado', {
+          Estado: EntityStatus.ACTIVE,
+        })
+        .andWhere('ProductoAlmacen.AlmacenID =:AlmacenID', { AlmacenID })
+        .andWhere(
+          new Brackets(qb => {
+            qb.where('Producto.Descripcion ILIKE :Nombre', {
+              Nombre: `%${Descripcion}%`,
+            });
+          }),
+        )
+
+        .take(10)
+        .orderBy('ProductoAlmacen.ProductoAlmacenID', 'DESC')
+        .getMany();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async obtenerProductoPorCodigoDeBarra(
+    CodigoBarra: string,
+    AlmacenID: number,
+  ): Promise<ProductoAlmacen> {
+    try {
+      return await this._productoAlmacenRepository
+        .createQueryBuilder('ProductoAlmacen')
+        .innerJoinAndSelect('Producto.ProductoID', 'Producto')
+        .where('ProductoAlmacen.Estado=:Estado', {
+          Estado: EntityStatus.ACTIVE,
+        })
+        .andWhere('ProductoAlmacen.AlmacenID =:AlmacenID', { AlmacenID })
+        .andWhere('Producto.CodigoBarra:=CodigoBarra', { CodigoBarra })
+        .getOne();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
 
   async obtenerDetallePorIngresoDetalleID(
     IngresoDetalleID: number,

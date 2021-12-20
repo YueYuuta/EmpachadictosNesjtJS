@@ -14,14 +14,19 @@ export enum ClienteAlias {
   ClienteEditar = 'cliente/editar-cliente',
   ClientePaginado = 'cliente/clientes',
   ClienteElmininar = 'cliente/eliminar-cliente',
+
+  ProveedorCrear = 'cliente/crear-proveedor',
+  ProveedorEditar = 'cliente/editar-proveedor',
+  ProveedorPaginado = 'cliente/proveedores',
+  ProveedorElmininar = 'cliente/eliminar-proveedor',
 }
 
-export enum ProveedorAlias {
-  ProveedorCrear = 'proveedor/crear-proveedor',
-  ProveedorEditar = 'proveedor/editar-proveedor',
-  ProveedorPaginado = 'proveedor/proveedores',
-  ProveedorElmininar = 'proveedor/eliminar-proveedor',
-}
+// export enum ProveedorAlias {
+//   ProveedorCrear = 'proveedor/crear-proveedor',
+//   ProveedorEditar = 'proveedor/editar-proveedor',
+//   ProveedorPaginado = 'proveedor/proveedores',
+//   ProveedorElmininar = 'proveedor/eliminar-proveedor',
+// }
 
 export enum AlmacenAlias {
   AlmacenCrear = 'almacen/crear-almacen',
@@ -83,6 +88,14 @@ export enum ProductoAlias {
   IngresoElmininar = 'producto/eliminar-ingreso',
 }
 
+export enum IngresoAlias {
+  IngresoCrear = 'ingreso/crear-ingreso',
+  IngresoEditar = 'ingreso/editar-ingreso',
+  // IngresoObtenerPorID = 'ingreso/obtener/id',
+  IngresoPaginado = 'ingreso/ingresos',
+  // IngresoObtener = 'ingreso/obtener',
+  IngresoElmininar = 'ingreso/eliminar-ingreso',
+}
 export enum UbicacionAlias {
   ProvinciaCrear = 'ubicacion/crear-provincia',
   ProvinciaEditar = 'ubicacion/editar-provincia',

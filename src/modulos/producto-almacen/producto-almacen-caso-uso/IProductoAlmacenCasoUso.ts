@@ -28,6 +28,15 @@ export interface IProductoAlmacenCasoUso {
   crear(ingreso: CrearProductoAlmacenIngresoModel): Promise<ProductoAlmacen>;
   eliminar(ProductoAlmacenID: number): Promise<boolean>;
 
+  obtenerProductoPorNombre(
+    Descripcion: string,
+    AlmacenID: number,
+  ): Promise<ProductoAlmacen[]>;
+  obtenerProductoPorCodigoDeBarra(
+    CodigoBarra: string,
+    AlmacenID: number,
+  ): Promise<ProductoAlmacen>;
+
   obtenerPaginadoPorCategoria(
     desde: number,
     limite: number,

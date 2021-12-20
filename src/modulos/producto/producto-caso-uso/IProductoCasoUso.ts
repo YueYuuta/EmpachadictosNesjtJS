@@ -36,4 +36,7 @@ export interface IProductoCasoUso {
     termino: string,
     CategoriaID: number,
   ): Promise<any>;
+
+  obtenerProductoPorNombre(Descripcion: string): Promise<Producto[]>;
+  obtenerProductoPorCodigoDeBarra(CodigoBarra: string): Promise<Producto>;
 }

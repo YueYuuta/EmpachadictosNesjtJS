@@ -9,24 +9,26 @@ const ProductoAlmacenRepo = () => Inject('ProductoAlmacenRepo');
 export class LeerProductoAlmacenCasoUso {
   constructor(
     @ProductoAlmacenRepo()
-    private readonly _menuRepository: IProductoAlmacenCasoUso,
+    private readonly _productoAlmacenRepository: IProductoAlmacenCasoUso,
   ) {}
 
   async obtenerProId(
     ProductoAlmacenID: number,
   ): Promise<LeerProductoAlmacenDto> {
-    const menu = await this._menuRepository.obtenerPorId(ProductoAlmacenID);
-    return plainToClass(LeerProductoAlmacenDto, menu);
+    const productoAlmacen = await this._productoAlmacenRepository.obtenerPorId(
+      ProductoAlmacenID,
+    );
+    return plainToClass(LeerProductoAlmacenDto, productoAlmacen);
   }
   async ExisteProductoEnELAlmacen(
     AlmacenID: number,
     ProductoID: number,
   ): Promise<LeerProductoAlmacenDto> {
-    const menu = await this._menuRepository.ExisteProductoEnELAlmacen(
+    const productoAlmacen = await this._productoAlmacenRepository.ExisteProductoEnELAlmacen(
       AlmacenID,
       ProductoID,
     );
-    return plainToClass(LeerProductoAlmacenDto, menu);
+    return plainToClass(LeerProductoAlmacenDto, productoAlmacen);
   }
 
   async obtenerPaginado(
@@ -35,23 +37,25 @@ export class LeerProductoAlmacenCasoUso {
     AlmacenID: number,
     termino?: string,
   ): Promise<LeerProductoAlmacenDto[]> {
-    let menus: any;
+    let productoAlmacens: any;
     if (termino) {
       termino = termino.trim();
-      menus = await this._menuRepository.obtenerPorBusqueda(
+      productoAlmacens = await this._productoAlmacenRepository.obtenerPorBusqueda(
         desde,
         limite,
         termino,
         AlmacenID,
       );
     } else {
-      menus = await this._menuRepository.obtenerPaginado(
+      productoAlmacens = await this._productoAlmacenRepository.obtenerPaginado(
         desde,
         limite,
         AlmacenID,
       );
     }
-    return menus.map((menu: any) => plainToClass(LeerProductoAlmacenDto, menu));
+    return productoAlmacens.map((productoAlmacen: any) =>
+      plainToClass(LeerProductoAlmacenDto, productoAlmacen),
+    );
   }
 
   async obtenerPaginadoPorCategoria(
@@ -61,10 +65,10 @@ export class LeerProductoAlmacenCasoUso {
     AlmacenID: number,
     termino?: string,
   ): Promise<LeerProductoAlmacenDto[]> {
-    let menus: any;
+    let productoAlmacens: any;
     if (termino) {
       termino = termino.trim();
-      menus = await this._menuRepository.obtenerPorBusquedaYCategoria(
+      productoAlmacens = await this._productoAlmacenRepository.obtenerPorBusquedaYCategoria(
         desde,
         limite,
         termino,
@@ -72,13 +76,39 @@ export class LeerProductoAlmacenCasoUso {
         AlmacenID,
       );
     } else {
-      menus = await this._menuRepository.obtenerPaginadoPorCategoria(
+      productoAlmacens = await this._productoAlmacenRepository.obtenerPaginadoPorCategoria(
         desde,
         limite,
         CategoriaID,
         AlmacenID,
       );
     }
-    return menus.map((menu: any) => plainToClass(LeerProductoAlmacenDto, menu));
+    return productoAlmacens.map((productoAlmacen: any) =>
+      plainToClass(LeerProductoAlmacenDto, productoAlmacen),
+    );
+  }
+
+  async obtenerProductoPorNombre(
+    Descripcion: string,
+    AlmacenID: number,
+  ): Promise<LeerProductoAlmacenDto[]> {
+    const productosAlmacen = await this._productoAlmacenRepository.obtenerProductoPorNombre(
+      Descripcion,
+      AlmacenID,
+    );
+    return productosAlmacen.map((productoAlmacen: any) =>
+      plainToClass(LeerProductoAlmacenDto, productoAlmacen),
+    );
+  }
+  async obtenerProductoPorCodigoDeBarra(
+    CodigoBarra: string,
+    AlmacenID: number,
+  ): Promise<LeerProductoAlmacenDto> {
+    const productoAlmacen = await this._productoAlmacenRepository.obtenerProductoPorCodigoDeBarra(
+      CodigoBarra,
+      AlmacenID,
+    );
+
+    return plainToClass(LeerProductoAlmacenDto, productoAlmacen);
   }
 }

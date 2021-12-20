@@ -5,6 +5,7 @@ import { ProductoModel } from '../../modulos/producto/producto-caso-uso/models/p
 export class ProductoMapper {
   public static editar(producto: EditarProductoDto): ProductoModel {
     const partiaProducto: EditarProductoDto = {
+      CodigoBarra: producto.CodigoBarra ?? null,
       Pantalla: producto.Pantalla ?? null,
       Categoria: producto.Categoria ?? null,
       Descripcion: producto.Descripcion ?? null,
@@ -26,6 +27,7 @@ export class ProductoMapper {
 
   public static crear(producto: EditarProductoDto): ProductoModel {
     const partiaProducto: EditarProductoDto = {
+      CodigoBarra: producto.CodigoBarra ?? null,
       Pantalla: producto.Pantalla ?? null,
       Categoria: producto.Categoria ?? null,
       Descripcion: producto.Descripcion ?? null,

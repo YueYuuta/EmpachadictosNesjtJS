@@ -17,6 +17,9 @@ export class Proveedor extends BaseEntity {
   @Column({ type: 'varchar', length: 13, nullable: true })
   Ruc: string;
 
+  @Column({ type: 'text', nullable: true })
+  Direccion: string;
+
   @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
   Estado: boolean;
 

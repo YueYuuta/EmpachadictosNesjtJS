@@ -83,6 +83,32 @@ export class ProductoController {
     };
   }
 
+  @Get('obtener/por/descripcion/:Descripcion')
+  async obtenerProductoPorNombre(
+    @Param('Descripcion') Descripcion: string,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerProductoService.obtenerProductoPorNombre(
+      Descripcion,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener/por/codigo/barra/:codigo')
+  async obtenerProductoPorCodigoDeBarra(
+    @Param('codigo') CodigoBarra: string,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerProductoService.obtenerProductoPorCodigoDeBarra(
+      CodigoBarra,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
   @Get('obtener/:ProductoID')
   async obtenerPorId(
     @Param('ProductoID', ParseIntPipe) ProductoID: number,

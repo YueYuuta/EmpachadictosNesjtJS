@@ -15,6 +15,8 @@ export class ProductoModel {
 
   Fecha: string;
 
+  CodigoBarra?: string;
+
   Imagen?: string;
 
   ProductoID?: number;

@@ -10,6 +10,11 @@ export class CrearProductoDto {
   @IsString()
   readonly Descripcion: string;
 
+  @IsOptional()
+  @IsNotEmpty({ message: 'La descripcion no debe ir vacio!' })
+  @IsString()
+  readonly CodigoBarra: string;
+
   @IsNotEmpty({ message: 'La pantalla no debe ir vacio!' })
   @IsString()
   readonly Pantalla: PantallaEnum;

@@ -3,18 +3,6 @@ export class ClienteModel {
 
   Nombre: string;
 
-  Referencia: string;
-
-  Enlace: number;
-
-  Parroquia: number;
-
-  Termino: number;
-
-  Publicidad: number;
-
-  Antiguo: number;
-
   Fecha: string;
 
   Direccion?: string;

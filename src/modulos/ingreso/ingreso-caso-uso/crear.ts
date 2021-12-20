@@ -120,13 +120,13 @@ export class CrearIngresoCasoUso {
         producto.PrecioCompra,
         productoDb.PrecioVenta,
       );
-      detalle[index].Total = producto.PrecioCompra * producto.Cantidad;
+      detalle[index].TotalsinIva = producto.PrecioCompra * producto.Cantidad;
       detalle[index].TotalIva = await this._sharedService.calcularIva(
         productoDb.EstadoIva,
-        detalle[index].Total,
+        detalle[index].TotalsinIva,
       );
-      detalle[index].TotalsinIva =
-        detalle[index].Total - detalle[index].TotalIva;
+      detalle[index].Total =
+        Number(detalle[index].TotalsinIva) + Number(detalle[index].TotalIva);
       if (producto.EstadoIva) {
         Subtotal12 = Subtotal12 + detalle[index].TotalsinIva;
       } else {

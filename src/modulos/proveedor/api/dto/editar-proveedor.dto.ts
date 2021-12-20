@@ -16,6 +16,11 @@ export class EditarProveedorDto {
   readonly Telefono: string;
 
   @IsOptional()
+  @IsNotEmpty({ message: 'La dirreccion del cliente no debe ir vacio' })
+  @IsString()
+  readonly Direccion: string;
+
+  @IsOptional()
   @IsNotEmpty({ message: 'El correo del cliente no debe ir vacio' })
   @IsString()
   readonly Correo: string;

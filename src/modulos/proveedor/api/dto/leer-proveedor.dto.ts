@@ -19,4 +19,7 @@ export class LeerProveedorDto {
 
   @Expose()
   readonly Fecha: string;
+
+  @Expose()
+  readonly Direccion: string;
 }

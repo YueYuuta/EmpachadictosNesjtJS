@@ -9,7 +9,7 @@ import { CrearProductoAlmacenCasoUso } from './producto-almacen-caso-uso/crear';
 import { LeerProductoAlmacenCasoUso } from './producto-almacen-caso-uso/leer';
 import { ProductoAlmacenRepoProvider } from './repository/producto-almacen-provider';
 import { EliminarProductoAlmacenCasoUso } from './producto-almacen-caso-uso/eliminar';
-import { ProductoAlmacenController } from './api/menu-almacen.controller';
+import { ProductoAlmacenController } from './api/producto-almacen.controller';
 import { ProductoAlmacenDetalle } from './entidates/producto-almacen-detalle.entity';
 import { EditarProductoAlmacenCasoUso } from './producto-almacen-caso-uso/editar';
 

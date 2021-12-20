@@ -26,6 +26,9 @@ export class Cliente extends BaseEntity {
   @Column({ type: 'float', default: 0 })
   Compras: number;
 
+  @Column({ type: 'text', nullable: true })
+  Direccion: string;
+
   @Column({ type: 'boolean', default: EntityStatus.ACTIVE })
   Estado: boolean;
 

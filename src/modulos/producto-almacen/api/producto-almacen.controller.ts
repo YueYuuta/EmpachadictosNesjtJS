@@ -20,10 +20,7 @@ import { ProductoAlmacenMapper } from '../../../utils/Mappers/producto-almacen';
 import { CrearProductoAlmacenCasoUso } from '../producto-almacen-caso-uso/crear';
 import { EliminarProductoAlmacenCasoUso } from '../producto-almacen-caso-uso/eliminar';
 import { LeerProductoAlmacenCasoUso } from '../producto-almacen-caso-uso/leer';
-import {
-  CrearProductoAlmacenEgresoDto,
-  CrearProductoAlmacenIngresoDto,
-} from './dto';
+import { CrearProductoAlmacenEgresoDto } from './dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('producto-almacen')
@@ -70,6 +67,36 @@ export class ProductoAlmacenController {
   ): Promise<SalidaApi> {
     const respuesta = await this._leerProductoAlmacenService.obtenerProId(
       ProductoAlmacenID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener/por/descripcion/:Descripcion/:AlmacenID')
+  async obtenerProductoPorNombre(
+    @Param('AlmacenID', ParseIntPipe) AlmacenID: number,
+    @Param('Descripcion') Descripcion: string,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerProductoAlmacenService.obtenerProductoPorNombre(
+      Descripcion,
+      AlmacenID,
+    );
+    return {
+      status: HttpStatus.OK,
+      data: respuesta,
+    };
+  }
+
+  @Get('obtener/por/codigo/barra/:codigo/:AlmacenID')
+  async obtenerProductoPorCodigoDeBarra(
+    @Param('AlmacenID', ParseIntPipe) AlmacenID: number,
+    @Param('codigo') CodigoBarra: string,
+  ): Promise<SalidaApi> {
+    const respuesta = await this._leerProductoAlmacenService.obtenerProductoPorCodigoDeBarra(
+      CodigoBarra,
+      AlmacenID,
     );
     return {
       status: HttpStatus.OK,

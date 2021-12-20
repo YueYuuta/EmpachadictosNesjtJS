@@ -9,7 +9,7 @@ export class ProveedorMapper {
       Correo: proveedor.Correo ?? null,
       Ruc: proveedor.Ruc ?? null,
       Telefono: proveedor.Telefono ?? null,
-
+      Direccion: proveedor.Direccion ?? null,
       Nombre: proveedor.Nombre ?? null,
     };
     Object.keys(partiaAlmacen).forEach(
@@ -24,7 +24,7 @@ export class ProveedorMapper {
 
   public static crear(proveedor: CrearProveedorDto): Partial<ProveedorModel> {
     const partiaAlmacen: Partial<CrearProveedorDto> = {
-      // Direccion: proveedor.Direccion ?? null,
+      Direccion: proveedor.Direccion ?? null,
       Correo: proveedor.Correo ?? null,
       Ruc: proveedor.Ruc ?? null,
       Telefono: proveedor.Telefono ?? null,

@@ -23,7 +23,7 @@ import { CrearProveedorDto } from './dto/crear-proveedor.dto';
 import { LeerProveedorDto } from './dto/leer-proveedor.dto';
 import { ProveedorMapper } from '@utils/Mappers/proveedor';
 import { EditarProveedorDto } from './dto/editar-proveedor.dto';
-import { ProveedorAlias } from '@utils/enums/rutas.enum';
+import { ClienteAlias } from '@utils/enums/rutas.enum';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('proveedor')
@@ -34,7 +34,7 @@ export class ProveedorController {
     private readonly _leerProveedorService: LeerProveedorCasoUso,
     private readonly _eliminarProveedorService: EliminarProveedorCasoUso,
   ) {}
-  @Ruta(ProveedorAlias.ProveedorCrear)
+  @Ruta(ClienteAlias.ProveedorCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(@Body() proveedor: CrearProveedorDto): Promise<SalidaApi> {
@@ -48,7 +48,7 @@ export class ProveedorController {
     };
   }
 
-  @Ruta(ProveedorAlias.ProveedorEditar)
+  @Ruta(ClienteAlias.ProveedorEditar)
   @Patch('editar/:ProveedorID')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
@@ -79,7 +79,7 @@ export class ProveedorController {
     };
   }
 
-  @Ruta(ProveedorAlias.ProveedorPaginado)
+  @Ruta(ClienteAlias.ProveedorPaginado)
   @Get('obtener/proveedors/:desde/:limite/:termino?')
   async ObtenerPaginado(
     @Param('desde', ParseIntPipe) desde: number,
@@ -97,7 +97,7 @@ export class ProveedorController {
     };
   }
 
-  @Ruta(ProveedorAlias.ProveedorElmininar)
+  @Ruta(ClienteAlias.ProveedorElmininar)
   @Delete('eliminar/:ProveedorID')
   async eliminar(
     @Param('ProveedorID') ProveedorID: number,

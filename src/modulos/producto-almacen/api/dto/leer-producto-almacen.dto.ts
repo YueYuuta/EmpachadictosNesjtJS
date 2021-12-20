@@ -9,13 +9,13 @@ export class LeerProductoAlmacenDto {
 
   @Expose()
   @Type(type => Producto)
-  readonly ProductoID: LeerProductoDto[];
+  readonly ProductoID: LeerProductoDto;
 
-  @Expose()
-  readonly Ingreso: number;
+  // @Expose()
+  // readonly Ingreso: number;
 
-  @Expose()
-  readonly Egreso: number;
+  // @Expose()
+  // readonly Egreso: number;
 
   @Expose()
   readonly Fecha: string;

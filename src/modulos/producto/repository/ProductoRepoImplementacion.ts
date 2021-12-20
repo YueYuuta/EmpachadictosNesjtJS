@@ -13,6 +13,41 @@ import { ProductoModel } from '../producto-caso-uso/models/producto';
 @Injectable()
 export class ProductoRepoService implements IProductoCasoUso {
   constructor(private readonly _productoRepository: ProductoRepository) {}
+  async obtenerProductoPorNombre(Descripcion: string): Promise<Producto[]> {
+    try {
+      return await this._productoRepository
+        .createQueryBuilder('Producto')
+        .innerJoinAndSelect('Producto.Categoria', 'Categoria')
+        .where('Producto.Estado=:Estado', { Estado: EntityStatus.ACTIVE })
+        .andWhere(
+          new Brackets(qb => {
+            qb.where('Producto.Descripcion ILIKE :Descripcion', {
+              Descripcion: `%${Descripcion}%`,
+            });
+          }),
+        )
+        .take(10)
+        .orderBy('Producto.ProductoID', 'DESC')
+        .getMany();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
+  async obtenerProductoPorCodigoDeBarra(
+    CodigoBarra: string,
+  ): Promise<Producto> {
+    try {
+      return await this._productoRepository.findOne({
+        where: { Estado: EntityStatus.ACTIVE, CodigoBarra },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `no se pudo establecer conexion, ${error}`,
+      );
+    }
+  }
   async eliminarDefinitivamente(ProductoID: number): Promise<boolean> {
     try {
       await this._productoRepository.delete(ProductoID);

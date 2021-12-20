@@ -14,7 +14,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ProductoAlias } from '@utils/enums/rutas.enum';
+import { IngresoAlias } from '@utils/enums/rutas.enum';
 
 import { IngresoMapper } from '@utils/Mappers/ingreso';
 import { CrearIngresoCasoUso } from '../ingreso-caso-uso/crear';
@@ -28,7 +28,7 @@ export class IngresoController {
     private readonly _crearIngresoService: CrearIngresoCasoUso,
     private readonly _editarIngresoService: EditarIngresoCasoUso, // private readonly _leerIngresoService: LeerIngresoCasoUso, // private readonly _editarIngresoService: EditarIngresoCasoUso,
   ) {}
-  @Ruta(ProductoAlias.IngresoCrear)
+  @Ruta(IngresoAlias.IngresoCrear)
   @Post('crear')
   @UsePipes(new ValidationPipe({ transform: true }))
   async crear(
@@ -46,7 +46,7 @@ export class IngresoController {
     };
   }
 
-  @Ruta(ProductoAlias.IngresoEditar)
+  @Ruta(IngresoAlias.IngresoEditar)
   @Patch('editar/:IngresoID')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editar(
@@ -95,7 +95,7 @@ export class IngresoController {
   //   };
   // }
 
-  // // @Ruta(ProductoAlias.MenuPaginado)
+  // // @Ruta(IngresoAlias.MenuPaginado)
   // // @Get('obtener/menus/:desde/:limite/:termino?')
   // // async ObtenerPaginado(
   // //   @Param('desde', ParseIntPipe) desde: number,
@@ -113,7 +113,7 @@ export class IngresoController {
   // //   };
   // // }
 
-  // // @Ruta(ProductoAlias.MenuPaginado)
+  // // @Ruta(IngresoAlias.MenuPaginado)
   // // @Get('obtener/menus-por-categoria/:desde/:limite/:CategoriaID/:termino?')
   // // async ObtenerPaginadoPorCategoria(
   // //   @Param('desde', ParseIntPipe) desde: number,
@@ -133,7 +133,7 @@ export class IngresoController {
   // //   };
   // // }
 
-  // // @Ruta(ProductoAlias.MenuElmininar)
+  // // @Ruta(IngresoAlias.MenuElmininar)
   // // @Delete('eliminar/:MenuID')
   // // async eliminar(@Param('MenuID') MenuID: number): Promise<SalidaApi> {
   // //   const respuesta = await this._eliminarMenuService.eliminar(MenuID);

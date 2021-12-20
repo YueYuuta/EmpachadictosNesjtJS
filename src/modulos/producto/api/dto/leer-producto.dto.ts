@@ -15,6 +15,9 @@ export class LeerProductoDto {
   readonly Descripcion: string;
 
   @Expose()
+  readonly CodigoBarra: string;
+
+  @Expose()
   readonly Pantalla: PantallaEnum;
 
   @Expose()

@@ -18,7 +18,7 @@ export class EditarProductoAlmacenCasoUso {
     const detalle = await this._productoAlmacenRepository.obtenerDetallePorIngresoDetalleID(
       IngresoDetalleID,
     );
-    console.log('detaleeeeeee--', detalle);
+    // console.log('detaleeeeeee--', detalle);
 
     const detalleEditado = await this._productoAlmacenRepository.cambioIngreso(
       ingreso,
