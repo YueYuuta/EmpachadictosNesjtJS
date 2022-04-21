@@ -35,7 +35,6 @@ export class IngresoController {
     @Body() ingreso: CrearIngresoDto,
     @ObtenerUsuario() usuario: any,
   ): Promise<SalidaApi> {
-    // this._ingresoGateway.sendToAll('hola como estas');
     const respuesta = await this._crearIngresoService.crear(
       IngresoMapper.crear(ingreso, usuario.UsuarioID),
     );

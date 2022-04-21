@@ -11,9 +11,8 @@ const ClienteRepo = () => Inject('ClienteRepo');
 @Injectable()
 export class CrearClienteCasoUso {
   constructor(
-    @ClienteRepo() private readonly _clienteRepository: IClienteCasoUso, // private readonly _enlaceService: LeerEnlaceCasoUso,
-  ) // private readonly _parroquiaService: LeerParroquiaCasoUso,
-  // private readonly _terminoService: LeerTerminoCasoUso,
+    @ClienteRepo() private readonly _clienteRepository: IClienteCasoUso, // private readonly _enlaceService: LeerEnlaceCasoUso, // private readonly _parroquiaService: LeerParroquiaCasoUso,
+  ) // private readonly _terminoService: LeerTerminoCasoUso,
   // private readonly _publicidadService: LeerPublicidadCasoUso,
   // private readonly _antiguoService: LeerAntiguoCasoUso,
   {}
@@ -62,7 +61,7 @@ export class CrearClienteCasoUso {
         );
       }
       const validacion = new ValidarIdentificacion();
-      if (!validacion.validarRucPersonaNatural(Ruc)) {
+      if (!validacion.validarRucSociedadPrivada(Ruc)) {
         throw new ConflictException(`el ruc: ${Ruc} no es un ruc valida!`);
       }
     }

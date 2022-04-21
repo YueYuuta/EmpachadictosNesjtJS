@@ -1,4 +1,4 @@
-import { genSalt, hash, compare } from 'bcrypt';
+import { genSalt, hash, compare } from 'bcryptjs';
 export class ProveedorBcrypt {
   public static async encriptarContra(Contraseña: string): Promise<string> {
     const salt: string = await genSalt(10);
